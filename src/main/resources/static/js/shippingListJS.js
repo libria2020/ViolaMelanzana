@@ -5,48 +5,45 @@ window.addEventListener("load", function(){
 });
 
 function aggiungiEventi(){
-	btnModifica.addEventListener("click",function(){
-		var radiobuttonID = document.querySelector( 'input[name="indirizzi"]:checked');
-		if(radiobuttonID != null) {   
-        	localStorage.setItem("id_indirizzo", radiobuttonID.getAttribute("id"));  
-			window.location.href = '/shipping';
- 		}else {
-        	alert("selezionare radiobutton di un indirizzo");
-		}
-	});
+	var btnModifica = document.querySelectorAll(".btnModifica");
+
+	for(let i = 0; i < btnModifica.length; ++i){
+		btnModifica[i].addEventListener("click",function(e){
+	        	localStorage.setItem("id_indirizzo", e.target.name);  
+				window.location.href = '/shipping';
+		});
+	}
 	
 	btnNuovo.addEventListener("click",function(){
 		localStorage.setItem("id_indirizzo", 0); 
 		window.location.href = '/shipping';
 	});
 	
-	btnElimina.addEventListener("click",function(){
-		var radiobuttonID = document.querySelector( 'input[name="indirizzi"]:checked');
-		if(radiobuttonID != null) {   
-        	$.ajax({
-				type: "POST",
-				url: "/deleteShipping",
-				contentType: "application/json",
-				data: JSON.stringify(radiobuttonID.getAttribute("id")),
-				success: function(risposta){
-					//status = 200
-					console.log(risposta);
-					if (risposta.status === "OK"){
-						//alert(risposta.messaggio);
-						window.location.href = '/shippingList';
+	
+	var btnElimina = document.querySelectorAll(".btnElimina");
+
+	for(let i = 0; i < btnModifica.length; ++i){
+		btnElimina[i].addEventListener("click",function(e){
+	        	$.ajax({
+					type: "POST",
+					url: "/deleteShipping",
+					contentType: "application/json",
+					data: JSON.stringify(e.target.name),
+					success: function(risposta){
+						console.log(risposta);
+						if (risposta.status === "OK"){
+							window.location.href = '/shippingList';
+						}
+					},
+					error: function(xhr){
+						console.log(xhr);
+						var res = JSON.parse(xhr.responseText);
+						alert(res.messaggio);
+						window.location.href = '/';
 					}
-				},
-				error: function(xhr){
-					console.log(xhr);
-					var res = JSON.parse(xhr.responseText);
-					alert(res.messaggio);
-					window.location.href = '/';
-				}
+			});
 		});
- 		}else {  
-        	alert("selezionare radiobutton di un indirizzo");
-		}
-	});
+	}
 	
 	btnPaga.addEventListener("click",function(){
 		var radiobuttonID = document.querySelector( 'input[name="indirizzi"]:checked');
@@ -57,10 +54,8 @@ function aggiungiEventi(){
 				contentType: "application/json",
 				data: JSON.stringify(Number(radiobuttonID.id)),
 				success: function(risposta){
-					//status = 200
 					console.log(risposta);
 					if (risposta.status === "OK"){
-						//alert(risposta.messaggio);
 						window.location.href = '/pay';
 					}
 				},
@@ -72,7 +67,7 @@ function aggiungiEventi(){
 				}
 		});
  		}else {  
-        	alert("selezionare radiobutton di un indirizzo");
+        	alert("Selezionare indirizzo");
 		}
 	});	
 }
@@ -85,5 +80,3 @@ function controlloListaIndirizzi(){
 		document.getElementById("pulsantiSecondari").style.display = "none";
 	}
 }
-
-

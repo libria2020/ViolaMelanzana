@@ -10,4 +10,6 @@ public interface IndirizzoDao {
 	public boolean saveOrUpdate(Indirizzo indirizzo);
 	public boolean delete(int id);
 	public List<Indirizzo> findAllFromUserEnable(String mail);
+	
+	public boolean deleteAddress(int mail);
 }

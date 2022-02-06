@@ -11,7 +11,6 @@ public class Ricetta {
 	private String descrizione;
 	private String preparazione;
 	private String consiglio;
-	private int accettata;
 	private int likes;
 	private int segnalazioni;
 	private int difficolta;
@@ -21,12 +20,17 @@ public class Ricetta {
 	private String img;
 	private String curiosita;
 	private Utente utentePubblicatore;
-	private boolean approvazione;
+	private Boolean approvazione;
 	private ArrayList<IngredienteQuantita> listaIngredientiConQuantita;
 	private ArrayList<Commento> commenti;
 	private ArrayList<String> categorieRicetta;
 	private String base64Image;
 	private String video;
+	private Integer chefPubblicatore; 
+	
+	public Ricetta() {
+		categorieRicetta = new ArrayList<String>();
+	}
 	
 	public int getDifficolta() {
 		return difficolta;
@@ -130,16 +134,7 @@ public class Ricetta {
 	public void setConsiglio(String consiglio) {
 		this.consiglio = consiglio;
 	}
-	
-	
-	public int getAccettata() {
-		return accettata;
-	}
-	
-	public void setAccettata(int accettata) {
-		this.accettata = accettata;
-	}
-	
+
 	public int getLikes() {
 		return likes;
 	}
@@ -164,14 +159,13 @@ public class Ricetta {
 		this.utentePubblicatore = utentePubblicatore;
 	}
 	
-	public boolean getApprovazione() {
+	public Boolean isApprovazione() {
 		return approvazione;
 	}
-	
-	public void setAdminApprovante(boolean approvazione) {
+
+	public void setApprovazione(Boolean approvazione) {
 		this.approvazione = approvazione;
 	}
-	
 
 	public ArrayList<Commento> getCommenti() {
 		return commenti;
@@ -200,6 +194,15 @@ public class Ricetta {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
+	}
+	
+
+	public Integer getChefPubblicatore() {
+		return chefPubblicatore;
+	}
+
+	public void setChefPubblicatore(Integer chefPubblicatore) {
+		this.chefPubblicatore = chefPubblicatore;
 	}
 
 	@Override

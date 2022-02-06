@@ -33,7 +33,7 @@
 		</c:if>
 		
 		<c:if test="${lista != null}">
-			<div class="col-md-5" style="background-color: white;">
+			<div class="container" style="background-color: white; width: 50%;">
 				<table id="tableIngredienti" class="table">
 					<thead class="thead-dark">
 						<tr>

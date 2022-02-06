@@ -39,7 +39,7 @@ var inserisciRicetta = function(){
 	var tempoC = $("#tempoC").val();
 	var dosi = $("#dosi").val();
 	var video = $("#video").val();
-	
+	var categoria = $("#categoria").val();
 	
 	var righeTabellaIngredienti = document.querySelectorAll("#riga");
 	var ingredientiQuantita = [];
@@ -47,9 +47,7 @@ var inserisciRicetta = function(){
 		var nome = riga.cells[0].textContent;
 		var quantita = riga.cells[1].textContent;
 		var uDiMisura= riga.cells[2].textContent;
-		
-		console.log(nome + " " + quantita + "  " + uDiMisura);
-		
+				
 		var I = new Ingrediente(nome);
 		var Q = new Quantita(quantita,uDiMisura);
 		
@@ -74,22 +72,21 @@ var inserisciRicetta = function(){
 			difficolta:difficolta,
 			tempoP:tempoP,
 			tempoC:tempoC,
-			dosi:dosi
+			dosi:dosi,
+			categoria:categoria
 		},	
 		success: function(risposta){
 			if(risposta === "OK"){
-				alert("aggiunta con successo");
+				/*alert("aggiunta con successo");*/
 			}
 			else{
-				alert("NOPE DATABSE");
+				/*alert("NOPE DATABSE");*/
 			}
 		},
 		error: function(xhr){
 			
 		}
 	})
-	
-	alert("AO");
 }
 
 
@@ -143,7 +140,6 @@ function controlli(){
 		
 	var immagine = $("#imageRicetta");	
 	var lblImmagine = document.querySelector("#lblImmagine");
-	console.log(immagine.attr("src"));
 	if(typeof immagine.attr("src") === 'undefined'){
 		immagine.addClass("makeRed");
 		res = false;
@@ -153,12 +149,27 @@ function controlli(){
 		lblImmagine.innerHTML = "";
 	}
 		
+	var categoria = $("#categoria");
+	var lblCategoria = document.querySelector("#lblCategoria");
+	if(categoria.val().length === 0){
+		res = false;
+		categoria.addClass("makeRed");
+		lblCategoria.innerHTML = "Deve esserci una categoria";
+	} else{
+		categoria.removeClass("makeRed");
+		lblCategoria.innerHTML = "";
+	}
+		
 	var difficolta = $("#difficolta");
 	var lblDifficolta = document.querySelector("#lblDifficolta");
 	if(difficolta.val().length === 0){
 		res = false;
 		difficolta.addClass("makeRed");
 		lblDifficolta.innerHTML = "Deve esserci una difficolta";
+	} else if(difficolta.val() < 0 || difficolta.val() > 5){
+		res = false;
+		difficolta.addClass("makeRed");
+		lblDifficolta.innerHTML = "La difficolta va da 1 a 5";
 	} else{
 		difficolta.removeClass("makeRed");
 		lblDifficolta.innerHTML = "";
@@ -170,6 +181,10 @@ function controlli(){
 		res = false;
 		tempoP.addClass("makeRed");
 		lblTempoP.innerHTML = "Deve esserci un tempo di preparazione";
+	} else if(tempoP.val() < 0){
+		res = false;
+		tempoP.addClass("makeRed");
+		lblTempoP.innerHTML = "Inserisci un tempo corretto";
 	} else{
 		tempoP.removeClass("makeRed");
 		lblTempoP.innerHTML = "";
@@ -181,6 +196,10 @@ function controlli(){
 		res = false;
 		tempoC.addClass("makeRed");
 		lblTempoC.innerHTML = "Deve esserci un tempo di cottura";
+	} else if(tempoC.val() < 0){
+		res = false;
+		tempoC.addClass("makeRed");
+		lblTempoC.innerHTML = "Inserisci un tempo corretto";
 	} else{
 		tempoC.removeClass("makeRed");
 		lblTempoC.innerHTML = "";
@@ -211,6 +230,7 @@ function evento(){
 		
 		if(controlli()){
 			inserisciRicetta();
+			alert("aggiunta con successo");
 			var form = document.querySelector("#form-insert");
 			form.submit();	
 		}
@@ -304,7 +324,6 @@ function showSelectedImage(){
 	
 	})
 	
-	//console.log(image.src);
 }
 
 /*function eventoChangeCategorie(){
@@ -328,26 +347,4 @@ function showSelectedImage(){
 		})
 	})
 
-}*/
-
-/*var rispostaIsPresent = false;
-function isPresent(nomeIngrediente){
-	return $.ajax({
-		type: "POST",
-		url: "/getIngradiants",	
-		async: false,
-		success: function(risposta){
-			for(var i = 0 ; i < risposta.length; i++){
-				if(nomeIngrediente === risposta[i].nome){
-					alert("IS TRRUE");
-					rispostaIsPresent = true;
-				}					
-			}
-			rispostaIsPresent = false;
-		},
-		error: function(xhr){
-			
-			rispostaIsPresent = false;
-		}
-	})
 }*/

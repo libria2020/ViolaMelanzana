@@ -7,8 +7,8 @@ import application.model.Chef;
 public interface ChefDao {
 	
 	public List<Chef> findAll();
-	public Chef findByPrimaryKey(String nome);
+	public Chef findByPrimaryKey(int id);
 	public boolean saveOrUpdate(Chef chef);
 	public boolean delete(Chef chef);
-	public List<Chef> findOrderBy(String expression, int limit, int offset);
+	public List<Chef> findOrderBy(int limit, int offset, boolean admin);
 }

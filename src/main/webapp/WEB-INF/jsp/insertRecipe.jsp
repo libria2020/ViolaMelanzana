@@ -20,7 +20,7 @@
 
 		<link href="../css/commonCSS.css" rel="stylesheet" type="text/css">
 		<link href="../css/homeCSS.css" rel="stylesheet" type="text/css">
-		<link href="../css/insertRecipeCSS.css" rel="stylesheet" type="text/css">
+		<link href="../css/insertCSS.css" rel="stylesheet" type="text/css">
 		<link href="../css/utilCSS.css" rel="stylesheet" type="text/css">
 		
 		<script  src="../js/insertRecipe.js"></script>
@@ -34,7 +34,7 @@
 		
 		<div id="container-insert" class="container fluid">
 			<h1>Inserisci la tua ricetta</h1>
-			<form id="form-insert" action="/insertRecipePage">
+			<form id="form-insert">
 				<div class="form-group">
 					<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
 					<label>Titolo</label>
@@ -53,7 +53,7 @@
 				<div class="form-group">
 					<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
 					<label>Preparazione</label>
-					<textarea rows="6" cols="50" id="preparazione" class="form-control formInput" name="preparazione" placeholder="Preparazione" maxlength="10000"></textarea>			
+					<textarea rows="6" cols="50" id="preparazione" class="form-control formInput" placeholder="Preparazione" maxlength="10000"></textarea>			
 					<label class="label lbl-warning" for="preparazione">Max 10000 characters</label>
 					<label id="lblPreparazione" style="color:red; font-size: 12"></label>
 				</div>
@@ -101,7 +101,7 @@
 			 	<div class="form-group">
 			 		
 					<label class="btn btn-default btn-file form-group col-md-3">
-					   Carica immagine ricetta <input id="uploadImage" type="file" name="image" accept="image/png, image/jpeg" style="display: none;" required> 
+					   Carica immagine ricetta <input id="uploadImage" type="file" accept="image/png, image/jpeg" style="display: none;" required> 
 					</label>
 					<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
 					<label>Immagine</label>
@@ -126,8 +126,16 @@
 					<label class="label lbl-warning" for="curiosita">Max 1000 characters</label>
 				</div>
 				
-				<div class="form-group" >
-					<input id="inputCategorie" class="form-control" type="text" placeholder="Inserisci la categoria del piatto"  >
+				<div class="form-row">
+					<div class="form-group" >
+						<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
+						<label>Categoria</label>
+						<input id="categoria" class="form-control" type="text" placeholder="Inserisci la categoria del piatto"  >
+						<label id="lblCategoria" style="color:red; font-size: 12"></label>
+					</div>
+					<div class="form-group">
+						<a href="/getListCategories" target="_blank" rel="noopener noreferrer">Visualizza lista Categorie</a>
+					</div>
 				</div>
   
 				<div class = "form-row">

@@ -13,7 +13,6 @@ public interface RicettaDao {
 
 	List<String> findIngredientByRecipeId(int id);
 	public List<RicettaProxy> findAll();
-	public boolean delete(Ricetta ricetta);
 	public boolean deleteRequest(Ricetta ricetta,Utente utente,String motivazione);
 
 	
@@ -25,8 +24,13 @@ public interface RicettaDao {
 	public List<RicettaProxy> search(String query, String filter);
 	public boolean save(Ricetta ricetta);
 	public boolean update(Ricetta ricetta);
+
+	public boolean deleteRecipeFormChef(int ricetta, int chef);
 	
-	public ArrayList<Ricetta> findPendingRecipe();
-	
+	public boolean updateDeleteRequest(int id_ricetta,boolean accettata);
+	public List<Ricetta> getWithBan();
+	public boolean delete(int id_ricetta);
+	public boolean update(int id_ricetta,boolean approvazione);
+
 	
 }

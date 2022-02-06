@@ -31,6 +31,7 @@ public class LoginController {
 	
 	@PostMapping("/doLogin")
 	public ModelAndView faiLogin(HttpServletRequest req, String username, String password) {
+		
 		ModelAndView model = new ModelAndView();
 		Utente utente = Database.getInstance().getFactory().getUtenteDao().checkByUniqueAndPassword(username, password);
 		HttpSession session = req.getSession(true);
@@ -39,11 +40,12 @@ public class LoginController {
 		if(utente != null) {
 			if(utente.isEnable()) {
 				session.setAttribute("utente", utente);
+				session.removeAttribute("admin");
 				model.setViewName("redirect:/");
 				return model;	
 			}
 			model.addObject("error", "Utente non abilitato. Devi confermare la tua email");
-			model.setViewName("/login");
+			model.setViewName("login");
 			return model;
 		}
 			
@@ -52,7 +54,6 @@ public class LoginController {
 			session.setAttribute("utente", admin);
 			session.setAttribute("admin", true);
 			model.setViewName("redirect:/");
-
 			return model;	
 		}
 
@@ -81,13 +82,14 @@ public class LoginController {
 			u = new Utente(mailGoogle, nomeGoogle, cognomeGoogle);
 			try {
 				u.setUsername("gmailUser" + IdBroker.getId(Database.getInstance().getConn(), NomiSequenze.GOOGLE));
+				u.setMaster(false);
+				u.setEnable(true);
+				if(!Database.getInstance().getFactory().getUtenteDao().save(u, true))
+					return "NO";
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			u.setMaster(false);
-			if(!Database.getInstance().getFactory().getUtenteDao().save(u, true))
-				return "NO";
 		}
 		
 		HttpSession session = req.getSession();

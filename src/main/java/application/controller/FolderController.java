@@ -40,7 +40,7 @@ public class FolderController {
 	}
 	
 	@PostMapping("newFolder")
-		public String newFolder(HttpServletRequest req,@RequestParam("nome") String nameFolder) {
+	public String newFolder(HttpServletRequest req,@RequestParam("nome") String nameFolder) {
 		HttpSession session = req.getSession();
 		Utente ut=(Utente) session.getAttribute("utente");
 		List <Raccolta> raccolteUtente=new ArrayList<Raccolta>();

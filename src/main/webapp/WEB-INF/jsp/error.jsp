@@ -18,17 +18,10 @@
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<!-- Latest compiled JavaScript -->
-	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"rel="stylesheet" id="bootstrap-css">
-	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-	<link href="../css/homeCSS.css" rel="stylesheet" type="text/css">
-	<link href="../css/commonCSS.css" rel="stylesheet" type="text/css">
-	<link href="../css/errorCSS.css" rel="stylesheet" type="text/css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
+	
 	<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 	
-	
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<script src="../js/indexJS.js"></script>
 	
 	</head>
 	
@@ -38,10 +31,9 @@
 	
 	<body>
 		
-			<div class="container">
+			<div class="container" style="text-align: center; margin-top: 10%;">
 				<img src="images/errorGif.gif" />
-				<h1>Si è verificato un errore durante la navigazione</h1>
-				
+				<h2>Si è verificato un errore durante la navigazione</h2>
 			</div>
 	</body>
 </html>	

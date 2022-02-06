@@ -117,7 +117,7 @@ private Connection conn;
 	@Override
 	public synchronized ArrayList<Commento> findForRecipe(int idRicetta){
 		ArrayList<Commento> commenti = null;
-		String query ="SELECT * from commento WHERE id_ricetta=?;";
+		String query ="SELECT * from commento WHERE id_ricetta=? order by data_pubblicazione desc;";
 		try {
 			
 			PreparedStatement pr = conn.prepareStatement(query);

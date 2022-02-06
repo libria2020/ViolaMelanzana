@@ -24,6 +24,22 @@ $(document).ready(function(){
 		$('#recent_previous').className = "vm-nav-btn"
 	}	
 	
+	
+	// ***** ***** ***** ***** ***** ***** ***** ***** *****
+	// Chef
+	$.ajax({
+		type: "GET",
+		url: "/categorie",
+		
+		success: function(risposta) { 
+			
+			for (var i = 0; i < risposta.length; i++) {
+				$('#cat_bar').append($('<a href="/categoria?categoria=' + risposta[i].id + '"><b>' + risposta[i].nome + '</b></a>'));
+			}
+		}		
+			
+	});
+	
 	// ***** ***** ***** ***** ***** ***** ***** ***** *****
 	// Chef
 	$.ajax({
@@ -43,13 +59,13 @@ $(document).ready(function(){
 				$("#chef-row").innerHTML = "";
 					
 				for (var i = 0; i < risposta.length; i++) {
-					$('#chef-row').append($('<div class="col-md-3" id="c-' + risposta[i].id + '">'+
-												'<div class="vm-container">'+
-													'<h4><b>' + risposta[i].nome +'</b></h4>'+
-												'</div>'+											
-												'<a href="chef?chef='+ risposta[i].id +'" >'+
+					$('#chef-row').append($('<div class="col-md-3 center-space" id="c-' + risposta[i].id + '">'+
+												'<div>'+
+													'<h4><b>' + risposta[i].nome +'</b></h4>'+	
+												'</div>'+									
+												'<a href="chef?key='+ risposta[i].id +'" >'+
 													'<img src="'+ risposta[i].img_link +'" class="img-circle person" alt="Avatar">'+
-												'</a>'+											
+												'</a>'+										
 											'</div>'));
 				}
 		}
@@ -79,13 +95,13 @@ $(document).ready(function(){
 					document.getElementById("chef-row").innerHTML = "";
 					
 					for (var i = 0; i < risposta.length; i++) {
-					$('#chef-row').append($('<div class="col-md-3" id="c-' + risposta[i].id + '">'+
-												'<div class="vm-container">'+
-													'<h4><b>' + risposta[i].nome +'</b></h4>'+
-												'</div>'+											
-												'<a href="chef?chef='+ risposta[i].id +'" >'+
+					$('#chef-row').append($('<div class="col-md-3 center-space" id="c-' + risposta[i].id + '">'+
+												'<div>'+
+													'<h4><b>' + risposta[i].nome +'</b></h4>'+	
+												'</div>'+									
+												'<a href="chef?key='+ risposta[i].id +'" >'+
 													'<img src="'+ risposta[i].img_link +'" class="img-circle person" alt="Avatar">'+
-												'</a>'+											
+												'</a>'+										
 											'</div>'));
 					}
 			}
@@ -117,14 +133,14 @@ $(document).ready(function(){
 						document.getElementById("chef-row").innerHTML = "";	
 					
 						for (var i = 0; i < risposta.length; i++) {
-						$('#chef-row').append($('<div class="col-md-3" id="c-' + risposta[i].id + '">'+
-													'<div class="vm-container">'+
-														'<h4><b>' + risposta[i].nome +'</b></h4>'+
-													'</div>'+											
-													'<a href="chef?chef='+ risposta[i].id +'" >'+
-														'<img src="'+ risposta[i].img_link +'" class="img-circle person" alt="Avatar">'+
-													'</a>'+											
-												'</div>'));
+						$('#chef-row').append($('<div class="col-md-3 center-space" id="c-' + risposta[i].id + '">'+
+												'<div>'+
+													'<h4><b>' + risposta[i].nome +'</b></h4>'+	
+												'</div>'+									
+												'<a href="chef?key='+ risposta[i].id +'" >'+
+													'<img src="'+ risposta[i].img_link +'" class="img-circle person" alt="Avatar">'+
+												'</a>'+										
+											'</div>'));
 						}
 					}
 			}

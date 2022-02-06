@@ -4,7 +4,6 @@ window.addEventListener("load", function(){
 });
 
 function getDati(){
-	console.log(localStorage.getItem("id_indirizzo"));
 	if(localStorage.getItem("id_indirizzo") != null && localStorage.getItem("id_indirizzo") != 0){
 		$.ajax({
 			type: "POST",
@@ -28,17 +27,24 @@ function getDati(){
 }
 
 function eventiButtoni(){
+
+	btnIndietro.addEventListener("click", function(){
+		window.location.href = '/shippingList';
+	});
+	
+	
 	btnSalva.addEventListener("click", function(){
 		var n_civico = document.getElementById('n_civico');
 		var cap = document.getElementById('cap');
 		var tel = document.getElementById('telefono');
+		
 		if(!is_int(n_civico.value) || !is_int(cap.value) || !is_int(tel.value)){
-			alert("controllare valori numerici");
+			alert("Controllare valori numerici");
 			return;
 		}
 		
 		if(cap.value.length != 5){
-			alert("cap non corretto");
+			alert("CAP non corretto");
 			return;
 		}
 		
@@ -50,7 +56,6 @@ function eventiButtoni(){
 			success: function(risposta){
 				console.log(risposta);
 				if (risposta.status === "OK"){
-					alert(risposta.messaggio);
 					window.location.href = '/shippingList';
 				}
 			},

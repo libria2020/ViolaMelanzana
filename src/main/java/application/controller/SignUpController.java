@@ -7,26 +7,37 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import application.model.Utente;
 import application.persistenza.Database;
 import application.utilities.SendEmail;
+import application.utilities.Utilities;
+import net.bytebuddy.utility.RandomString;
 
 
 @Controller
 public class SignUpController {
 	
 	@GetMapping("signUpPage")
-	public String signUpPage(HttpServletRequest req) {
-		if(req.getSession().getAttribute("utente") != null)
-			return "redirect:/";
-		return "signup";
+	public ModelAndView signUpPage(HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		if(session.getAttribute("utente") != null)
+			return new ModelAndView("redirect:/");
+		return new ModelAndView("signup");
 	}
 	
 
 	@PostMapping("register")
-	public String register(HttpServletRequest req, @RequestParam("mail") String mail,@RequestParam("nome") String nome, 
+	public ModelAndView register(HttpServletRequest req, @RequestParam("mail") String mail,@RequestParam("nome") String nome, 
 			@RequestParam("cognome") String cognome, @RequestParam("username") String username, @RequestParam("password") String password) {
+		
+		ModelAndView model = new ModelAndView("signup");
+		
+		if(Database.getInstance().getFactory().getUtenteDao().findByUnique(username) != null) {
+			model.addObject("error", "Lo username usato è già registrato. Cambialo");
+			return model;
+		}
 		
 		Utente utente = new Utente();
 		utente.setMail(mail);
@@ -36,62 +47,36 @@ public class SignUpController {
 		utente.setUsername(username);
 		utente.setMaster(false);
 		utente.setEnable(false);
-		utente.setVerificationCode(SendEmail.getInstance().getRandom());
+		String verificationCode = RandomString.make(45);
+		utente.setVerificationCode(verificationCode);
 		
 		if(Database.getInstance().getFactory().getUtenteDao().save(utente, false)) {
 			
-			boolean test = SendEmail.getInstance().sendEmailVerification(utente);
+			String link = Utilities.getSiteUrl(req) + "/verify?verification_code=" + verificationCode;
+			boolean test = SendEmail.getInstance().sendEmailVerification(utente, link);
 			
 			if(test) {
-				HttpSession session = req.getSession();
-				session.setAttribute("usernameUser", utente.getUsername());
-				session.setAttribute("verificationCode", utente.getVerificationCode());
+				model.addObject("message", "Controlla la tua email per verificarla");
 			}
-			return "verify";
-			
-		} else {
-			return "signup";
-		}
+		} 	
+		return model;
 	}
 	
-	@PostMapping("verifyCode")
-	public String verificaCodice(HttpServletRequest req, String codice) {
-		HttpSession session = req.getSession();
-		String usernameUser = (String)session.getAttribute("usernameUser");
-		String verificationCode = (String) session.getAttribute("verificationCode");
+	@GetMapping("verify")
+	public ModelAndView verificaCodice(HttpServletRequest req, @RequestParam("verification_code") String verificationCode) {
+		ModelAndView model = new ModelAndView("verify");
 		
-		if(codice.equals(verificationCode)) {
-			session.removeAttribute("usernameUser");
-			session.removeAttribute("verificationCode");
+		Utente u = Database.getInstance().getFactory().getUtenteDao().findByVerificationCode(verificationCode);
+		if(u != null) {
 			
-			Database.getInstance().getFactory().getUtenteDao().enableUser(usernameUser);
+			model.addObject("message", "Email verificata correttamente");
 			
-			return "redirect:/loginPage";
+			Database.getInstance().getFactory().getUtenteDao().enableUser(u.getUsername());
+			
 		} else {
-			return "verify";
+			model.addObject("error", "Impossibile verificare una email con questo link. Riprova più tardi o chiedine un altro");
 		}
-	}
-	
-	
-	/*@PostMapping("/googleSignIn")
-	public String addGoogleUser(String mailGoogle, String nomeGoogle, String cognomeGoogle, HttpServletRequest req) {
-		try {
-			Utente u = Database.getInstance().getFactory().getUtenteDao().findByPrimaryKey(mailGoogle);
-			if(u == null) {
-				u = new Utente(mailGoogle, nomeGoogle, cognomeGoogle, "gmailUser" + IdBroker.getIdGoogle(Database.getInstance().getConn()), false);
-				if(!Database.getInstance().getFactory().getUtenteDao().save(u, true))
-					return "login";
-			}
-			
-			HttpSession session = req.getSession();
-			session.setAttribute("utente", u);
-			session.setAttribute("google", true);
-			
-			return "redirect:/";
-		} catch (SQLException e) {
-			e.printStackTrace();
 		
-		}
-		return "login";
-	}*/
+		return model;
+	}
 }

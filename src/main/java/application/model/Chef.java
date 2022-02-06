@@ -10,6 +10,11 @@ public class Chef {
 	private Date data;
 	private String descrizione;
 	private String img_link;
+	
+	public Chef() {
+		// TODO Auto-generated constructor stub
+	}
+	
 	public int getId() {
 		return id;
 	}

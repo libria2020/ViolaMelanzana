@@ -9,96 +9,104 @@
 <fmt:setBundle basename="messages/messages"/>
 
 <html>
+<head>
+	<meta charset="UTF-8">
+		
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<!-- jQuery library -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<!-- Latest compiled JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
 
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-<header>
-	<!-- Main Navigation Bar -->
-	<nav class="vm-navbar space-nav">
-		<div class="row">
-			<div class="col-md-3">
-				<div class="navbar-header">
-					<a class="navbar-brand" href="/">
-						<img src= "/images/logo.png" id="logo">
-					</a>
-				</div>
-			</div>
-			
-			<div class="col-md-6">
-				<form action="/ricerca" method="get" class="vm-search-bar">
-					<div class="vm-input-group">
-						<select id="nav-bar-cat" name="filter"  class="vm-btn vm-filter-btn">
-						    <option value="all" selected="selected"><fmt:message key="filter.all"/></option>
-						    <c:forEach items="${tutteLeCategorie}" var="categoria">
-						    	<option value="' + risposta[i].id + '"> ${categoria.nome} </option>
-						    </c:forEach>
-					  	</select>
-				  	
-						<input type="text" placeholder="Search" name="search">
-						
-						<button type="submit" class="vm-btn">
-							<i class="fa fa-search fa-lg vm-color" aria-hidden="true"></i>
-						</button>
-					</div>
-				</form> 
-			</div>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	
-			<div class="col-md-3">
-				<div class="vm-user-navbar">
-					
-					<c:if test="${utente != null }">
-						<a href="cart">
-					  		<i class="fa fa-opencart fa-lg vm-color" aria-hidden="true"></i>
-						</a>
-					
-						<a href="folderLike">
-							<i class="fa fa-heart-o fa-lg vm-color" aria-hidden="true"></i>
-						</a>
-					</c:if>	
-					<c:if test="${utente == null }">
-						<a href="loginPage">
-							<span data-toggle="tooltip" data-placement="bottom" title="<fmt:message key="log.messages"/>">
-						  		<i class="fa fa-opencart fa-lg vm-color" aria-hidden="true"></i>
-							</span>
-						</a>
-						<a href="loginPage">
-							<span data-toggle="tooltip" data-placement="bottom" title="<fmt:message key="log.messages"/>">
-								<i class="fa fa-heart-o fa-lg vm-color" aria-hidden="true"></i>
-							</span>
-						</a>
-					</c:if>		
-					
-					<div class="vm-dropdown">
-						<button class="vm-btn">
-							<i class="fa fa-user-o fa-lg vm-color" aria-hidden="true"></i>
-						</button>
-						
-						<div class="vm-dropdown-content">					
-							<c:if test="${utente != null}">
-								<a href="account"><fmt:message key="profile"/></a>
-								<a href="account"><fmt:message key="order"/></a>
-								<a href="insertRecipePage"><fmt:message key="add.recipe"/></a>
-								<a href="logOut"><fmt:message key="logout"/></a>
-							</c:if>	
+	<script src="../js/navbarJS.js"></script>
+	
+	<link href="../css/navbarCSS.css" rel="stylesheet" type="text/css">
+	
+</head>
+
+<body>
+<header>
+
+	<nav class="vm-navbar">
+		<div class="container-fluid">
+			<div class="navbar-header">
+      			<a class="" href="/">
+					<img src= "/images/logo.png" id="logo">
+				</a>
+    		</div>
+		
+			<div>
+				<ul class="vm-user nav navbar-nav">
+				
+					<c:if test="${admin == true }">
+						<li class="vm-text"> Admin ${utente.username}! </li>
+						<li class="dropdown">
+							<a class="fa fa-user-o vm-color vm-icon dropdown-toggle" data-toggle="dropdown" href="#"></a>
 							
-							<c:if test="${utente == null}">
-								<a href="loginPage"><fmt:message key="profile"/></a>
-								<a href="loginPage"><fmt:message key="order"/></a>
-								<a href="loginPage"><fmt:message key="add.recipe"/></a>
-								<a href="loginPage"><fmt:message key="login"/></a>
-							</c:if>
-					    </div>
-					</div>
+							<ul class="dropdown-menu" style="margin-left: -110px;">
+							    <li><a href="requestAdminView">Richieste Utente</a></li>
+							    <li><a href="ordiniInConsegna">Ordini</a></li>
+							    <li><a href="insertChefPage">Nuovo Chef</a></li>
+							    <li><a href="logOut">Logout</a></li>
+						    </ul>
+						</li>
+					</c:if>
 					
-					<c:if test="${utente != null }">
-						<p><fmt:message key="welcome"/> ${utente.username}!</p>
-					</c:if>	
-					<c:if test="${utente == null }">
-						<p><fmt:message key="greetings"/>!</p>
-					</c:if>			
-				</div>
+					<c:if test="${admin == null }">
+						<c:if test="${utente != null }">
+							<li class="vm-text"> Benvenuto ${utente.username}! </li>
+							<li class="dropdown">
+								<a class="fa fa-user-o vm-color vm-icon dropdown-toggle" data-toggle="dropdown" href="#"></a>
+								
+								<ul class="dropdown-menu">
+									    <li><a href="account">Il mio Profilo</a></li>
+									    <li><a href="account">I miei Ordini</a></li>
+									    <li><a href="insertRecipePage">Nuova Ricetta</a></li>
+									    <li><a href="logOut">Logout</a></li>
+							    </ul>
+							</li>
+							<li><a href="folderLike" class="fa fa-heart-o vm-color vm-icon"></a></li>
+							<li><a href="cart" class="fa fa-opencart fa-lg vm-color vm-icon"></a></li>	
+						</c:if>	
+						
+						<c:if test="${utente == null }">
+							<li class="vm-text"> Ciao, accedi! </li>
+							<li class="dropdown">
+								<a class="fa fa-user-o vm-color vm-icon dropdown-toggle" data-toggle="dropdown" href="#"></a>
+								
+								<ul class="dropdown-menu" style="margin-left: -109px;">
+									    <li><a href="loginPage">Il mio Profilo</a></li>
+									    <li><a href="loginPage">I miei Ordini</a></li>
+									    <li><a href="loginPage">Nuova Ricetta</a></li>
+									    <li><a href="loginPage">Login</a></li>
+							    </ul>
+							</li>
+							<li><a href="loginPage" class="fa fa-heart-o vm-color vm-icon"></a></li>
+							<li><a href="loginPage" class="fa fa-opencart fa-lg vm-color vm-icon"></a></li>	
+						</c:if>
+					</c:if>
+				
+				</ul>	
 			</div>
-		</div>		
+			 
+			<div class="vm-input-group">
+				<form action="/ricerca" method="get">
+					<select id="nav-bar-cat" name="filter" class="vm-text">
+					    <option value="all" selected="selected"> Tutte le categorie </option>
+				  	</select>
+					<input type="text" placeholder="Search" name="search">
+					<button type="submit" class="fa fa-search vm-color vm-icon"></button>
+				</form> 
+			</div>	
+		</div>
 	</nav>
+
 </header>
 
-	
+</body>	
+</html>

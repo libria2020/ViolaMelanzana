@@ -7,26 +7,45 @@ $(document).ready(function(){
 	type: "GET",
 	url: "/account/address",
 	
-	success: function(risposta) { // TODO controlar la dimension del array antes de estamparlo
+	success: function(risposta) { 
 			
 			for (var i = 0; i < risposta.length; i++) {
-				$('#address-tab').append($('<div class="row address">'+
-												'<div>'+														
-													'<h4> <b>Via</b> ' + risposta[i].via + '</h4>'+
-													'<h4> <b>N. Civico</b> ' + risposta[i].n_civico + '</h4>'+
-													'<h4> ' + risposta[i].citta + ', ' + risposta[i].provincia + ' </h4>'+
-													'<h4> <b>Cap</b> ' + risposta[i].cap + '</h4>'+
-													'<h4> <b>Telefono</b> ' + risposta[i].telefono + '</h4>'+
-													'<div>'+
-														'<button>Elimina</button>'+
-														'<button>Modifica</button>'+
+				$('#address-tab').append($('<div class="address-container">'+
+												'<div>'+
+													'<div class="row">'+
+										        		'<div class="col-md-6"> <h4>Via:</h4></div>'+
+										            	'<div class="col-md-6" id="via-'+ risposta[i].id +'">' + risposta[i].indirizzo + '</div>'+
+										            '</div>	'+													
+													' <div class="row">'+
+										        		'<div class="col-md-6"> <h4>Numero civico:</h64> </div>'+
+										            	'<div class="col-md-6" id="num-'+ risposta[i].id +'">' + risposta[i].n_civico + '</div>'+
+										            '</div>'+
+										          	'<div class="row">'+
+										        		'<div class="col-md-6"> <h64>CAP:</h4> </div>'+
+										            	'<div class="col-md-6" id="cap-'+ risposta[i].id +'">' + risposta[i].cap + '</div>'+
+										            '</div>'+
+													'<div class="row">'+
+										        		'<div class="col-md-6"> <h4>Città:</h4> </div>'+
+										            	'<div class="col-md-6" id="city-'+ risposta[i].id +'">' + risposta[i].citta + '</div>'+
+										            '</div>'+
+										            '<div class="row">'+
+										        		'<div class="col-md-6"> <h4>Provincia:</h4> </div>'+
+										            	'<div class="col-md-6" id="prov-'+ risposta[i].id +'">' + risposta[i].provincia + '</div>'+
+										            '</div>'+
+										            '<div class="row">'+
+										        		'<div class="col-md-6"> <h4>Telefono:</h4> </div>'+
+										            	'<div class="col-md-6" id="tel-'+ risposta[i].id +'"> ' + risposta[i].telefono + ' </div>'+
+										            '</div>'+
+													'<div class="row center">'+
+														'<button class="vm-btn-cart vm-btn-mod glyphicon glyphicon-trash vm-color" onclick="deleteInd('+ risposta[i].id +')"></button>'+
+										            	'<button class="vm-btn-cart vm-btn-mod glyphicon glyphicon-edit vm-color" data-toggle="modal" data-target="#addressModal"></button>'+
 													'</div>'+
 												'</div>'+
 											'</div>'));
 			}
 			
-			$('#address-tab').append($('<div>'+
-											'<button>Aggingi indirizzi</button>'+
+			$('#address-tab').append($('<div class="row center">'+
+											'<button id="ok" class="vm-btn-cart vm-btn-mod glyphicon glyphicon-plus vm-color"  data-toggle="modal" data-target="#addressModal"></button>'+
 										'</div>'));
 		}
 	});
@@ -35,14 +54,14 @@ $(document).ready(function(){
 	type: "GET",
 	url: "/account/orders",
 	
-	success: function(risposta) { // TODO controlar la dimension del array antes de estamparlo
+	success: function(risposta) { 
 			
 			for (var i = 0; i < risposta.length; i++) {
 				$('#orders-tab').append($('<div class="row order">'+
-												'<a><h3>Numero dell’ordine: ' + risposta[i].id + '</h3></a>'+
+												'<h3>Numero dell’ordine: ' + risposta[i].id + '</h3>'+
 												'<div class="row"> '+
 													'<div class="col-md-4">'+
-														'<b>Data dell’ordine</b> <br> ' + risposta[i].data_completamento + ' </div>'+
+														'<b>Data dell’ordine</b> <br> ' + risposta[i].data + ' </div>'+
 													'<div class="col-md-4">'+
 														'<b>Totale</b> <br> ' + risposta[i].totale + ' €</div>'+
 													'<div class="col-md-4">'+
@@ -51,36 +70,121 @@ $(document).ready(function(){
 											'</div>'));
 			}
 		}
-	});
+	});		
 	
-	// Get the modal
-var modal = document.getElementById("myModal");
-
-// Get the button that opens the modal
-var btn = document.getElementById("myBtn");
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-
-// When the user clicks the button, open the modal 
-btn.onclick = function() {
-  modal.style.display = "block";
-}
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-  modal.style.display = "none";
-}
-
-// When the user clicks anywhere outside of the modal, close it
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
+	var save = document.querySelector("#btn-save");
+	
+	save.addEventListener("click", function(event){
+		event.preventDefault();
 		
+		var ok = true;
+		
+		var oldPassword = $("#oldPassword");
+		
+		$.ajax({
+		type: "POST",
+		url: "/verifyPassword",
+		data : {
+        		"password" : oldPassword.val()
+    		},
+		
+		success: function(risposta) { 
 
+				if( risposta.status === "nonAuth" ) {
+					oldPassword.addClass("makeRed");
+					lblOldPassword.innerHTML = risposta.messaggio;
+					ok = false;
+					
+					var newPassword = $("#newPassword");
+					var lblPassword = document.querySelector("#lblNewPassword");
+					
+					ok = control(newPassword, lblPassword);
+					
+					
+					var confirmPassword = $("#confirmpassword");
+					var lblConfirmPassword = document.querySelector("#lblConfirmPassword");
+					
+					ok = control(confirmPassword, lblConfirmPassword);
+					
+				
+					if(ok){
+						if(newPassword.val() !== confirmPassword.val()){
+							lblNewPassword.innerHTML = "Password diverse";
+							lblConfirmPassword.innerHTML = "Password diverse";
+							newPassword.addClass("makeRed");
+							confirmPassword.addClass("makeRed");
+							ok = false;
+						} else{
+							newPassword.removeClass("makeRed");
+							confirmPassword.removeClass("makeRed");
+						}
+					}
+					
+				} else if ( risposta.status === "Auth" ) {
+					
+					oldPassword.removeClass("makeRed");
+					lblOldPassword.innerHTML = "";
+					
+					var newPassword = $("#newPassword");
+					var lblPassword = document.querySelector("#lblNewPassword");
+					
+					ok = control(newPassword, lblPassword);
+					
+					
+					var confirmPassword = $("#confirmpassword");
+					var lblConfirmPassword = document.querySelector("#lblConfirmPassword");
+					
+					ok = control(confirmPassword, lblConfirmPassword);
+					
+					if(ok){
+						if(newPassword.val() !== confirmPassword.val()){
+							lblNewPassword.innerHTML = "Password diverse";
+							lblConfirmPassword.innerHTML = "Password diverse";
+							newPassword.addClass("makeRed");
+							confirmPassword.addClass("makeRed");
+							ok = false;
+						} else{
+							newPassword.removeClass("makeRed");
+							confirmPassword.removeClass("makeRed");
+						}
+					}
+					
+					
+					if(ok){
+						var changePasword = document.querySelector("#changePasword");
+						changePasword.submit();
+					}
+				}
+				
+			}
+		});	
+	})
+	
+	function control(elem, lab) {
+		let regexPassword = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])");
+		
+		if(elem.val().length < 8 ){
+			elem.addClass("makeRed");
+			lab.innerHTML = "Password troppo corta";
+			return false;
+		} else if(elem.val().length > 20){
+			elem.addClass("makeRed");
+			lab.innerHTML = "Password troppo lunga";
+			return false;
+		} else if(!regexPassword.test(elem.val())){
+			elem.addClass("makeRed");
+			lab.innerHTML = "La password deve contenere almeno una lettera minuscola, una maiuscola, un numero e $%@#!*^&";
+			return false;
+		} else{
+			elem.removeClass("makeRed");
+			lab.innerHTML = "";
+			return true;
+		}
+	}
+	
 });
+
+
 
 function load(evt, elem) {
 	var tabcontent = document.getElementsByClassName("tabcontent");
@@ -110,10 +214,42 @@ function orders(evt) {
 	load(evt, "orders-tab");
 }
 	
+
 	
+function deleteInd(id) {
 	
+	$.ajax({
+	type: "POST",
+	url: "/deleteAddress",
+	data : {
+        		"orderId" : id
+    		},
 	
-	
-	
-	
+	success: function(risposta) {
+		
+		if( risposta.status === "nonAuth" ) {
+			alert(risposta.messaggio);			
+		} else if ( risposta.status === "Auth" ) {
+			location.reload();
+			/*document.getElementById("address").click();*/
+		}
+		
+	}
+	});
+}
+
+
+/*function copyInd(id) {
+
+	document.getElementById("via").innerHTML = document.getElementById("via-"+id).innerHTML;
+	document.getElementById("num").innerHTML = document.getElementById("num-"+id).innerHTML;
+	document.getElementById("cap").innerHTML = document.getElementById("cap-"+id).innerHTML;
+	document.getElementById("city").innerHTML = document.getElementById("city-"+id).innerHTML;
+	document.getElementById("prov").innerHTML = document.getElementById("prov-"+id).innerHTML;
+	document.getElementById("tel").innerHTML = document.getElementById("tel-"+id).innerHTML;
+
+	document.getElementById("ok").click();
+
+}*/
+
 	

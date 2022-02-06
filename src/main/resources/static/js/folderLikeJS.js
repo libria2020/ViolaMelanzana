@@ -75,7 +75,6 @@ $(document).ready(function(){
 										'<div class="card-body">'+ 
 										'<div class="icon-top-right">'+
 										'<form action="removeFromFolder" method="post" id="removeFromFolder">'+
-										'<button type="submit" id="removeRecipeFromFolder">Rimuovi</button>' +
 										'</form>'+
 										'<i class="glyphicon glyphicon-comment vm-color icon"></i>'+
 										'<span class="number vm-color">'+ risposta[j].commenti.length + '</span>' +

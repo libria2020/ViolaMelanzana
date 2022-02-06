@@ -26,11 +26,21 @@
 }
 
 .modal-header {
-  padding: 2px 16px;
   background-color: #4d0099;
   color:white;
   font-size:110%;
+  height:10%;
   
+}
+
+.modal-header h2{
+	position:relative;
+	margin-top:-2px ;
+}
+
+/* Bottocino di chiusura modali*/
+.modal-header #closeModal {
+  margin-top:-5%;
 }
 
 /*Per aggiunta di una raccolta senza altre raccolte*/
@@ -39,6 +49,7 @@
     border:none; 
     font-size:15px;
 }
+
 #myBtn:hover{
 	text-decoration: underline  #4d0099;
 	color: #4d0099
@@ -63,13 +74,7 @@
   to {top:0; opacity:1}
 }
 
-/* Bottocino di chiusura modali*/
-.close {
-  color: white;
-  float: right;
-  font-size: 28px;
-  font-weight: bold;
-}
+
 
 /* Bottocino di chiusura notifica non loggato*/
 .notification .close{
@@ -96,36 +101,26 @@
 	  margin:14px auto;
 }
 
-
-.media{
-	  font-size: 100%; 
-	  display:block;
-	  margin:30% auto;
-}
-
-
-.media-body{
-	padding-left:3%;
-	padding-top:15%;
-	font-size: 150%; 
-}
-
 .media-left{
-	padding-top:4%;
+	margin:5% auto;
+}
 
+.media-right{
+	margin:16% auto;
+	margin-left:-5%;
+	font-size:110%;
 }
 
 #img{
-	width:500px;
-	height:350px;
+	width:450px;
+	height:300px;
 }
 
 dt{
-	margin-top:2%;
+	margin-top:0.1%;
 }
 #by{
 	font-size:10px;
-	float:left;
 }
 .fa{
 	color: #4d0099;	
@@ -148,8 +143,9 @@ dt{
     margin-right:5px;
     font-size:12px;
 }
+
 #remove{
-		background:transparent;
+	background:transparent;
     border:none;
 }
 #remove:hover{
@@ -159,15 +155,22 @@ dt{
 .shadow{
   border:none;
   box-shadow: 5px 6px 15px 1px #4d0099;
-  width: 90%;
-  height: 450px;
+  width: 80%;
+  height: 400px;
   position: relative;
+  margin:5% auto;
+
 }
 
 #buttonBar{
-	
 	  text-align: center;
 	  margin-top:10%;
+}
+
+#buttonBar1{
+	width:45%;	
+	margin:5% auto;
+	margin-left:25%;
 }
 
 #buttonType{
@@ -175,9 +178,9 @@ dt{
 	  border: none;
 	  color: white;
 	  text-decoration: none;
-	  display: inline-block;
-	  font-size: 150%;
+	  font-size: 100%;
 	  padding:1.2%;
+	  margin:2%;
 	  background-color: #4d0099;
 }
 
@@ -187,14 +190,11 @@ dt{
 	  color: white;
 	  text-decoration: none;
 	  display: inline-block;
-	  font-size: 150%;
+	  font-size: 120%;
 	  padding:10px;
 	  background-color: #4d0099;
 	  text-align:center;
 }
-
-
-
 
 #imgBut{
 	color:white;
@@ -210,63 +210,68 @@ dt{
 
 
 .heading-1{
-	font-size:400%;
-	line-height: 120%;
+	font-size:300%;
 	font-weight:bold;
 	color:#4d0099;
     margin-left:70px;
 }
 
 .titleSection{
-	font-size:350%;
-	line-height: 110%;
+	font-size:250%;
 	font-style:italic;
 	margin-left:2%;
 	margin-top:8%;
-	
+	display: inline-block;
+	border-bottom: 3px solid #4d0099;
 }
 
-hr{
-	background-color:#4d0099;
-    color:#4d0099;
-    margin-left:2%;
-    width:5%;
-    height:0.5%;
-}
 
 p{
- 
-  font-size:150%;
+  font-size:120%;
   text-align:justify;
 }
 
-li{
+.ing {
 	 text-align:justify;
-	 font-size:150%;
+	 font-size:130%;
 }
 
 .card{
     background-color:white;
-    width:50%;
+    width:60%;
+    height:20%;
 	margin: 30 auto;
 	box-shadow: 2px 2px 6px #4d0099;
 }
 
-.card-text{
-	 text-align:left;
-	 font-size:16px;
-	 float:left;
-}
 
 .card-header{
 	text-align:left;
+	padding-left:2%;
+    border-bottom: 1px solid #afafaf;
+	
 }
 
 .card-header img{
-	width:15%;
-	height:15%;
+	width:20%;
+	height:20%;
 	float:right;
-	margin-top:-6%;
+	margin-right:3%;
+	margin-top:-5%;
+}
+
+.card-header h1{
+	font-size:28px;
+}
+
+.card-body {
+	padding-left:2%;
+	font-size:15px;
+}
+#footer{
+	position:relative;
+	margin-top:6.8%;
+	border-top:1px solid #afafaf;
 }
 
 .form-group{
@@ -295,11 +300,11 @@ iframe{
 	  border-radius: 20%/40%;
 	  border: none;
 	  color: white;
-	  padding: 1%;
+	  padding: 2.5%;
 	  text-align: center;
 	  text-decoration: none;
 	  display: inline-block;
-	  font-size: 150%;
+	  font-size: 18px;
 	  cursor: pointer;
 	  margin-top:3%;
 	  background-color: #4d0099;
@@ -320,7 +325,7 @@ textarea{
 }
 
 #contenuto{
-		font-size:200%;
+		font-size:150%;
 	
 }
 
@@ -332,7 +337,7 @@ textarea{
   text-align: center; 
   top: 220%;
   width: 30% !important;
-  height:10% !important;
+  height:15% !important;
   margin:auto; 
  
 
@@ -377,9 +382,6 @@ textarea{
   #by{
   	float:right;
   }
- .heading-1{
- 	font-size:300%;
- }
 
  .shadow img {
  	object-fit: contain;

@@ -18,4 +18,15 @@ public interface UtenteDao {
 	public Utente findByToken(String token);
 	public boolean setToken(Utente user, String token);
 	public boolean resetPassword(Utente u, String password);
+	
+	public boolean updateData(Utente utente);
+	public boolean updatePassword(Utente utente);
+	public boolean updateUsername(Utente utente);
+	
+	public Utente findByVerificationCode(String verificationCode);
+	
+	public List<Utente> findAllWithRequest();
+	public List<List<String>> getUserRequest(String mail);
+	public boolean isMaster(String mail_utente,boolean master);
+
 }

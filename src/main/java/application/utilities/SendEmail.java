@@ -1,7 +1,6 @@
 package application.utilities;
 
 import java.util.Properties;
-import java.util.Random;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -16,8 +15,7 @@ public class SendEmail {
 	
 	private static SendEmail instance = null;
 	final String fromEmail = "sito.di.ricette@gmail.com";
-	final String password = "Melanzana82!";
-	
+	final String password = "Melanzana82!";	
 	
 	private Session session = null;
 	
@@ -47,14 +45,7 @@ public class SendEmail {
 		return instance;
 	}
 	
-	public String getRandom() {
-		Random r = new Random();
-		int number = r.nextInt(999999);
-		
-		return String.format("%06d", number);
-	}
-	
-	public boolean sendEmailVerification(Utente u) {
+	public boolean sendEmailVerification(Utente u, String link) {
 		boolean res = false;
 		
 		String toEmail = u.getMail();
@@ -66,9 +57,12 @@ public class SendEmail {
 			message.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
 			message.setFrom(new InternetAddress(fromEmail));
 			
-			message.setSubject("Verifca Email Utente");
-			message.setText("Ci sei quasi! Per essere un membro effettivo di Viola Melanzana devi verificare la tua mail!\n"
-					+ "Inserisci questo codice per confermarla:" + u.getVerificationCode());
+			message.setSubject("Verifica Email");
+			message.setText("Ciao!\n"
+							+ "Manca poco, \n"
+							+ "Clicca il link qui sotto per verificare la tua email ed entrare a far parte della nostra community.\n\n"
+							+ link + "\n\n"
+							+ "Ignora questa mail se non ti sei registrato sul nostro sito");
 			
 			Transport.send(message);
 			

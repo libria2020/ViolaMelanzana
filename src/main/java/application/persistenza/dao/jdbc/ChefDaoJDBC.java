@@ -25,14 +25,51 @@ public class ChefDaoJDBC implements ChefDao {
 	}
 
 	@Override
-	public Chef findByPrimaryKey(String nome) {
-		// TODO Auto-generated method stub
-		return null;
+	public Chef findByPrimaryKey(int id) {
+		Chef chef = null;
+		
+		String query = "select * from chef where id=?";
+		
+		try {
+			PreparedStatement pr = conn.prepareStatement(query);
+			pr.setInt(1, id);
+			ResultSet rs = pr.executeQuery();
+			
+			if(rs.next()) {
+				chef = new Chef();
+				chef.setId(rs.getInt("id"));
+				chef.setNome(rs.getString("nome"));
+				chef.setCognome(rs.getString("cognome"));
+				chef.setData(rs.getDate("data"));
+				chef.setDescrizione(rs.getString("descrizione"));
+				chef.setImg_link(rs.getString("img_link"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return chef;
 	}
 
 	@Override
 	public boolean saveOrUpdate(Chef chef) {
-		// TODO Auto-generated method stub
+		String query = "insert into chef values(?, ?, ?, now(), ?, ?)";
+	
+		try {
+			PreparedStatement pr = conn.prepareStatement(query);
+			pr.setInt(1, chef.getId());
+			pr.setString(2, chef.getNome());
+			pr.setString(3, chef.getCognome());
+		
+			pr.setString(4, chef.getDescrizione());
+			pr.setString(5, chef.getImg_link());
+		
+			pr.executeUpdate();
+		
+			return true;
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
 		return false;
 	}
 
@@ -43,19 +80,27 @@ public class ChefDaoJDBC implements ChefDao {
 	}
 	
 	@Override
-	public List<Chef> findOrderBy(String expression, int limit, int offset) {
+	public List<Chef> findOrderBy(int limit, int offset, boolean admin) {
 		ArrayList<Chef> chef = null;
 		
-		String query ="select * from chef order by ? desc limit ? offset ?;";
+		String query;
+		
+		if ( admin ) {
+			query ="select chef.id, chef.nome, chef.cognome, chef.data, chef.descrizione, chef.img_link "
+				+ "from chef order by data desc limit ? offset ?;";
+		} else {
+			query ="select chef.id, chef.nome, chef.cognome, chef.data, chef.descrizione, chef.img_link "
+				+ "from chef inner join ricetta on chef.id = chef order by data desc limit ? offset ?;";
+		}
+		
 		PreparedStatement ps;
 		try {
 			
 			chef = new ArrayList<Chef>();
 			
 			ps = conn.prepareStatement(query);
-			ps.setString(1, expression);
-			ps.setInt(2, limit);
-			ps.setInt(3, offset);
+			ps.setInt(1, limit);
+			ps.setInt(2, offset);
 			
 			ResultSet rs = ps.executeQuery();
 			
@@ -70,7 +115,7 @@ public class ChefDaoJDBC implements ChefDao {
 				c.setImg_link(rs.getString("img_link"));
 				
 				chef.add(c);
-				
+
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

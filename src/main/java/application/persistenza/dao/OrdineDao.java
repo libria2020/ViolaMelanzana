@@ -1,5 +1,6 @@
 package application.persistenza.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import application.model.Ordine;
@@ -20,5 +21,9 @@ public interface OrdineDao {
 	public boolean addDate(String mail);
 	public boolean deleteProduct(String name, String mail);
 	public List<Ordine> findAllOrdersFromUser(String key);
+	
+	public HashMap<Prodotto, Integer>findProductsOfOrder(int id);
+	
+	public List<Ordine> OrdiniInConsegna();
 
 }

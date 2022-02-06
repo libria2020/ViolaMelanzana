@@ -19,7 +19,8 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<!-- Latest compiled JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
-	 <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+	
+	<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 
 	<link href="../css/homeCSS.css" rel="stylesheet" type="text/css">
 	<link href="../css/commonCSS.css" rel="stylesheet" type="text/css">
@@ -31,10 +32,8 @@
 </head>
 <body>
 
-		<jsp:include page="navbar.jsp"></jsp:include>
+	<jsp:include page="navbar.jsp"></jsp:include>
 
-	
-	
 	<!-- Carousel -->
 	<div class="container space-st">	
 		<!-- Slide Show -->
@@ -75,9 +74,6 @@
 		<!-- Secondary Navigation Bar -->
 		<nav class="vm-cat-navbar space-rd">
 			<div class="vm-cat-content" id="cat_bar">
-				<c:forEach items="${tutteLeCategorie}" var="categoria">
-					<a href="/categoria?categoria=${categoria.id}"><b>  ${categoria.nome} </b></a>
-				</c:forEach>
 				<a href="javascript:void(0);" class="icon" onclick="myFunction()">
 		   			<i class="fa fa-bars fa-lg vm-color"></i>
 		 		</a>
@@ -88,7 +84,6 @@
 
 
 
-	<!-- TODO cargamento dinamico de los chefs -->
 	<!-- Chefs Section -->
 	<div class="container space-nd">	
 		<div class="row">
@@ -134,7 +129,7 @@
 					<div class="col-md-3">
 						<div class="vm-card">
 							<a href="recipePage?ricetta_id=${ricetta.id}">
-								<img src="${ricetta.img}" alt="Avatar" class="card-img">
+								<img src="${ricetta.base64Image}" alt="Avatar" class="card-img">
 							</a>
 							
 							<a href="recipePage?ricetta_id=${ricetta.id}">
@@ -145,7 +140,7 @@
 							
 							<div class="vm-container-s">
 								<i class="glyphicon glyphicon-comment vm-color icon"></i>
-								<span class="number vm-color">125</span>
+								<span class="number vm-color">${ricetta.commenti.size()}</span>
 								<i class="glyphicon glyphicon-star vm-color icon"></i>
 								<span class="number vm-color">${ricetta.likes}</span>
 							</div>
@@ -153,7 +148,7 @@
 					</div>
 				</c:forEach>	
 			</div>
-		</div>
+		</div>	
 	</c:if>
 	
 
@@ -193,7 +188,7 @@
 	<!-- Load More Content -->
 	<div class="container space">
 		<div>
-			<button id="load" class="vm-btn-load"> Load more </button>
+			<button id="load" class="vm-btn-load vm-background-color"> Load more </button>
 		</div>
 	</div>
 

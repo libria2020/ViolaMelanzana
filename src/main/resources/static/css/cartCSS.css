@@ -1,3 +1,14 @@
+.space {
+	margin-top: 5%;
+	margin-bottom: 5%;
+}
+
+
+
+.main-container {
+	margin:14px auto;
+}
+
 .container {
 	background-color: WhiteSmoke;
 	padding-top: 32px;
@@ -24,12 +35,25 @@
 .address-container {
 	width: 60%;
 	margin-left: 20%;
+	font-size: 18px;
 }
 
 .mod-container {
 	width: 80%;
 	margin-left: 10%;
 }
+
+.pay-container {
+	text-align: center;
+	width: 80%;
+	margin-left: 10%;
+}
+
+
+
+
+
+
 
 .vm-btn-cart {
 	border: none;
@@ -38,12 +62,16 @@
 	outline: none;
 
 	font-size: 20px;
+	
 }
 
 .vm-btn-prod {
 	padding: 8px 10px;
 	width: 50%;	
 	margin: 0;
+		
+	background-color: #4d0099;
+	color: white;
 }
 
 .vm-btn-pay {
@@ -51,6 +79,34 @@
 	width: 90%;
 	margin-top: 2%;
 	margin-left: 5%;
+	
+	background-color: #4d0099;
+	color: white;
+}
+
+.vm-btn-deliver {
+	padding: 12px 14px;
+	width: 58%;
+	margin-top: 4%;
+	margin-bottom: 4%;
+	
+	background-color: #4d0099;
+	color: white;
+}
+
+.vm-btn-mod {
+	padding: 8px 10px;
+	width: 50px;
+	margin-left: 18px;
+	margin-right: 18px;
+	font-size: 24px;
+}
+
+.vm-btn-save {
+	padding: 6px 18px;
+
+	background-color: #4d0099;
+	color: white;
 }
 
 
@@ -71,22 +127,16 @@ thead {
   color: white;
 }
 
+
+
+
+
 .vm-mod {
 	margin-top: 14px;
 	text-align:center;	
 }
 
-.vm-btn-mod {
-	padding: 8px 10px;
-	width: 50px;
-	margin-left: 18px;
-	margin-right: 18px;
-	font-size: 24px;
-}
-
-
-
-input[type=text], select {
+.vm-input {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -96,4 +146,50 @@ input[type=text], select {
   box-sizing: border-box;
 }
 
+.order {
+	border-radius: 25px;
+	
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	transition: 0.3s;
+  
+	padding: 2%;
+	
+	width: 80%;
+	margin-left: 10%;	
+	margin-top: 4%;
+}
 
+.cart-row {
+	font-size: 18px;
+	padding-bottom: 12px;
+	padding-top: 12px;
+	
+	padding-left: 40px;
+}
+
+.vm-btn-view {
+	background-color: transparent;
+	border: none;
+	font-size: 16px;
+	float: right;
+}
+
+.vm-btn-view:hover {
+	text-decoration: underline;
+	color: #4d0099;
+}
+
+.vm-link {
+	float: right;
+	font-size: 16px;
+	color: black;
+	cursor: pointer;
+	padding-right: 24px;
+	padding-top: 12px;
+}
+
+
+.vm-link:hover {
+	text-decoration: underline;
+	color: #4d0099;
+}

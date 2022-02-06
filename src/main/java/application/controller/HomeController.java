@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import application.model.Categoria;
 import application.model.Chef;
@@ -21,20 +22,42 @@ import application.persistenza.Database;
 public class HomeController {
 	
 	@GetMapping("/")
-	public String getHomePage(HttpServletRequest request) {		
-		if ( request.getSession().getAttribute("utente") != null ) {			
-			Utente utente = (Utente) request.getSession().getAttribute("utente");		
-			List<RicettaProxy> ricettaUtente = Database.getInstance().getFactory().getRicettaDao().findByPublisher(utente.getMail(), 4, 0);
-			List<Indirizzo> indirizzi = Database.getInstance().getFactory().getIndirizzoDao().findAllFromUserEnable(utente.getMail());
-			request.setAttribute("ricettaUtente", ricettaUtente);
-			request.setAttribute("indirizzi", indirizzi);
+	public ModelAndView getHomePage(HttpServletRequest request) {		
+		
+		ModelAndView model = new ModelAndView("index");
+		
+		if ( request.getSession().getAttribute("utente") != null ) {		
+			
+			if ( request.getSession().getAttribute("utente") instanceof Utente ) {
+				Utente utente = (Utente) request.getSession().getAttribute("utente");	
+				
+				List<RicettaProxy> ricettaUtente = Database.getInstance().getFactory().getRicettaDao().findByPublisher(utente.getMail(), 4, 0);
+				
+				model.addObject("ricettaUtente", ricettaUtente);
+			} 
+
 		}
 		
-		List<Categoria> tutteLeCategorie = Database.getInstance().getFactory().getCategoriaDao().findAll();
-		request.setAttribute("tutteLeCategorie", tutteLeCategorie);
+		System.out.println(request.getSession().getAttribute("admin"));
 		
-		return "index";
+		return model;
 	}
+	
+//	@GetMapping("/")
+//	public String getHomePage(HttpServletRequest request) {		
+//		if ( request.getSession().getAttribute("utente") != null ) {			
+//			Utente utente = (Utente) request.getSession().getAttribute("utente");		
+//			
+//			List<RicettaProxy> ricettaUtente = Database.getInstance().getFactory().getRicettaDao().findByPublisher(utente.getMail(), 4, 0);
+//			
+//			List<Indirizzo> indirizzi = Database.getInstance().getFactory().getIndirizzoDao().findAllFromUserEnable(utente.getMail());
+//			
+//			request.setAttribute("ricettaUtente", ricettaUtente);
+//			request.setAttribute("indirizzi", indirizzi);
+//		}
+//		
+//		return "index";
+//	}
 	
 	@GetMapping("/ricettePopolari")
 	@ResponseBody
@@ -65,7 +88,24 @@ public class HomeController {
 	@ResponseBody
 	public List<Chef> getTuttiChef(@RequestParam int offset, HttpServletRequest request) {
 		
-		List<Chef> tuttiChef = Database.getInstance().getFactory().getChefDao().findOrderBy("data", 4, offset);
+		List<Chef> tuttiChef = null;
+		
+		Boolean admin = (Boolean) request.getSession().getAttribute("admin");
+		
+		if ( admin == null ) {
+			tuttiChef = Database.getInstance().getFactory().getChefDao().findOrderBy( 4, offset, false);
+		} else if ( admin == true ) {
+			tuttiChef = Database.getInstance().getFactory().getChefDao().findOrderBy( 4, offset, true);
+		}
 		return tuttiChef;
+	}
+	
+	@GetMapping("/categorie")
+	@ResponseBody
+	public List<Categoria> getTutteCategorie(HttpServletRequest request) {		
+		
+		List<Categoria> tutteLeCategorie = Database.getInstance().getFactory().getCategoriaDao().findAll();
+		
+		return tutteLeCategorie;
 	}
 }

@@ -9,8 +9,13 @@
     cursor: pointer;
 }
 
-#sendRecipe{
+#insertChef, #sendRecipe{
 	color: white;
+	border-radius: 15px;
+}
+
+#insertChef:hover, #sendRecipe:hover {
+	color: rgba(255,255,255,0.8);
 	border-radius: 15px;
 }
 
@@ -27,6 +32,6 @@ textarea {
 }
 
 #container-insert{
-	background-color: WhiteSmoke;	
+	background-color: WhiteSmoke;
 }
 

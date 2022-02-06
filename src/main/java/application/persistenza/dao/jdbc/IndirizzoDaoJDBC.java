@@ -199,4 +199,25 @@ public class IndirizzoDaoJDBC implements IndirizzoDao{
 		
 		return indirizzi;
 	}
+
+	@Override
+	public boolean deleteAddress(int id) {
+		try {
+			String update = "update indirizzo set attivo=false where id=?";
+			PreparedStatement prst = conn.prepareStatement(update);
+	
+			prst.setInt(1, id);
+			
+			if ( prst.executeUpdate() == 0 ) {
+				return false;
+			}
+			
+		
+		} catch(SQLException e) {
+			e.printStackTrace();
+			
+		}
+		
+		return true;
+	}
 }

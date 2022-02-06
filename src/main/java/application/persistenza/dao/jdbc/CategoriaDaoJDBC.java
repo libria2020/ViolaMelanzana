@@ -72,9 +72,29 @@ public class CategoriaDaoJDBC implements CategoriaDao {
 	}
 
 	@Override
-	public Categoria findByPrimaryKey(String nome) {
-		// TODO Auto-generated method stub
-		return null;
+	public Categoria findByPrimaryKey(int id) {
+		
+		Categoria cat = null;
+		
+		String query = "select * from categoria where id=?";
+		
+		try {
+			PreparedStatement pr = conn.prepareStatement(query);
+			pr.setInt(1, id);
+			
+			ResultSet rs = pr.executeQuery();
+			
+			while(rs.next()) {
+				
+				cat = new Categoria();
+				cat.setId(rs.getInt("id"));
+				cat.setNome(rs.getString("nome"));
+				
+			}
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return cat;
 	}
 
 	@Override
@@ -87,6 +107,48 @@ public class CategoriaDaoJDBC implements CategoriaDao {
 	public boolean delete(Categoria prodotto) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@Override
+	public int findIdCategoriaByName(String nome) {
+		String query = "select * from categoria where nome=?";
+		
+		try {
+			PreparedStatement pr = conn.prepareStatement(query);
+			pr.setString(1, nome);
+			ResultSet rs = pr.executeQuery();
+			if(rs.next()) {
+				int id = rs.getInt("id");
+				return id;
+			}
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public boolean saveCategoriesOfRecipe(int idRicetta, ArrayList<String> categorieRicetta) {
+		int idCategoria = findIdCategoriaByName(categorieRicetta.get(0));
+		
+		if(idCategoria == 0)
+			return false;
+		
+		String query = "insert into ricetta_categoria values(?, ?)";
+		
+		try {
+			PreparedStatement pr = conn.prepareStatement(query);
+			pr.setInt(1, idRicetta);
+			pr.setInt(2, idCategoria);
+			pr.executeUpdate();
+			return true;
+		} catch(SQLException e) {
+			//TODO
+			e.printStackTrace();
+			return false;
+		}
+
 	}
 
 }

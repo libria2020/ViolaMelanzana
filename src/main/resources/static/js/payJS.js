@@ -27,7 +27,6 @@ function eventiButtoni(){
 						console.log(risposta);
 						if (risposta.status === "OK"){
 							setDataDB();
-							window.location.href = 'confirmedOrder';
 						}
 					},
 					error: function(xhr){
@@ -57,7 +56,7 @@ function eventiButtoni(){
 			console.log(risposta);
 				if (risposta.status === "OK"){
 					controlloInMagazzinoEAggiornamentoDB();
-					window.location.href = 'confirmedOrder';
+					setDataDB();
 				}
 			},
 			error: function(xhr){
@@ -74,80 +73,83 @@ function eventiButtoni(){
 function controlloInMagazzino(){
 	$.ajax({
 		type: "POST",
-			url: "/control",
-			success: function(risposta){
-			console.log(risposta);
-				if (risposta.status === "OK"){
-					if(risposta.messaggio === "false"){
-						alert("magazzino in eccesso");
-						window.location.href = '/';
-					}
+		url: "/control",
+		success: function(risposta){
+		console.log(risposta);
+			if (risposta.status === "OK"){
+				if(risposta.messaggio === "false"){
+					alert("magazzino in eccesso");
+					window.location.href = '/';
 				}
-			},
-			error: function(xhr){
-				console.log(xhr);
-				var res = JSON.parse(xhr.responseText);
-				alert(res.messaggio);
-				window.location.href = '/';
 			}
-		});
+		},
+		error: function(xhr){
+			console.log(xhr);
+			var res = JSON.parse(xhr.responseText);
+			alert(res.messaggio);
+			window.location.href = '/';
+		}
+	});
 }
 
 function controlloInMagazzinoEAggiornamentoDB(){
 	$.ajax({
 		type: "POST",
-			url: "/controlAndUpdate",
-			success: function(risposta){
-			console.log(risposta);
-				if (risposta.status === "OK"){
-					if(risposta.messaggio === "false"){
-						alert("magazzino in eccesso");
-						window.location.href = '/';
-					}
+		url: "/controlAndUpdate",
+		success: function(risposta){
+		console.log(risposta);
+			if (risposta.status === "OK"){
+				if(risposta.messaggio === "false"){
+					alert("magazzino in eccesso");
+					window.location.href = '/';
 				}
-			},
-			error: function(xhr){
-				console.log(xhr);
-				var res = JSON.parse(xhr.responseText);
-				alert(res.messaggio);
-				window.location.href = '/';
+				else console.log("ok");
 			}
-		});
+		},
+		error: function(xhr){
+			console.log(xhr);
+			var res = JSON.parse(xhr.responseText);
+			alert(res.messaggio);
+			window.location.href = '/';
+		}
+	});
 }
 
 
 function ripristinoDB(){
 	$.ajax({
 		type: "POST",
-			url: "/restore",
-			success: function(risposta){
-			console.log(risposta);
-				if (risposta.status === "OK"){
-				}
-			},
-			error: function(xhr){
-				console.log(xhr);
-				var res = JSON.parse(xhr.responseText);
-				alert(res.messaggio);
-				window.location.href = '/';
+		url: "/restore",
+		success: function(risposta){
+		console.log(risposta);
+			if (risposta.status === "OK"){
+				console.log("ok");
 			}
-		});
+		},
+		error: function(xhr){
+			console.log(xhr);
+			var res = JSON.parse(xhr.responseText);
+			alert(res.messaggio);
+			window.location.href = '/';
+		}
+	});
 }
 
 function setDataDB(){
 	$.ajax({
 		type: "POST",
-			url: "/date",
-			success: function(risposta){
-			console.log(risposta);
-				if (risposta.status === "OK"){
-				}
-			},
-			error: function(xhr){
-				console.log(xhr);
-				var res = JSON.parse(xhr.responseText);
-				alert(res.messaggio);
-				window.location.href = '/';
+		url: "/date",
+		success: function(risposta){
+		console.log(risposta);
+			if (risposta.status === "OK"){
+				window.location.href = 'confirmedOrder';
 			}
-		});
+		},
+		error: function(xhr){
+			console.log(xhr);
+			var res = JSON.parse(xhr.responseText);
+			alert(res.messaggio);
+			window.location.href = '/';
+		}
+	});
 }

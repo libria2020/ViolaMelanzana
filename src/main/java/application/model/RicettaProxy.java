@@ -18,10 +18,7 @@ public class RicettaProxy extends Ricetta{
 		// TODO Auto-generated method stub
 		return super.getPreparazione();
 	}
-	public boolean getApprovazione() {
-		return super.getApprovazione();
-	}
-	
+		
 	public ArrayList<IngredienteQuantita> getListaIngredientiConQuantita() {
 		return super.getListaIngredientiConQuantita();
 	}
@@ -39,9 +36,9 @@ public class RicettaProxy extends Ricetta{
 	}
 
 	@Override
-	public int getAccettata() {
+	public Boolean isApprovazione() {
 		// TODO Auto-generated method stub
-		return super.getAccettata();
+		return super.isApprovazione();
 	}
 
 	@Override

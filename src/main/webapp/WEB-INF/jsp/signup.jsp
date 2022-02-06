@@ -1,3 +1,12 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
+
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page isELIgnored="false" %>
+
+<fmt:setLocale value="it"/>
+<fmt:setBundle basename="messages/messages"/>
 
 <html>
 	<head>
@@ -6,7 +15,7 @@
 
 		<link href="../css/authCSS.css" rel="stylesheet" type="text/css">
 		<link href="../css/commonCSS.css" rel="stylesheet" type="text/css">
-		<link href="../css/util.css" rel="stylesheet" type="text/css">
+		<link href="../css/utilCSS.css" rel="stylesheet" type="text/css">
 		
 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -28,7 +37,16 @@
 						<h1>Signup</h1>
 					</div>
 				</div>
-			
+				<c:choose>
+			        <c:when test = "${message != null}">
+			            <label class="text-danger">${message}</label>
+			        </c:when>
+			         
+			        <c:when test = "${error != null}">
+			           	<label class="text-danger">${error}</label>
+			        </c:when>
+		        </c:choose>
+
 				<form id="formRegister" method="post" action="register">
 					<div class="form-group">
 						<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>

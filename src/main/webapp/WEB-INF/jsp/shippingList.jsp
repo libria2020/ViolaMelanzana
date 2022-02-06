@@ -4,9 +4,33 @@
 <html>
 	<head>
 		<meta charset="utf-8">
+		
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+		<!-- jQuery library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<!-- Latest compiled JavaScript -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
+		
+		<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+	
+		<script language="javascript" src="../js/cartJS.js"></script>
+		
+		
+		<link href="../css/cartCSS.css" rel="stylesheet" type="text/css" />
+		<link href="../css/commonCSS.css" rel="stylesheet" type="text/css">
+		<link href="../css/homeCSS.css" rel="stylesheet" type="text/css">
+		
+		<script language="javascript" src="../js/shippingListJS.js"></script>
+		<script language="javascript" src="../js/indirizzoJS.js"></script>
+		
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"> 
+		
+		<!-- 
 
 		<link href="../css/cartCSS.css" rel="stylesheet" type="text/css" />
 		<link href="../css/commonCSS.css" rel="stylesheet" type="text/css">
+		<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 		
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -18,29 +42,13 @@
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css"> 
+		-->
 	</head>	
 	<body>
 	
-		<section class="h-10 h-custom" style="background-color: #eee;">
-			<div class="d-flex justify-content-between m-2 p-2">
-				<div class="p-l4 m-4">
-					<label class="btn-static-pieno text-white">1</label>
-				</div>
-				<div class="m-4">
-					<label class="btn-static-vuoto text-white">2</label>
-				</div>
-				<div class="m-4">
-					<label class="btn-static-vuoto text-white">3</label>
-				</div>
-			</div>
-		</section >
-
-
-
-		<div class="container" id="card">
+		<div class="container space" id="card">
 			<h3>Liste indirizzi per le consegne</h3>
-			
 			<hr/>
 			
 			<div class="prod-container" >
@@ -52,44 +60,44 @@
 						<c:forEach items="${indirizzi}" var="ind">
 							<div class="cart-container address-container">
 						    	<div id="card">
-						        	<div class="row ms-4 p-1">
-						        		<div class="col-md-6"> <h6>Via:</h6></div>
+						        	<div class="row">
+						        		<div class="col-md-6"> <h4>Via:</h4></div>
 						            	<div class="col-md-6"> ${ind.indirizzo} </div>
 						            </div>
 						            
-						            <div class="row ms-4 p-1">
-						        		<div class="col-md-6"> <h6>Numero civico:</h6> </div>
+						            <div class="row">
+						        		<div class="col-md-6"> <h4>Numero civico:</h4> </div>
 						            	<div class="col-md-6"> ${ind.n_civico} </div>
 						            </div>
 						            
-						            <div class="row ms-4 p-1">
-						        		<div class="col-md-6"> <h6>CAP:</h6> </div>
+						            <div class="row">
+						        		<div class="col-md-6"> <h4>CAP:</h4> </div>
 						            	<div class="col-md-6"> ${ind.cap} </div>
 						            </div>
 						            
-						            <div class="row ms-4 p-1">
-						        		<div class="col-md-6"> <h6>Città:</h6> </div>
+						            <div class="row">
+						        		<div class="col-md-6"> <h4>Città:</h4> </div>
 						            	<div class="col-md-6"> ${ind.citta} </div>
 						            </div>
 						            
-						            <div class="row ms-4 p-1">
-						        		<div class="col-md-6"> <h6>Provincia:</h6> </div>
+						            <div class="row">
+						        		<div class="col-md-6"> <h4>Provincia:</h4> </div>
 						            	<div class="col-md-6"> ${ind.provincia} </div>
 						            </div>
 						            
-						            <div class="row ms-4 p-1">
-						        		<div class="col-md-6"> <h6>Telefono:</h6> </div>
+						            <div class="row">
+						        		<div class="col-md-6"> <h4>Telefono:</h4> </div>
 						            	<div class="col-md-6"> ${ind.telefono} </div>
 						            </div>
 						            
-						             <div class="ms-4 p-3">
+						             <div class="ms-4">
 						             	<input type="radio" name="indirizzi" id="${ind.id}">
-						            	 <label> Indirizzo di Consegna</label>
+						            	<label style="margin-top: 8px;"> Indirizzo di Consegna</label>
 						           	</div>
 						           
 									<div class="vm-mod">
-										<button class="vm-btn-cart vm-btn-mod bi-trash vm-color" id="btnElimina"></button>
-						            	<button class="vm-btn-cart vm-btn-mod bi-pencil-square vm-color" id="btnModifica"></button>
+										<button class="btnElimina vm-btn-cart vm-btn-mod bi-trash vm-color" name="${ind.id}"></button>
+						            	<button class="btnModifica vm-btn-cart vm-btn-mod bi-pencil-square vm-color" name="${ind.id}"></button>
 									</div>
 									
 								</div>
@@ -104,11 +112,16 @@
 					<button class="vm-btn-cart vm-btn-mod bi-plus-square mt-4 vm-color" id="btnNuovo"></button>
 				</div>
 				
+				<div class="vm-mod">
+					<button class="bi-cart vm-btn-cart vm-btn-mod vm-color" onclick="location.href='\cart';"></button>
+				</div>
+				
 				<div id="pulsantiSecondari" class="vm-mod">
-					<input id="btnPaga" class="vm-btn-prod vm-btn-cart mt-4" type="button" value="Scegli metodo di pagamento" />
+					
+					<input id="btnPaga" class="vm-btn-prod vm-btn-cart mt-4" type="button" value="Continua" />
 				</div>
 				
 		</div>
-		
+	
 	</body>
 </html>

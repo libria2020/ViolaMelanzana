@@ -8,4 +8,5 @@ public class NomiSequenze {
 	public static final String GOOGLE = "idgoogle_seq";
 	public static final String CATEGORIA = "categoria_seq";
 	public static final String IMAGES = "img_seq";
+	public static final String CHEF = "chef_seq";
 }

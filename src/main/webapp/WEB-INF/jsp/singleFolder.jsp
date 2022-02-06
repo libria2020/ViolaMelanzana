@@ -15,30 +15,30 @@
 	<head>
 	<meta charset="UTF-8">
 	<title>Viola Melanzana</title>
-	<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+	
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<!-- Latest compiled JavaScript -->
-	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"rel="stylesheet" id="bootstrap-css">
-	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
 
 	<link href="../css/homeCSS.css" rel="stylesheet" type="text/css">
 	<link href="../css/commonCSS.css" rel="stylesheet" type="text/css">
 	<link href="../css/folderLikeCSS.css" rel="stylesheet" type="text/css">
-	 <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-	
+ 	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	
 	<script src="../js/singleFolderJS.js"></script>
 	
+	<link rel="icon" type="image/x-icon" href="/images/favicon.ico"> 
+	
 	</head>
 	
 <body>
-		<jsp:include page="navbar.jsp"></jsp:include>
-
-	<body>
+	
+	<jsp:include page="navbar.jsp"></jsp:include>
+	
 	 <div id="mainContainer" class="row">
 	 	<div class="container space-nd" id="mainContainer">
 			<div class="col-sm-3" id="left">
@@ -69,7 +69,7 @@
 						<button type="submit" id="deleteFolder" onClick="return confirm('Confermi di voler eliminare DEFINITIVAMENTE questa raccolta?')">elimina</button> 
 					</form>
 				  	<h1 id="preferiti">${nome}</h1>
-				   	<div class="container space-s" id="likeRecipe">
+				   	<div id="likeRecipe">
 				   	
 				   	</div>				   	
 			 </div>

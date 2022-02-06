@@ -15,6 +15,7 @@ import application.model.Ordine;
 import application.model.Prodotto;
 import application.persistenza.Database;
 import application.persistenza.dao.OrdineDao;
+import application.utilities.StatoOrdine;
 
 public class OrdineDaoJDBC implements OrdineDao{
 	
@@ -31,11 +32,47 @@ public class OrdineDaoJDBC implements OrdineDao{
 	}
 
 	@Override
-	public Ordine findByPrimaryKey(int nome) {
-		// TODO Auto-generated method stub
-		return null;
+	public Ordine findByPrimaryKey(int id) {
+		Ordine ordine = null;
+		String query = "SELECT * from ordine where id=?";
+		
+		try {
+			ordine = new Ordine();
+			PreparedStatement st = conn.prepareStatement(query);
+			st.setInt(1, id);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				HashMap<Prodotto, Integer> prodotti = new HashMap<Prodotto, Integer>();
+				ordine.setId(rs.getInt("id"));
+				ordine.setUtenteOrdine(Database.getInstance().getFactory().getUtenteDao().findByPrimaryKey(rs.getString("utente")));
+				ordine.setData(rs.getDate("data_completamento"));
+				ordine.setTotale(rs.getFloat("totale"));
+				ordine.setStato(rs.getString("stato"));
+				String queryProdotti = "SELECT * "
+				+ "FROM incluso as i, prodotto as p "
+				+ "WHERE p.nome = i.nome_prodotto and i.id_ordine=?";
+				PreparedStatement stProdotti = conn.prepareStatement(queryProdotti);
+				stProdotti.setInt(1, id);
+				ResultSet rsProdotti = stProdotti.executeQuery();
+				
+				while(rsProdotti.next()) {
+					Prodotto prodotto = new Prodotto();
+					prodotto.setNome(rsProdotti.getString("nome"));
+					prodotto.setQuantitaDisponibile(rsProdotti.getInt("quantita_disponibile"));
+					prodotto.setPrezzo(rsProdotti.getDouble("prezzo"));
+					prodotto.setIngrediente(new Ingrediente(rsProdotti.getString("ingrediente")));
+					prodotto.setTaglio(rsProdotti.getInt("taglio"));
+					prodotto.setUnitaDiMisura(rsProdotti.getString("unita_di_misura"));
+					prodotti.put(prodotto, rsProdotti.getInt("quantita"));
+				}
+				ordine.setProdottiInOrder(prodotti);
+			}
+		} catch (SQLException e) {
+		e.printStackTrace();
+		}
+		return ordine;
 	}
-
+	
 	@Override
 	public boolean saveOrUpdate(Ordine ordine) {
 		if(ordine.getId() == 0) {
@@ -133,7 +170,6 @@ public class OrdineDaoJDBC implements OrdineDao{
 				o.setData(rs.getDate("data_completamento"));
 				o.setStato(rs.getString("stato"));
 				o.setTotale(rs.getFloat("totale"));
-				
 				ordini.add(o);
 				
 			}
@@ -147,47 +183,10 @@ public class OrdineDaoJDBC implements OrdineDao{
 
 	@Override
 	public Ordine findCurrentFromUser(String mail) {
-		Ordine ordine = null;
-		int id_ordine;
-		String query = "SELECT * from incluso as i, ordine as o where id_ordine=? and i.id_ordine=o.id";
-		try {
-			ordine = new Ordine();
-			PreparedStatement st = conn.prepareStatement(query);
-			id_ordine = findCurrentIdFromUser(mail);
-			st.setInt(1, id_ordine);
-			ResultSet rs = st.executeQuery();
-			if(rs.next()) {
-				 
-				HashMap<Prodotto, Integer> prodotti = new HashMap<Prodotto, Integer>();
-				ordine.setId(rs.getInt("id_ordine"));
-				ordine.setUtenteOrdine(Database.getInstance().getFactory().getUtenteDao().findByPrimaryKey(rs.getString("utente")));
-				ordine.setData(rs.getDate("data_completamento"));
-				
-				String queryProdotti = "SELECT * "
-									+ "FROM incluso as i, prodotto as p "
-									+ "WHERE p.nome = i.nome_prodotto and id_ordine=?";
-				PreparedStatement stProdotti = conn.prepareStatement(queryProdotti);
-				stProdotti.setInt(1, id_ordine);
-				ResultSet rsProdotti = stProdotti.executeQuery();
-				while(rsProdotti.next()) {
-					Prodotto prodotto = new Prodotto();
-					prodotto.setNome(rsProdotti.getString("nome"));
-					prodotto.setQuantitaDisponibile(rsProdotti.getInt("quantita_disponibile"));
-					prodotto.setPrezzo(rsProdotti.getDouble("prezzo"));
-					prodotto.setIngrediente(new Ingrediente(rsProdotti.getString("ingrediente")));
-					prodotto.setTaglio(rsProdotti.getInt("taglio"));
-					prodotto.setUnitaDiMisura(rsProdotti.getString("unita_di_misura"));
-					
-					prodotti.put(prodotto, rsProdotti.getInt("quantita"));
-				}
-				ordine.setProdottiInOrder(prodotti);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return ordine;
+		return findByPrimaryKey(findCurrentIdFromUser(mail));
 	}
 	
+
 	@Override
 	public int findCurrentIdFromUser(String mail) {
 		String query = "SELECT * from ordine where utente=? and data_completamento IS NULL";
@@ -315,4 +314,73 @@ public class OrdineDaoJDBC implements OrdineDao{
 		return true;
 	}
 
+	@Override
+	public HashMap<Prodotto, Integer> findProductsOfOrder(int id) {
+		
+		HashMap<Prodotto, Integer> prod = null;
+		
+		String query = "select * from incluso inner join prodotto on nome=nome_prodotto where id_ordine=?";
+		
+		PreparedStatement st;
+		try {
+			st = conn.prepareStatement(query);
+			st.setInt(1, id);
+			
+			ResultSet rs =st.executeQuery();
+			
+			prod = new HashMap<Prodotto, Integer>();
+			
+			while (rs.next()) {
+				
+				Prodotto p = new Prodotto();
+				
+				p.setNome(rs.getString("nome"));
+				p.setQuantitaDisponibile(rs.getInt("quantita_disponibile"));
+				p.setPrezzo(rs.getDouble("prezzo"));
+				p.setTaglio(rs.getInt("taglio"));
+				p.setUnitaDiMisura(rs.getString("unita_di_misura"));
+				
+				Integer quant = rs.getInt("quantita");
+				
+				prod.put(p, quant);					
+				
+			}	
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return prod;	
+	}
+
+	
+	@Override
+	public List<Ordine> OrdiniInConsegna() {
+		List<Ordine> ordini = null;
+		try {
+			ordini = new ArrayList<Ordine>();
+			String query = "SELECT * FROM ordine WHERE stato=? OR stato=? OR stato=? order by id";
+			PreparedStatement st = conn.prepareStatement(query);
+			st.setString(1, StatoOrdine.IN_ATTESA_DELLA_CONSEGNA_ALLACONSEGNA);
+			st.setString(2, StatoOrdine.IN_ATTESA_DELLA_CONSEGNA_PAYPAL);
+			st.setString(3, StatoOrdine.SPEDITO);
+			
+			ResultSet rs = st.executeQuery();
+			
+			while(rs.next()){
+				Ordine ordine = new Ordine();
+				ordine.setId(rs.getInt("id"));
+				ordine.setData(rs.getDate("data_completamento"));
+				ordine.setUtenteOrdine(Database.getInstance().getFactory().getUtenteDao().findByPrimaryKey(rs.getString("utente")));
+				ordine.setStato(rs.getString("stato"));
+				ordine.setIndirizzo(Database.getInstance().getFactory().getIndirizzoDao().findByPrimaryKey(rs.getInt("id_indirizzo")));
+				ordine.setTotale(rs.getInt("totale"));
+				ordini.add(ordine);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+		return ordini;
+	}
 }

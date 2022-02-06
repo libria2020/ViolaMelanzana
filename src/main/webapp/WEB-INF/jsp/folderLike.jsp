@@ -21,26 +21,24 @@
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<!-- Latest compiled JavaScript -->
-	<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"rel="stylesheet" id="bootstrap-css">
-	<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
 
 	<link href="../css/homeCSS.css" rel="stylesheet" type="text/css">
 	<link href="../css/commonCSS.css" rel="stylesheet" type="text/css">
 	<link href="../css/folderLikeCSS.css" rel="stylesheet" type="text/css">
 	
-		 <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	
 	<script src="../js/folderLikeJS.js"></script>
 	
+	<link rel="icon" type="image/x-icon" href="/images/favicon.ico"> 
+	
 	</head>
 	
 <body>
-		<jsp:include page="navbar.jsp"></jsp:include>
+		
+	<jsp:include page="navbar.jsp"></jsp:include>
 
-	
-	<body>
 	 <div id="mainContainer" class="row">
 	 	<div class="container space-nd" id="mainContainer">
 			<div class="col-sm-3" id="left">
@@ -62,7 +60,7 @@
 			
 				<div class="col-sm-9" id="likeRecipe">
 					  	<h1 id="preferiti">I miei Preferiti</h1>
-					   	<div class="container space-s" id="likeRecipe">
+					   	<div id="likeRecipe">
 					   	
 					   	</div>			
 					   		   	
