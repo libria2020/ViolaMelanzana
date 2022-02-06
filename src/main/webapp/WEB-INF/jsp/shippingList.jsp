@@ -13,8 +13,6 @@
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
 		
 		<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-	
-		<script language="javascript" src="../js/cartJS.js"></script>
 		
 		
 		<link href="../css/cartCSS.css" rel="stylesheet" type="text/css" />
@@ -61,36 +59,36 @@
 							<div class="cart-container address-container">
 						    	<div id="card">
 						        	<div class="row">
-						        		<div class="col-md-6"> <h4>Via:</h4></div>
-						            	<div class="col-md-6"> ${ind.indirizzo} </div>
+						        		<div class="col-md-6 col-sm-6 col-xs-6"> <h4>Via:</h4></div>
+						            	<div class="col-md-6 col-sm-6 col-xs-6"> ${ind.indirizzo} </div>
 						            </div>
 						            
 						            <div class="row">
-						        		<div class="col-md-6"> <h4>Numero civico:</h4> </div>
-						            	<div class="col-md-6"> ${ind.n_civico} </div>
+						        		<div class="col-md-6 col-sm-6 col-xs-6"> <h4>Numero civico:</h4> </div>
+						            	<div class="col-md-6 col-sm-6 col-xs-6"> ${ind.n_civico} </div>
 						            </div>
 						            
 						            <div class="row">
-						        		<div class="col-md-6"> <h4>CAP:</h4> </div>
-						            	<div class="col-md-6"> ${ind.cap} </div>
+						        		<div class="col-md-6 col-sm-6 col-xs-6"> <h4>CAP:</h4> </div>
+						            	<div class="col-md-6 col-sm-6 col-xs-6"> ${ind.cap} </div>
 						            </div>
 						            
 						            <div class="row">
-						        		<div class="col-md-6"> <h4>Città:</h4> </div>
-						            	<div class="col-md-6"> ${ind.citta} </div>
+						        		<div class="col-md-6 col-sm-6 col-xs-6"> <h4>Città:</h4> </div>
+						            	<div class="col-md-6 col-sm-6 col-xs-6"> ${ind.citta} </div>
 						            </div>
 						            
 						            <div class="row">
-						        		<div class="col-md-6"> <h4>Provincia:</h4> </div>
-						            	<div class="col-md-6"> ${ind.provincia} </div>
+						        		<div class="col-md-6 col-sm-6 col-xs-6"> <h4>Provincia:</h4> </div>
+						            	<div class="col-md-6 col-sm-6 col-xs-6"> ${ind.provincia} </div>
 						            </div>
 						            
 						            <div class="row">
-						        		<div class="col-md-6"> <h4>Telefono:</h4> </div>
-						            	<div class="col-md-6"> ${ind.telefono} </div>
+						        		<div class="col-md-6 col-sm-6 col-xs-6"> <h4>Telefono:</h4> </div>
+						            	<div class="col-md-6 col-sm-6 col-xs-6"> ${ind.telefono} </div>
 						            </div>
 						            
-						             <div class="ms-4">
+						             <div>
 						             	<input type="radio" name="indirizzi" id="${ind.id}">
 						            	<label style="margin-top: 8px;"> Indirizzo di Consegna</label>
 						           	</div>
@@ -109,7 +107,7 @@
 				
 				
 				<div class="vm-mod">
-					<button class="vm-btn-cart vm-btn-mod bi-plus-square mt-4 vm-color" id="btnNuovo"></button>
+					<button class="vm-btn-cart vm-btn-mod bi-plus-square vm-color" id="btnNuovo"></button>
 				</div>
 				
 				<div class="vm-mod">
@@ -118,7 +116,7 @@
 				
 				<div id="pulsantiSecondari" class="vm-mod">
 					
-					<input id="btnPaga" class="vm-btn-prod vm-btn-cart mt-4" type="button" value="Continua" />
+					<input id="btnPaga" class="vm-btn-prod vm-btn-cart" type="button" value="Continua" />
 				</div>
 				
 		</div>

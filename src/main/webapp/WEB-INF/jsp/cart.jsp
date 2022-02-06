@@ -90,18 +90,18 @@
 			<div class="cart-container prod-container" id="card_paga">
 		    	<div id="card">
 		        	<div class="row cart-row">
-		        		<div class="col-md-9"> Subtotale </div>
-		            	<div class="col-md-3" id="subtotale">  </div>
+		        		<div class="col-md-7 col-sm-7 col-xs-7"> Subtotale </div>
+		            	<div class="col-md-5 col-sm-5 col-xs-5" id="subtotale" style="text-align: right;">  </div>
 		            </div>
 		            
 		            <div class="row cart-row">
-		        		<div class="col-md-9"> Spedizione* </div>
-		            	<div class="col-md-3" id="spedizione">  </div>
+		        		<div class="col-md-7 col-sm-7 col-xs-7"> Spedizione* </div>
+		            	<div class="col-md-5 col-sm-5 col-xs-5" id="spedizione" style="text-align: right;">  </div>
 		            </div>
 		            
 		            <div class="row cart-row">
-		        		<div class="col-md-9"> Totale </div>
-		            	<div class="col-md-3" id="totale">  </div>
+		        		<div class="col-md-7 col-sm-7 col-xs-7"> Totale </div>
+		            	<div class="col-md-5 col-sm-5 col-xs-5" id="totale" style="text-align: right;">  </div>
 		            </div>
 		
 					<input class="vm-btn-pay vm-btn-cart" id="btnIndirizzo" type="button" value="Paga" />

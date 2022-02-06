@@ -34,11 +34,13 @@ $(document).ready(function(){
 		success: function(risposta) { 
 			
 			for (var i = 0; i < risposta.length; i++) {
-				$('#cat_bar').append($('<a href="/categoria?categoria=' + risposta[i].id + '"><b>' + risposta[i].nome + '</b></a>'));
+				$('#cat_bar').append($('<a href="search/category?categoria=' + risposta[i].id + '"><b>' + risposta[i].nome + '</b></a>'));
 			}
 		}		
 			
 	});
+	
+	
 	
 	// ***** ***** ***** ***** ***** ***** ***** ***** *****
 	// Chef
@@ -49,7 +51,7 @@ $(document).ready(function(){
     		"offset" : chef*4
 		},
 		
-		success: function(risposta) { // TODO controlar la dimension del array antes de estamparlo
+		success: function(risposta) {
 		
 				chef++;
 				
@@ -59,11 +61,11 @@ $(document).ready(function(){
 				$("#chef-row").innerHTML = "";
 					
 				for (var i = 0; i < risposta.length; i++) {
-					$('#chef-row').append($('<div class="col-md-3 center-space" id="c-' + risposta[i].id + '">'+
+					$('#chef-row').append($('<div class="col-md-3 col-sm-3 col-xs-12 center-space" id="c-' + risposta[i].id + '">'+
 												'<div>'+
 													'<h4><b>' + risposta[i].nome +'</b></h4>'+	
 												'</div>'+									
-												'<a href="chef?key='+ risposta[i].id +'" >'+
+												'<a href="search/chef?key='+ risposta[i].id +'" >'+
 													'<img src="'+ risposta[i].img_link +'" class="img-circle person" alt="Avatar">'+
 												'</a>'+										
 											'</div>'));
@@ -95,11 +97,11 @@ $(document).ready(function(){
 					document.getElementById("chef-row").innerHTML = "";
 					
 					for (var i = 0; i < risposta.length; i++) {
-					$('#chef-row').append($('<div class="col-md-3 center-space" id="c-' + risposta[i].id + '">'+
+					$('#chef-row').append($('<div class="col-md-3 col-sm-3 col-xs-12 center-space" id="c-' + risposta[i].id + '">'+
 												'<div>'+
 													'<h4><b>' + risposta[i].nome +'</b></h4>'+	
 												'</div>'+									
-												'<a href="chef?key='+ risposta[i].id +'" >'+
+												'<a href="search/chef?key='+ risposta[i].id +'" >'+
 													'<img src="'+ risposta[i].img_link +'" class="img-circle person" alt="Avatar">'+
 												'</a>'+										
 											'</div>'));
@@ -123,8 +125,7 @@ $(document).ready(function(){
 		
 			success: function(risposta) {
 					chef++;
-					// TODO arreglar en base al numero de tuplas
-					if ( risposta.length < 4 ) { // TODO cambiar recent === 2 con el numero maximo de paginas (multiplo de 4) - 2
+					if ( risposta.length < 4 ) {
 						document.getElementById("chef_next").disabled = true;
 						document.getElementById("chef_next").className += " disabled";
 					}
@@ -133,11 +134,11 @@ $(document).ready(function(){
 						document.getElementById("chef-row").innerHTML = "";	
 					
 						for (var i = 0; i < risposta.length; i++) {
-						$('#chef-row').append($('<div class="col-md-3 center-space" id="c-' + risposta[i].id + '">'+
+						$('#chef-row').append($('<div class="col-md-3 col-sm-3 col-xs-12 center-space" id="c-' + risposta[i].id + '">'+
 												'<div>'+
 													'<h4><b>' + risposta[i].nome +'</b></h4>'+	
 												'</div>'+									
-												'<a href="chef?key='+ risposta[i].id +'" >'+
+												'<a href="search/chef?key='+ risposta[i].id +'" >'+
 													'<img src="'+ risposta[i].img_link +'" class="img-circle person" alt="Avatar">'+
 												'</a>'+										
 											'</div>'));
@@ -159,17 +160,19 @@ $(document).ready(function(){
     		"offset" : count*8
 		},
 		
-		success: function(risposta) { // TODO controlar la dimension del array antes de estamparlo
+		success: function(risposta) {
 				for (var i = (0 + count * 2); i < (2 + count*2); i++) {
 					
 					$('#popular').append($('<div id="row-' + i + '" class="row"></div>'));
 					
 					for (var j = (0 + i * 4); j < (4 + i*4); j++) {
-						$('#row-' + i).append($('<div class="col-md-3">'+
+						
+						$('#row-' + i).append($('<div class="col-md-3 col-sm-3 col-xs-12">'+
 													'<div id="p-' + risposta[j].id + '"class="vm-card">'+
 														'<a href="recipePage?ricetta_id=' + risposta[j].id + '">'+
 															'<img src="' + risposta[j].base64Image + '" alt="Avatar" class="card-img">'+
 														 '</a>'+
+														 '<div id="chef-img-' + risposta[j].id + '"></div>'+
 														 '<a href="recipePage?ricetta_id=' + risposta[j].id + '">'+
 														 	'<div class="vm-container"><h4><b>' + risposta[j].titolo + '</b></h4></div>'+
 														 '</a>'+
@@ -180,7 +183,27 @@ $(document).ready(function(){
 															'<span class="number vm-color">' + risposta[j].likes + '</span>'+
 														 '</div>'+
 													'</div>'+
-												'</div>'));		
+												'</div>'));	
+													
+						if ( risposta[j].chefPubblicatore !== 0 ) {
+							
+							var id = risposta[j].id;
+							
+							$.ajax({
+									type: "GET",
+									url: "/singleChef",
+									data: {
+							    		"key" : risposta[j].chefPubblicatore
+									},
+									
+									success: function(chef) {
+										$('#chef-img-' + id).append($('<div>'+
+																		'<img src="' + chef.img_link + '" alt="Avatar" class="img-circle avatar">'+
+																	 '</div>'));		
+									}
+							});
+							
+						}
 					}
 				}
 				
@@ -193,6 +216,7 @@ $(document).ready(function(){
 	load.addEventListener("click", function() {
 		
 		$.ajax({
+			async: false,
 			type: "GET",
 			url: "/ricettePopolari",
 			data: {
@@ -200,9 +224,6 @@ $(document).ready(function(){
 			},
 			
 		success: function(risposta) {
-					// TODO arreglar en base al numero de tuplas
-					// https://stackoverflow.com/questions/44839753/returning-json-object-as-response-in-spring-boot
-					// https://stackoverflow.com/questions/9098649/jquery-ajax-request-with-json-response-how-to/59733878
 					if ( risposta.length < 8 ) {
 						document.getElementById("load").disabled = true;
 					}
@@ -212,11 +233,12 @@ $(document).ready(function(){
 						$('#popular').append($('<div id="row-' + i + count * 2  + '" class="row"></div>'));
 						
 						for (var j = (0 + i * 4); j < (4 + i*4) && j < risposta.length; j++) {
-							$('#row-' + i + count * 2).append($('<div class="col-md-3">'+
+							$('#row-' + i + count * 2).append($('<div class="col-md-3 col-sm-3 col-xs-12">'+
 																	'<div id="p-' + risposta[j].id + '"class="vm-card">'+
 																		'<a href="recipePage?ricetta_id=' + risposta[j].id + '">'+
 																			'<img src="' + risposta[j].base64Image + '" alt="Avatar" class="card-img">'+
 																		'</a>'+
+																		'<div id="chef-img-' + risposta[j].id + '"></div>'+
 																		'<a href="recipePage?ricetta_id=' + risposta[j].id + '">'+
 																		 	'<div class="vm-container"><h4><b>' + risposta[j].titolo + '</b></h4></div>'+
 																		'</a>'+
@@ -228,6 +250,26 @@ $(document).ready(function(){
 																		'</div>'+
 																	'</div>'+
 																'</div>'));
+									
+							var ricetta = risposta[j].id;
+							
+							if ( risposta[j].chefPubblicatore !== 0 ) {					
+								$.ajax({
+										async: false,
+										type: "GET",
+										url: "/singleChef",
+										data: {
+								    		"key" : risposta[j].chefPubblicatore
+										},
+										
+										success: function(chef) {
+											$('#chef-img-' + ricetta).append($('<div>'+
+																			'<img src="' + chef.img_link + '" alt="Avatar" class="img-circle avatar">'+
+																		 '</div>'));		
+										}
+								});
+								
+							}
 						}
 					}
 					count++;
@@ -319,7 +361,7 @@ function stampa(risposta) {
 	document.getElementById("recent-row").innerHTML = "";
 				
 	for (var i = 0; i < risposta.length; i++) {
-		$('#recent-row').append($('<div class="col-md-3"> <div id="r-' + risposta[i].id + '"class="vm-card"> </div></div>'));
+		$('#recent-row').append($('<div class="col-md-3 col-sm-3 col-xs-12"> <div id="r-' + risposta[i].id + '"class="vm-card"> </div></div>'));
 
 		$('#r-' + risposta[i].id).append($('<a href="recipePage?ricetta_id=' + risposta[i].id + '">'+
 											'<img src="' + risposta[i].base64Image + '" alt="Avatar" class="card-img">'+
@@ -339,6 +381,9 @@ function stampa(risposta) {
 
 
 var user = 1;
+
+
+
 
 // ***** ***** ***** ***** ***** ***** ***** ***** *****
 // Recipes Published by User
@@ -365,7 +410,7 @@ function previous() {
 				document.getElementById("user-row").innerHTML = "";
 					
 				for (var i = 0; i < risposta.length; i++) {
-					$('#user-row').append($('<div class="col-md-3"> <div id="u-' + risposta[i].id + '"class="vm-card"> </div></div>'));
+					$('#user-row').append($('<div class="col-md-3 col-sm-3 col-xs-12"> <div id="u-' + risposta[i].id + '"class="vm-card"> </div></div>'));
 
 					$('#u-' + risposta[i].id).append($('<a href="recipePage?ricetta_id=' + risposta[i].id + '">'+
 														'<img src="' + risposta[i].base64Image + '" alt="Avatar" class="card-img">'+
@@ -400,8 +445,7 @@ function next() {
 		
 			success: function(risposta) {				
 					user++;
-					// TODO arreglar en base al numero de tuplas
-					if ( risposta.length < 4 ) { // TODO cambiar recent === 2 con el numero maximo de paginas (multiplo de 4) - 2
+					if ( risposta.length < 4 ) {
 						document.getElementById("user_next").disabled = true;
 						document.getElementById("user_next").className += " disabled";
 					}
@@ -410,7 +454,7 @@ function next() {
 						document.getElementById("user-row").innerHTML = "";
 							
 						for (var i = 0; i < risposta.length; i++) {
-							$('#user-row').append($('<div class="col-md-3"> <div id="u-' + risposta[i].id + '"class="vm-card"> </div></div>'));
+							$('#user-row').append($('<div class="col-md-3 col-sm-3 col-xs-12"> <div id="u-' + risposta[i].id + '"class="vm-card"> </div></div>'));
 		
 							$('#u-' + risposta[i].id).append($('<a href="recipePage?ricetta_id=' + risposta[i].id + '">'+
 																'<img src="' + risposta[i].base64Image + '" alt="Avatar" class="card-img">'+

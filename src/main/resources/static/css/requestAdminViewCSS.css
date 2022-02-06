@@ -108,3 +108,20 @@ td{
   animation-name: animatetop;
   animation-duration: 0.4s
 }
+
+.order-status{
+border-width:3px;
+border-style:solid;
+}
+
+.pay-delivery{
+border-color:#FF0000;
+}
+
+.pay-paypal{
+border-color:#FFD700;
+}
+
+.shipped {
+border-color: #008000;
+}

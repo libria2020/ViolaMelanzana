@@ -3,6 +3,19 @@ window.addEventListener("load", function(){
 	inserimentoDatiPrezzo();
 	aggiungiEventi();
 	addEvent();
+	
+	window.addEventListener('resize', function(){
+		
+		var w = window.screen.width;
+		var elem = document.getElementById("cart_prodotti");
+		
+  		if( w <= 696) {
+			elem.className = "table-responsive";	
+		} else {
+			elem.className = "cart-container prod-container";
+		}
+	});
+	
 });
 
 
@@ -36,7 +49,6 @@ function aggiungiEventi(){
 			}
 		})
 		
-		console.log(prodotto_quantita);
 		
 		var prodotto_quantita_class = new ProdottoQuantita(out,localStorage.getItem("prezzo_totale"));
 		$.ajax({

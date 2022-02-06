@@ -5,6 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import application.model.Ordine;
 import application.persistenza.Database;
@@ -13,16 +14,18 @@ import application.persistenza.Database;
 public class CartController {
 	
 	@GetMapping("cart")
-	public String Cart(HttpServletRequest req) {
+	public ModelAndView Cart(HttpServletRequest req) {
 		UtenteControlloLog utenteLoggato = new UtenteControlloLog();
-		
-		if ( !utenteLoggato.isNull(req)) {
+		ModelAndView model = new ModelAndView();
+		if (!utenteLoggato.isNull(req)) {
 			Ordine ordine = Database.getInstance().getFactory().getOrdineDao().findCurrentFromUser(utenteLoggato.getUtente(req).getMail());
-			req.getSession().setAttribute("ordine", ordine);
-			return "cart";
+			model.addObject("ordine", ordine);
+			model.setViewName("cart");
+			return model;
 		}
 		
-		return "redirect:/";
+		model.setViewName("cart");
+		return model;
 	}
 	
 	@PostMapping("/shippingList")

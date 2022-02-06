@@ -119,7 +119,7 @@ body {
 
 
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 767px) {
 	.vm-cat-content a {
 		display: none;
 	}
@@ -127,9 +127,7 @@ body {
 		float: right;
 		display: block;
 	}
-}
-
-@media screen and (max-width: 600px) {
+	
 	.vm-cat-content.responsive {position: relative;}
 	.vm-cat-content.responsive .icon {
 		position: absolute;
@@ -143,10 +141,27 @@ body {
 	}
 }
 
-@media screen and (max-width: 600px) {
-  
+@media screen and (max-width: 991px) {
+	.person {
+		width: 100% !important;
+		height: 24% !important;
+	}
 }
 
+@media screen and (max-width: 767px) {
+	.person {
+		width: 48% !important;
+		height: 48% !important;
+	}
+}
+
+
+@media screen and (max-width: 575px) {
+	.person {
+		width: 56% !important;
+		height: 40% !important;
+	}
+}
 
 
 
@@ -376,5 +391,14 @@ body {
 
 
 
-
+.avatar {
+	float: right;
+	position: relative;
+	background-color: white;
+	padding: 8px;
+	margin-right: 8px;
+	margin-top: -30px;
+	width: 60px;
+	height: 60px;
+}
 

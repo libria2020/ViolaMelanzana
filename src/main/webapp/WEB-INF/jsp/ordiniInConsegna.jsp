@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 	<head>
 		
@@ -17,6 +17,7 @@
 		
 		<link href="../css/homeCSS.css" rel="stylesheet" type="text/css">
 		<link href="../css/commonCSS.css" rel="stylesheet" type="text/css">
+		<link href="../css/requestAdminViewCSS.css" rel="stylesheet" type="text/css">
 		
     	<script language="javascript" src="../js/ordiniInConsegnaJS.js"></script>
     	
@@ -29,7 +30,8 @@
   			
 	  		<div  class="main-container container" id="cart_prodotti">
   				<c:forEach items="${ordini}" var="ordine">
-					<div class="order">
+  				 <c:set var = "string1" value = "${ordine.stato}"/>
+					<div class="div_${fn:replace(string1,' ', '_')} order" id="uno">  
 						<button class="btnVisualizza vm-btn-view" name="${ordine.id}"> Visualizza </button>
 						<h3>Numero dell’ordine: ${ordine.id} </h3> 
 						

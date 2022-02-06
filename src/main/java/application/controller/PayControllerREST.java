@@ -18,13 +18,12 @@ public class PayControllerREST {
 	@PostMapping("/confirmedOrderPayPal")
 	public Messaggi ConfirmedOrderPayPal(HttpServletResponse resp, HttpServletRequest req) {
 		Messaggi messaggio = new Messaggi();
-		Ordine ordine = (Ordine) req.getSession().getAttribute("ordine");
-		ordine.setStato(StatoOrdine.IN_ATTESA_DELLA_CONSEGNA_PAYPAL);
 		UtenteControlloLog utenteLoggato = new UtenteControlloLog();
+		Ordine ordine = Database.getInstance().getFactory().getOrdineDao().findCurrentFromUser(utenteLoggato.getUtente(req).getMail());
+		ordine.setStato(StatoOrdine.IN_ATTESA_DELLA_CONSEGNA_PAYPAL);
 		if (!utenteLoggato.isNull(req) && Database.getInstance().getFactory().getOrdineDao().saveOrUpdate(ordine)) {
 			messaggio.setStatus("OK");
 			messaggio.setMessaggio("Pagamento alla consegna aggiornato sul DB con successo");
-			req.getSession().setAttribute("ordine", ordine);
 		}else {
 			resp.setStatus(500);
 			messaggio.setStatus("Fail");
@@ -36,13 +35,12 @@ public class PayControllerREST {
 	@PostMapping("/confirmedOrderAllaConsegna")
 	public Messaggi ConfirmedOrder_PagamentoAllaConsegna(HttpServletResponse resp, HttpServletRequest req) {
 		Messaggi messaggio = new Messaggi();
-		Ordine ordine = (Ordine) req.getSession().getAttribute("ordine");
-		ordine.setStato(StatoOrdine.IN_ATTESA_DELLA_CONSEGNA_ALLACONSEGNA);
 		UtenteControlloLog utenteLoggato = new UtenteControlloLog();
+		Ordine ordine = Database.getInstance().getFactory().getOrdineDao().findCurrentFromUser(utenteLoggato.getUtente(req).getMail());
+		ordine.setStato(StatoOrdine.IN_ATTESA_DELLA_CONSEGNA_ALLACONSEGNA);
 		if (!utenteLoggato.isNull(req) && Database.getInstance().getFactory().getOrdineDao().saveOrUpdate(ordine)) {
 			messaggio.setStatus("OK");
 			messaggio.setMessaggio("Pagamento alla consegna aggiornato sul DB con successo");
-			req.getSession().setAttribute("ordine", ordine);
 		}else {
 			resp.setStatus(500);
 			messaggio.setStatus("Fail");
@@ -77,17 +75,17 @@ public class PayControllerREST {
 	@PostMapping("/date")
 	public Messaggi controlloInMagazzinoeESetData(HttpServletResponse resp, HttpServletRequest req) {
 		Messaggi messaggio = new Messaggi();
-		Ordine ordine = (Ordine) req.getSession().getAttribute("ordine");
+		UtenteControlloLog utenteLoggato = new UtenteControlloLog();
+		Ordine ordine = Database.getInstance().getFactory().getOrdineDao().findCurrentFromUser(utenteLoggato.getUtente(req).getMail());
         long now = System.currentTimeMillis();
         Date sqlDate = new Date(now);
 		ordine.setData(sqlDate);
-		UtenteControlloLog utenteLoggato = new UtenteControlloLog();
 		System.out.println(ordine.getData());
 		if (!utenteLoggato.isNull(req) && Database.getInstance().getFactory().getOrdineDao().saveOrUpdate(ordine)) {
 			messaggio.setStatus("OK");
 			messaggio.setMessaggio("Data aggiornata");
-			req.getSession().setAttribute("ordine", ordine);
-		}else {
+		}
+		else {
 			resp.setStatus(500);
 			messaggio.setStatus("Fail");
 			messaggio.setMessaggio("Problemi interni, perfavore riprovi");
@@ -99,8 +97,8 @@ public class PayControllerREST {
 	@PostMapping("/controlAndUpdate")
 	public Messaggi UpdateDB(HttpServletResponse resp, HttpServletRequest req) {
 		Messaggi messaggio = new Messaggi();
-		Ordine ordine = (Ordine) req.getSession().getAttribute("ordine");
 		UtenteControlloLog utenteLoggato = new UtenteControlloLog();
+		Ordine ordine = Database.getInstance().getFactory().getOrdineDao().findCurrentFromUser(utenteLoggato.getUtente(req).getMail());
 		if (!utenteLoggato.isNull(req)) {
 			Ordine o = Database.getInstance().getFactory().getOrdineDao().findCurrentFromUser(utenteLoggato.getUtente(req).getMail());
 			messaggio.setStatus("OK");
@@ -117,7 +115,6 @@ public class PayControllerREST {
 				System.out.println(prodotto.getQuantitaDisponibile());
 			}
 			Database.getInstance().getFactory().getOrdineDao().saveOrUpdate(ordine);
-			req.getSession().setAttribute("ordine", ordine);
 		}else {
 			resp.setStatus(500);
 			messaggio.setStatus("Fail");

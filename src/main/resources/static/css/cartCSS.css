@@ -164,7 +164,8 @@ thead {
 	padding-bottom: 12px;
 	padding-top: 12px;
 	
-	padding-left: 40px;
+	padding-left: 48px;
+	padding-right: 48px;
 }
 
 .vm-btn-view {
@@ -193,3 +194,25 @@ thead {
 	text-decoration: underline;
 	color: #4d0099;
 }
+
+
+@media screen and (max-width: 1199px) {
+	.address-container {
+		width: 60%;
+		margin-left: 20%;
+	}
+	
+}
+
+@media screen and (max-width: 991px) {
+	.address-container {
+		width: 96%;
+		margin-left: -0.12%;
+	}
+	
+	.vm-btn-prod {
+		width: 76%;	
+	}
+}
+
+

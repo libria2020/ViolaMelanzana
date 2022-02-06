@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import application.model.Indirizzo;
 import application.persistenza.Database;
@@ -15,14 +16,17 @@ import application.persistenza.Database;
 public class ShippingListController {
 	
 	@GetMapping("shippingList")
-	public String Shipping(HttpServletRequest req) {
+	public ModelAndView Shipping(HttpServletRequest req) {
+		ModelAndView model = new ModelAndView();
 		UtenteControlloLog utenteLoggato = new UtenteControlloLog();
 		if (!utenteLoggato.isNull(req)) {
 			List<Indirizzo> indirizzi = Database.getInstance().getFactory().getIndirizzoDao().findAllFromUserEnable(utenteLoggato.getUtente(req).getMail());
-			req.setAttribute("indirizzi", indirizzi);
-			return "shippingList";
+			model.addObject("indirizzi", indirizzi);
+			model.setViewName("shippingList");
+			return model;
 		}
-		return "redirect:/";
+		model.setViewName("redirect:/");
+		return model;
 }
 	
 	@PostMapping("/pay")

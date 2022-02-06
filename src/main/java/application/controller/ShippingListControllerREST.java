@@ -17,14 +17,13 @@ public class ShippingListControllerREST {
 	@PostMapping("/changeStatusAddress")
 	public Messaggi saveOrdine(@RequestBody int id, HttpServletResponse resp, HttpServletRequest req) {
 		Messaggi messaggio = new Messaggi();
-		Ordine ord = (Ordine) req.getSession().getAttribute("ordine");
-		ord.setStato(StatoOrdine.IN_ATTESA_DEL_METODO_DI_PAGAMENTO);
-		ord.setIndirizzo(Database.getInstance().getFactory().getIndirizzoDao().findByPrimaryKey(id));
 		UtenteControlloLog utenteLoggato = new UtenteControlloLog();
-		if (!utenteLoggato.isNull(req) && Database.getInstance().getFactory().getOrdineDao().saveOrUpdate(ord)) {
+		Ordine ordine = Database.getInstance().getFactory().getOrdineDao().findCurrentFromUser(utenteLoggato.getUtente(req).getMail());
+		ordine.setStato(StatoOrdine.IN_ATTESA_DEL_METODO_DI_PAGAMENTO);
+		ordine.setIndirizzo(Database.getInstance().getFactory().getIndirizzoDao().findByPrimaryKey(id));
+		if (!utenteLoggato.isNull(req) && Database.getInstance().getFactory().getOrdineDao().saveOrUpdate(ordine)) {
 			messaggio.setStatus("OK");
 			messaggio.setMessaggio("Ordine aggiornato sul DB con successo");
-			req.getSession().setAttribute("ordine", ord);
 		}else {
 			resp.setStatus(500);
 			messaggio.setStatus("Fail");

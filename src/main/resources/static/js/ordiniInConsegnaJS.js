@@ -29,4 +29,22 @@ function aggiungiEventi(){
 			});
 		});
 	}
+	var x = document.getElementsByClassName("div_spedito");
+	for(let i = 0; i < x.length; ++i){
+		x[i].className += " order-status";
+		x[i].className += " shipped";
+	}
+	
+	var y = document.getElementsByClassName("div_in_attesa_della_consegna,_pagamento_alla_consegna");
+	for(let i = 0; i < y.length; ++i){
+		y[i].className += " order-status";
+		y[i].className += " pay-delivery";
+	}
+	
+	var z = document.getElementsByClassName("div_in_attesa_della_consegna,_pagato_paypal");
+	for(let i = 0; i < z.length; ++i){
+		z[i].className += " order-status";
+		z[i].className += " pay-paypal";
+	}
+
 }

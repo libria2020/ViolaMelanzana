@@ -311,7 +311,7 @@ public class RicettaDaoJDBC implements RicettaDao {
 	public List<RicettaProxy> findOrderBy(String expression, int limit, int offset) {
 		ArrayList<RicettaProxy> ricettaProxy = null;
 		
-		String query ="select id, titolo, likes, image_ricetta from ricetta where approvazione=true order by " + expression + " desc limit ? offset ?;";
+		String query ="select id, titolo, likes, image_ricetta, chef from ricetta where approvazione=true order by " + expression + " desc limit ? offset ?;";
 		PreparedStatement ps;
 		try {
 			
@@ -330,6 +330,7 @@ public class RicettaDaoJDBC implements RicettaDao {
 				r.setTitolo(rs.getString("titolo"));
 				r.setLikes(rs.getInt("likes"));
 				r.setImg(rs.getString("image_ricetta"));
+				r.setChefPubblicatore(rs.getInt("chef"));
 				
 				if(r.getImg() != null) {
 					BufferedReader read;

@@ -37,27 +37,14 @@ public class HomeController {
 			} 
 
 		}
-		
-		System.out.println(request.getSession().getAttribute("admin"));
-		
+				
 		return model;
 	}
 	
-//	@GetMapping("/")
-//	public String getHomePage(HttpServletRequest request) {		
-//		if ( request.getSession().getAttribute("utente") != null ) {			
-//			Utente utente = (Utente) request.getSession().getAttribute("utente");		
-//			
-//			List<RicettaProxy> ricettaUtente = Database.getInstance().getFactory().getRicettaDao().findByPublisher(utente.getMail(), 4, 0);
-//			
-//			List<Indirizzo> indirizzi = Database.getInstance().getFactory().getIndirizzoDao().findAllFromUserEnable(utente.getMail());
-//			
-//			request.setAttribute("ricettaUtente", ricettaUtente);
-//			request.setAttribute("indirizzi", indirizzi);
-//		}
-//		
-//		return "index";
-//	}
+	@GetMapping("search")
+	public String goToSearch(HttpServletRequest request) {		
+		return "search";
+	}
 	
 	@GetMapping("/ricettePopolari")
 	@ResponseBody
@@ -107,5 +94,15 @@ public class HomeController {
 		List<Categoria> tutteLeCategorie = Database.getInstance().getFactory().getCategoriaDao().findAll();
 		
 		return tutteLeCategorie;
+	}
+	
+	@GetMapping("singleChef")
+	@ResponseBody
+	public Chef getSingleChef(@RequestParam String key, HttpServletRequest request) { 
+
+		int id = Integer.parseInt(key);
+		Chef chef = Database.getInstance().getFactory().getChefDao().findByPrimaryKey(id);
+		
+		return chef;
 	}
 }
