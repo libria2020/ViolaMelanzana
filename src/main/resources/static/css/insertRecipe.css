@@ -1,0 +1,32 @@
+#tableIngredienti{
+	visibility: hidden;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+#sendRecipe{
+	color: white;
+	border-radius: 15px;
+}
+
+.ast {
+	color: #6900cc;
+}
+
+.lbl-warning{
+	background-color: #6900cc;
+}
+
+textarea {
+	resize: none;
+}
+
+#container-insert{
+	background-color: WhiteSmoke;	
+}
+
