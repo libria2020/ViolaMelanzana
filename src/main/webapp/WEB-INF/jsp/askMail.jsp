@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page isELIgnored="false" %>
 
 <fmt:setLocale value="it"/>
@@ -24,6 +24,9 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		
+		<script src="../js/askMail.js"></script>
+		
 	</head>
 	
 	<body>
@@ -36,11 +39,10 @@
 					</div>
 				</div>
 				
-				<form method="post" action="/sendMailRecoverPassword">
+				
 					<label>Invieremo link per resettare la password alla tua Email</label>					
-					<c:if test="${message != null}">
-						<label class="text-warning">${message}</label>
-					</c:if>
+					<label id="lblMessage" class="text-warning"></label>
+					
 				
 					<div class="form-group">
 		               	<div class="form-row">
@@ -49,10 +51,10 @@
 	                </div>
 	                <div class="form-group"> 
 		                <div>
-		                	<button class="btn btn-block mbtn tx-tfm vm-background-color">Invia</button>
+		                	<button id="btnSend" class="btn btn-block mbtn tx-tfm vm-background-color">Invia</button>
 						</div>	
 					</div>				
-				</form>
+				
 			</div>
 		</div>
 	</body>

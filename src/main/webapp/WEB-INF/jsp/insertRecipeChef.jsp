@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page isELIgnored="false" %>
 
 <fmt:setLocale value="it"/>
@@ -44,13 +44,6 @@
 					<input class="form-control formInput" type="text" id="titolo" Placeholder="Titolo"/>
 					<label id="lblTitolo" style="color:red; font-size: 12"></label>
 				</div>
-			
-				<!-- <div class="form-group">
-					<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
-					<label>Chef</label>
-					<input class="form-control formInput" type="number" id="chef" Placeholder="Chef"/>
-					<label id="lblChef" style="color:red; font-size: 12"></label>
-				</div> -->
 			
 				<div class="form-group">
 					<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
@@ -114,8 +107,9 @@
 					</label>
 					<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
 					<label>Immagine</label>
-					 <img id="imageRicetta" width="300" height="300"></img> 
+					 <img id="imageRicetta" width="300" height="300" src=""></img> 
 					 <label id="lblImmagine" style="color:red; font-size: 12"></label>
+					 <button type="button" id="removeImage" class="btn" style="display: none;">Rimuovi</button>
 				</div>
 				
 				<div class="form-group">
@@ -151,7 +145,7 @@
 					<div class="form-group col-md-2">
 						<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
 						<label>Difficolta</label>
-						<input id="difficolta" class="form-control" type="number" placeholder="Difficoltà" >
+						<input id="difficolta" class="form-control" type="number" min="1" max="5" placeholder="Difficoltà" >
 						<label id="lblDifficolta" style="color:red; font-size: 12"></label>
 					</div>
 					<div class="form-group col-md-3">

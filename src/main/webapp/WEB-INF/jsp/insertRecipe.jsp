@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page isELIgnored="false" %>
 
 <fmt:setLocale value="it"/>
@@ -58,8 +58,6 @@
 					<label id="lblPreparazione" style="color:red; font-size: 12"></label>
 				</div>
 				
-				
-				
 				<div class="form-row" id="ingrediente">
 					<div class="form-group col-md-3">
 				      	<input type="text" class="form-control" id="nomeIngrediente" placeholder="Nome Ingrediente">
@@ -83,6 +81,7 @@
 					</div>
 				</div> 
 				
+				
 				<div class= "form-group">
 					<table id="tableIngredienti" class="table">
 						<thead>
@@ -105,8 +104,9 @@
 					</label>
 					<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
 					<label>Immagine</label>
-					 <img id="imageRicetta" width="300" height="300"></img> 
+					 <img id="imageRicetta" width="300" height="300" src="" ></img> 
 					 <label id="lblImmagine" style="color:red; font-size: 12"></label>
+					 <button type="button" id="removeImage" class="btn" style="display: none;">Rimuovi</button>
 				</div>
 				
 				<div class="form-group">
@@ -126,23 +126,29 @@
 					<label class="label lbl-warning" for="curiosita">Max 1000 characters</label>
 				</div>
 				
-				<div class="form-row">
-					<div class="form-group" >
-						<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
-						<label>Categoria</label>
-						<input id="categoria" class="form-control" type="text" placeholder="Inserisci la categoria del piatto"  >
-						<label id="lblCategoria" style="color:red; font-size: 12"></label>
-					</div>
+				
+				<div class="form-group">
+					<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
+					<label>Categoria</label>
+					
 					<div class="form-group">
-						<a href="/getListCategories" target="_blank" rel="noopener noreferrer">Visualizza lista Categorie</a>
+							<input id="categoria" class="form-control" type="text" placeholder="Inserisci la categoria del piatto"  >
+							<label id="lblCategoria" style="color:red; font-size: 12" for="categoria"></label>
+							<button id="addCategory" class="btn" type="button">Aggiungi categoria</button>
+							<a href="/getListCategories" target="_blank" rel="noopener noreferrer">Visualizza lista Categorie</a>
 					</div>
 				</div>
+				
+				<div id="div-categories" class="form-group">
+					
+				</div>
+				
   
 				<div class = "form-row">
 					<div class="form-group col-md-2">
 						<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
 						<label>Difficolta</label>
-						<input id="difficolta" class="form-control" type="number" placeholder="Difficoltà" >
+						<input id="difficolta" class="form-control" type="number" min="1" max="5" placeholder="Difficoltà" >
 						<label id="lblDifficolta" style="color:red; font-size: 12"></label>
 					</div>
 					<div class="form-group col-md-3">
