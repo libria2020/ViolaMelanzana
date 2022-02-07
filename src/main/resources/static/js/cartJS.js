@@ -2,12 +2,11 @@ window.addEventListener("load", function(){
 	controlloCarrelloVuoto();
 	inserimentoDatiPrezzo();
 	aggiungiEventi();
-	addEvent();
 	
 	window.addEventListener('resize', function(){
 		
 		var w = window.screen.width;
-		var elem = document.getElementById("cart_prodotti");
+		var elem = document.getElementById("tabella_prodotti");
 		
   		if( w <= 696) {
 			elem.className = "table-responsive";	
@@ -15,7 +14,7 @@ window.addEventListener("load", function(){
 			elem.className = "cart-container prod-container";
 		}
 	});
-	
+
 });
 
 
@@ -49,6 +48,7 @@ function aggiungiEventi(){
 			}
 		})
 		
+		console.log(prodotto_quantita);
 		
 		var prodotto_quantita_class = new ProdottoQuantita(out,localStorage.getItem("prezzo_totale"));
 		$.ajax({
@@ -70,9 +70,7 @@ function aggiungiEventi(){
 				}
 			});
 		});	
-}
 
-function addEvent(){
 	var delete_btn = document.querySelectorAll(".delete_btn");
 	
 	for(let i = 0; i < delete_btn.length; ++i){
@@ -88,8 +86,9 @@ function addEvent(){
 					success: function(risposta){
 						console.log(risposta);
 						if (risposta.status === "OK"){
-						
-							window.location.href = 'cart';
+							//window.location.href = 'cart';
+							document.querySelector("#tr_"+e.target.name).remove();
+							controlloCarrelloVuoto();
 						}
 					},
 					error: function(xhr){
@@ -109,9 +108,9 @@ function addEvent(){
 function controlloCarrelloVuoto(){
 	var element = document.getElementById("cart_prodotti");
 	var numberOfChildren = element.getElementsByTagName("*").length;
-	if(numberOfChildren === 10){
+	if(numberOfChildren === 0){
 		document.getElementById("carrelloVuoto").style.display = "block";
-		document.getElementById("cart_prodotti").style.display = "none";
+		document.getElementById("tabella_prodotti").style.display = "none";
 		document.getElementById("card_paga").style.display = "none";
 	}
 }

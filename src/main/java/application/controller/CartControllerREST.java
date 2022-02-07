@@ -26,11 +26,11 @@ public class CartControllerREST {
 	public Messaggi saveOrdine(@RequestBody ProdottoQuantita prodotto_quantita, HttpServletResponse resp, HttpServletRequest req) {
 		UtenteControlloLog utenteLoggato = new UtenteControlloLog();
 		Messaggi messaggio = new Messaggi();
-		Ordine ordine = (Ordine) req.getSession().getAttribute("ordine");
+		
+		Ordine ordine = Database.getInstance().getFactory().getOrdineDao().findCurrentFromUser( utenteLoggato.getUtente(req).getMail());
+		
 		ordine.setStato(StatoOrdine.IN_ATTESA_DELL_INDIRIZZO);
 		ordine.setTotale(prodotto_quantita.getPrezzo());
-		System.out.println(prodotto_quantita.getPrezzo());
-		System.out.println(prodotto_quantita.getProdotto_quantita().size());
 		if (!utenteLoggato.isNull(req) && Database.getInstance().getFactory().getOrdineDao().saveOrUpdate(ordine)) {
 			for(var prodotto : prodotto_quantita.getProdotto_quantita().keySet()) {
 				Prodotto pro = Database.getInstance().getFactory().getProdottoDao().findByPrimaryKey(prodotto);

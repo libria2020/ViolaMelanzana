@@ -56,7 +56,7 @@
 					
 					<div id="indirizzi">
 						<c:forEach items="${indirizzi}" var="ind">
-							<div class="cart-container address-container">
+							<div class="cart-container address-container" id="div_${ind.id}">
 						    	<div id="card">
 						        	<div class="row">
 						        		<div class="col-md-6 col-sm-6 col-xs-6"> <h4>Via:</h4></div>

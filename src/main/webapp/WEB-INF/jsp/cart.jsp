@@ -13,20 +13,6 @@
 		<link href="../css/cartCSS.css" rel="stylesheet" type="text/css" />
 		<link href="../css/homeCSS.css" rel="stylesheet" type="text/css">
 		<link href="../css/commonCSS.css" rel="stylesheet" type="text/css">
-		
-<!-- 	<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
-		
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-		
-		<script language="javascript" src="../js/cartJS.js"></script>
-		<script language="javascript" src="../js/ProdottoQuantita.js"></script>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
- -->		
  
 	 	<!-- Latest compiled and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -54,7 +40,7 @@
 					<label>Carrello vuoto!</label>
 			</div>
 				
-			<div  class="cart-container prod-container" id="cart_prodotti">
+			<div  class="cart-container prod-container" id="tabella_prodotti">
 			
 				<table class="table table-hover">
 					<thead>
@@ -68,9 +54,9 @@
 						</tr>	
 					</thead>
 					
-					<tbody>
+					<tbody id="cart_prodotti">
 						<c:forEach items="${ordine.prodottiInOrder}" var="ord">
-							<tr>
+							<tr id="tr_${ord.key.nome}">
 								<td id="${ord.key.nome}" class="nomeProdotti">${ord.key.nome}</td>	
 								<td> <input type="number" class="quantita" style="width:75px;" value="${ord.value}" onchange="inserimentoDatiPrezzo()"> </td>
 								<td> ${ord.key.unitaDiMisura} </td>
