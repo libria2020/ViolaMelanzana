@@ -31,88 +31,12 @@
 	
 	<script src="../js/accountJS.js"></script>
 	
-	<script src="../js/navbarJS.js"></script>
 		
-	<link href="../css/navbarCSS.css" rel="stylesheet" type="text/css">
 	
 </head>
 
 <body>	
 
-	<nav class="vm-navbar">
-		<div class="container-fluid">
-			<div class="navbar-header">
-      			<a class="" href="/">
-					<img src= "/images/logo.png" id="logo">
-				</a>
-    		</div>
-		
-			<div>
-				<ul class="vm-user nav navbar-nav">
-				
-					<c:if test="${admin == true }">
-						<li class="vm-text"> Admin ${utente.username}! </li>
-						<li class="dropdown">
-							<a class="fa fa-user-o vm-color vm-icon dropdown-toggle" data-toggle="dropdown" href="#"></a>
-							
-							<ul class="dropdown-menu" style="margin-left: -110px;">
-							    <li><a href="requestAdminView">Richieste Utente</a></li>
-							    <li><a href="ordiniInConsegna">Ordini</a></li>
-							    <li><a href="insertChefPage">Nuovo Chef</a></li>
-							    <li><a href="logOut">Logout</a></li>
-						    </ul>
-						</li>
-					</c:if>
-					
-					<c:if test="${admin == null }">
-						<c:if test="${utente != null }">
-							<li class="vm-text"> Benvenuto ${utente.username}! </li>
-							<li class="dropdown">
-								<a class="fa fa-user-o vm-color vm-icon dropdown-toggle" data-toggle="dropdown" href="#"></a>
-								
-								<ul class="dropdown-menu">
-									    <li><a href="account">Il mio Profilo</a></li>
-									    <li><a href="account">I miei Ordini</a></li>
-									    <li><a href="insertRecipePage">Nuova Ricetta</a></li>
-									    <li><a href="logOut">Logout</a></li>
-							    </ul>
-							</li>
-							<li><a href="folderLike" class="fa fa-heart-o vm-color vm-icon"></a></li>
-							<li><a href="cart" class="fa fa-opencart fa-lg vm-color vm-icon"></a></li>	
-						</c:if>	
-						
-						<c:if test="${utente == null }">
-							<li class="vm-text"> Ciao, accedi! </li>
-							<li class="dropdown">
-								<a class="fa fa-user-o vm-color vm-icon dropdown-toggle" data-toggle="dropdown" href="#"></a>
-								
-								<ul class="dropdown-menu" style="margin-left: -109px;">
-									    <li><a href="loginPage">Il mio Profilo</a></li>
-									    <li><a href="loginPage">I miei Ordini</a></li>
-									    <li><a href="loginPage">Nuova Ricetta</a></li>
-									    <li><a href="loginPage">Login</a></li>
-							    </ul>
-							</li>
-							<li><a href="loginPage" class="fa fa-heart-o vm-color vm-icon"></a></li>
-							<li><a href="loginPage" class="fa fa-opencart fa-lg vm-color vm-icon"></a></li>	
-						</c:if>
-					</c:if>
-				
-				</ul>	
-			</div>
-			 
-			<div class="vm-input-group">
-				<form action="/ricerca" method="get">
-					<select id="nav-bar-cat" name="filter" class="vm-text">
-					    <option value="all" selected="selected"> Tutte le categorie </option>
-				  	</select>
-					<input type="text" placeholder="Search" name="search">
-					<button type="submit" class="fa fa-search vm-color vm-icon"></button>
-				</form> 
-			</div>	
-		</div>
-	</nav>
-	
 	<div class="main-container container space-nd">
  		<div class="row view-container">
  			<div class="col-md-3 left">
@@ -140,53 +64,37 @@
 					<h2 class="right-container">Dati personali</h2>
 					
 					<div class="row right-container">
-						<div class="col-md-8">
+						<div class="col-md-8 col-sm-8 col-xs-8">
 							<div class="elem">
 								<b>Nome e Cognome</b>
 							</div>	
-							<div class="sub-elem">
+							<div class="sub-elem" id="user-Data">
 								${utente.nome} ${utente.cognome}
 							</div>
 						</div>
-						<div class="col-md-4 elem">
+						<div class="col-md-4 col-sm-4 col-xs-4 elem">
 							<button class="vm-btn-cart vm-btn-mod vm-color glyphicon glyphicon-edit" data-toggle="modal" data-target="#dataModal"></button>
 						</div>
 					</div>
-					
 					<hr>
 					
 					<div class="row right-container">
-						<div class="col-md-8">
+						<div class="col-md-8 col-sm-8 col-xs-8">
 							<div class="elem">
 								<b>La tuo nome utente</b>
 							</div>	
-							<div class="sub-elem">
+							<div class="sub-elem" id="user-Username">
 								${utente.username}
 							</div>
 						</div>
-						<div class="col-md-4 elem">
+						<div class="ccol-md-4 col-sm-4 col-xs-4 elem">
 							<button class="vm-btn-cart vm-btn-mod vm-color glyphicon glyphicon-edit" data-toggle="modal" data-target="#usernameModal"></button>
 						</div>
 					</div>
-					<!--  
-					<div class="row vm-container">
-						<div class="col-md-8">
-							<div class="elem">
-								<b>La tua email</b>
-							</div>	
-							<div class="sub-elem">
-								${utente.mail}
-							</div>
-						</div>
-						<div class="col-md-4 elem">
-							<button class="vm-btn-cart vm-btn-mod vm-color glyphicon glyphicon-edit" data-toggle="modal" data-target="#emailModal"></button>
-						</div>
-					</div>
-					-->
 					<hr>
 					
 					<div class="row right-container">
-						<div class="col-md-8">
+						<div class="col-md-8 col-sm-8 col-xs-8">
 							<div class="elem">
 								<b>La tua password</b>
 							</div>	
@@ -194,7 +102,7 @@
 								*********
 							</div>
 						</div>
-						<div class="col-md-4 elem">
+						<div class="col-md-4 col-sm-4 col-xs-4 elem">
 							<button class="vm-btn-cart vm-btn-mod vm-color glyphicon glyphicon-edit" data-toggle="modal" data-target="#passwordModal"></button>
 						</div>
 					</div>
@@ -222,7 +130,7 @@
 	
 	
 	
-
+	<!-- Chage Name and Lastname -->
 	<div class="modal fade" id="dataModal" role="dialog">
     	<div class="modal-dialog">
 			<div class="modal-content">
@@ -244,7 +152,7 @@
 						</div>
 						
 						<div class="modal-footer">
-	          				<button type="submit" class="btn btn-default">Salva</button>
+	          				<button type="submit" class="btn btn-default" id="btn-save-data">Salva</button>
 	        			</div>
 					</form>
 				</div>	
@@ -254,6 +162,7 @@
 
 
 
+	<!-- Chage Username -->
 	<div class="modal fade" id="usernameModal" role="dialog">
     	<div class="modal-dialog">
 			<div class="modal-content">
@@ -270,11 +179,11 @@
 					<form action="/username" method="post">
 						<div class="form-group">
 							<label for="formGroupExampleInput">Nuovo nome utente</label>
-							<input type="text" class="form-control" id="formGroupExampleInput" placeholder="Nome utente" name="newUsername">
+							<input type="text" class="form-control" id="newUsername" placeholder="Nome utente" name="newUsername">
 						</div>
 						
 						<div class="modal-footer">
-			          		<button type="submit" class="btn btn-default">Salva</button>
+			          		<button type="submit" class="btn btn-default" id="btn-save-username">Salva</button>
 			        	</div>
 					</form>
 				</div>
@@ -285,46 +194,6 @@
 	</div>
 	
 	
-	
-	<div class="modal fade" id="emailModal" role="dialog">
-    	<div class="modal-dialog">
-			<div class="modal-content">
-				<div class="modal-header">
-					<h2>Modifica i tuo indirizzo email</h2>
-					<span class="close" data-dismiss="modal">&times;</span>
-				</div>
-				
-				<div class="modal-body">
-					<div> <b> Email corrente</b></div>
-					
-					<div class="sep"> ${utente.mail} </div>
-					
-					<form>
-						<div class="form-group">
-							<label for="formGroupExampleInput">Nuova email</label>
-							<input type="text" class="form-control" id="formGroupExampleInput" placeholder="Indirizzo email">
-						</div>
-						
-						<div class="form-group">
-							<label for="formGroupExampleInput2">Conferma la nuova email</label>
-							<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="Indirizzo email">
-						</div>
-						
-						<div class="form-group">
-							<label for="formGroupExampleInput2">La tua password</label>
-							<input type="password" class="form-control" id="formGroupExampleInput2" placeholder="La tua password">
-						</div>
-					</form>
-				</div>
-				
-				<div class="modal-footer">
-	          		<button class="btn btn-default">Salva</button>
-	        	</div>
-			</div>
-		</div>
-	</div>
-	
-
 	
 	<div class="modal fade" id="passwordModal" role="dialog">
     	<div class="modal-dialog">

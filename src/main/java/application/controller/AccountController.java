@@ -54,21 +54,67 @@ public class AccountController {
 		return ordini;
 	}
 	
+	
+	
+	
 	@PostMapping("/data")
-	public String setData(@RequestParam("name") String name, @RequestParam("lastName") String lastName, HttpServletRequest request) {
+	@ResponseBody
+	public Utente setData(@RequestParam("name") String name, @RequestParam("lastName") String lastName, HttpServletRequest request) {
+		
+		Utente utenteOld = (Utente) request.getSession().getAttribute("utente");
 		
 		Utente utente = (Utente) request.getSession().getAttribute("utente");
-		
+				
 		utente.setNome(name);
 		utente.setCognome(lastName);
 		
-		if ( Database.getInstance().getFactory().getUtenteDao().updateData(utente) ) {
+		if ( Database.getInstance().getFactory().getUtenteDao().updateData(utente) ) {	
 			HttpSession session = request.getSession(true);
 			session.setAttribute("utente", utente);
+			
+			return utente;
+		} 
+		
+		return utenteOld;
+	}
+	
+	@PostMapping("/username")
+	@ResponseBody
+	public Utente setUsername(@RequestParam("newUsername") String newUsername, HttpServletRequest request) {
+		
+		Utente utenteOld = (Utente) request.getSession().getAttribute("utente");
+		
+		Utente utente = (Utente) request.getSession().getAttribute("utente");
+		
+		utente.setUsername(newUsername);
+		
+		if ( Database.getInstance().getFactory().getUtenteDao().updateUsername(utente) ) {
+			HttpSession session = request.getSession(true);
+			session.setAttribute("utente", utente);
+			
+			return utente;
 		}
 		
-		return "redirect:/account";
+		return utenteOld;
 	}
+		
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	@PostMapping("/password")
 	public String verifyPassword(@RequestParam("newPassword") String newPassword, HttpServletRequest request) {
@@ -106,20 +152,13 @@ public class AccountController {
 		return msg;
 	}
 	
-	@PostMapping("/username")
-	public String setUsername(@RequestParam("newUsername") String newUsername, HttpServletRequest request) {
-		
-		Utente utente = (Utente) request.getSession().getAttribute("utente");
-		
-		utente.setUsername(newUsername);
-		
-		if ( Database.getInstance().getFactory().getUtenteDao().updateUsername(utente) ) {
-			HttpSession session = request.getSession(true);
-			session.setAttribute("utente", utente);
-		}
-		
-		return "redirect:/account";
-	}
+	
+	
+	
+	
+	
+	
+	
 	
 	@GetMapping("/orderDetails")
 	@ResponseBody

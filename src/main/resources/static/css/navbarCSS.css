@@ -80,3 +80,7 @@
 	width:210px;
 	height: 60px;
 }
+
+.dropdown-menu li {
+	font-size: 16px;
+}

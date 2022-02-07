@@ -26,7 +26,7 @@
 	<script src="../js/navbarJS.js"></script>
 	
 	<link href="../css/navbarCSS.css" rel="stylesheet" type="text/css">
-	
+		
 </head>
 
 <body>
@@ -34,11 +34,14 @@
 
 	<nav class="vm-navbar">
 		<div class="container-fluid">
+			
 			<div class="navbar-header">
-      			<a class="" href="/">
+	     			<a class="" href="/">
 					<img src= "/images/logo.png" id="logo">
 				</a>
-    		</div>
+	   		</div>
+		
+		
 		
 			<div>
 				<ul class="vm-user nav navbar-nav">
@@ -57,6 +60,10 @@
 						</li>
 					</c:if>
 					
+					
+					
+					
+					
 					<c:if test="${admin == null }">
 						<c:if test="${utente != null }">
 							<li class="vm-text"> Benvenuto ${utente.username}! </li>
@@ -73,6 +80,8 @@
 							<li><a href="folderLike" class="fa fa-heart-o vm-color vm-icon"></a></li>
 							<li><a href="cart" class="fa fa-opencart fa-lg vm-color vm-icon"></a></li>	
 						</c:if>	
+						
+						
 						
 						<c:if test="${utente == null }">
 							<li class="vm-text"> Ciao, accedi! </li>
@@ -94,6 +103,9 @@
 				</ul>	
 			</div>
 			 
+			 
+			 
+			 
 			<div class="vm-input-group">
 				<form action="/ricerca" method="get">
 					<select id="nav-bar-cat" name="filter" class="vm-text">
@@ -103,6 +115,7 @@
 					<button type="submit" class="fa fa-search vm-color vm-icon"></button>
 				</form> 
 			</div>	
+			
 		</div>
 	</nav>
 

@@ -197,3 +197,31 @@ hr{
 	text-decoration: underline;
 	color: #4d0099;
 }
+
+
+
+
+
+
+
+
+
+@media screen and (max-width: 991px) {
+	dt {
+		float: left;
+		margin-bottom: 24px;
+		margin-right: 12px;
+	}
+	
+	.tablinks {
+		border-width: 0 0 2px 0;
+	}
+	
+	.tablinks:hover {
+		border-width: 0 0 2px 0;
+	}
+	
+	.left button.active {
+	  	border-width: 0 0 2px 0;
+	}
+}

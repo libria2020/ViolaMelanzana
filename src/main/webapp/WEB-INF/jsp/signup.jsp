@@ -24,14 +24,17 @@
 		
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+		
 		<script language="javascript" src="../js/signup.js"></script>
 		
+		<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+				
 	</head>
 	
 	<body>
-		<div class="container scont">
-		
-			<div class="form">
+		<div class="container">
+			<div class="row">
+			<div class="form" class="col-lg-6 col-md-12 col-sm-12">
 				<div class="logo">
 					<div class="text-center">
 						<h1>Signup</h1>
@@ -105,6 +108,75 @@
 					</div>
 				</form>
 			</div>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			<div class="col-lg-6 col-md-12 col-sm-12" style="margin-left: 40px;">
+	
+				<div style="padding-bottom: 64px; padding-top: 32px;">
+					<h1 class="vm-color" style="text-align: center;"> Tutti i vantaggi </h1>
+					<hr style="margin-top: -32px; width: 300px;">
+					<hr style="margin-top: -20px; width: 300px;">
+				</div>
+				
+				
+				
+				<div class="row" style="padding-bottom: 64px;">
+					<div class="col-md-2 col-sm-2 col-2">
+						<div class="fas fa-paper-plane vm-color s-icon"></div>
+					</div>
+					
+					<div class="col-md-10 col-sm-10 col-10">
+						<h2 class="vm-color">Pubblica le tue Ricette su Viola Melanzana</h2> 
+						Iscrivendoti potrai condividere con tutta la nostra comunità le tue ricette favorite! 
+					</div>
+				</div>
+				
+				<div class="row" style="padding-bottom: 64px;">
+					<div class="col-md-2 col-sm-2 col-2">
+						<div class="fas fa-folder vm-color s-icon"></div>
+					</div>
+					
+					<div class="col-md-10 col-sm-10 col-10">
+						<h2 class="vm-color">I tuoi ricettari</h2> 
+						Salva le tue ricette preferite organizzandole come vuoi.
+					</div>
+				</div>
+				
+				<div class="row" style="padding-bottom: 64px;">
+					<div class="col-md-2 col-sm-2 col-2">
+						<div class="fab fa-opencart vm-color s-icon"></div>
+					</div>
+					
+					<div class="col-md-10 col-sm-10 col-10">
+						<h2 class="vm-color">Lista della spesa</h2> 
+						Aggiungi gli ingredienti nella tua lista della spesa direttamente dalle ricette e acquista i prodotti dai nostri magazzini.
+					</div>
+				</div>
+				
+				<div class="row" style="padding-bottom: 64px;">
+					<div class="col-md-2 col-sm-2 col-2">
+						<div class="fas fa-comment-alt vm-color s-icon"></div>
+					</div>
+					
+					<div class="col-md-10 col-sm-10 col-10">
+						<h2 class="vm-color">Commenta</h2> 
+						Commenta le ricette di Viola Melanzana. Facci sapere cosa pensi!
+					</div>
+				</div>
+				
+			</div>
+			
+			
+		</div>	
 		</div>
 	</body>
 </html>

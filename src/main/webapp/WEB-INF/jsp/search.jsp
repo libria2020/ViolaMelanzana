@@ -27,6 +27,8 @@
 	
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	
+	<script src="../js/searchJS.js"></script>
+	
 </head>
 	<body>
 		
@@ -84,44 +86,44 @@
 		
 		
 				<c:forEach items="${list}" var="ricetta">
-						<div class="card mb-3 vm-card">
-							<div class="row no-gutters">
-								<div class="col-md-4">
-									<a href="recipePage?ricetta_id=${ricetta.id}" >
-										<img src="${ricetta.base64Image}" class="card-img" alt="...">
-									</a>
-								</div>
-								<div class="col-md-8">
-									<div class="card-body">
+					<div class="card mb-3 vm-card">
+						<div class="row no-gutters" id="recipe-${ricetta.id}">
+							<div class="col-md-4">
+								<a href="recipePage?ricetta_id=${ricetta.id}" >
+									<img src="${ricetta.base64Image}" class="card-img" alt="...">
+								</a>
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+								
+									<c:if test="${admin == true}">
+										<c:if test="${chef != null}">
+											<div class="icon-top-left">
+												<button class="vm-link" onclick="remove(${ricetta.id}, ${chef.id})">Rimuovi Ricetta</button>
+											</div> 
+										</c:if>
+									</c:if>	
 									
-										<c:if test="${admin == true}">
-											<c:if test="${chef != null}">
-												<div class="icon-top-left">
-													<a href="/removeRecipe?recipe=${ricetta.id}&chef=${chef.id}">Rimuovi Ricetta</a>
-												</div> 
-											</c:if>
-										</c:if>	
-										
-										<div class="icon-top-right">
-											<i class="glyphicon glyphicon-comment vm-color icon"></i>
-											<span class="number vm-color">${ricetta.commenti.size()}</span>
-											<i class="glyphicon glyphicon-heart vm-color icon"></i>
-											<span class="number vm-color"> ${ricetta.likes} </span> 
-										</div> 
-										<a href="recipePage?ricetta_id=${ricetta.id}">
-											<h2><b>${ricetta.titolo}</b></h2>   
-										</a>
-										<p class="decs">${ricetta.descrizione}</p>
-									</div>	
-									<div class="icon-botton-left">
-										<i class="glyphicon glyphicon-cutlery vm-color icon"></i>
-										<span class="number vm-color">${ricetta.difficolta}</span>
-										<i class="glyphicon glyphicon-hourglass vm-color icon"></i>
-										<span class="number vm-color">${ricetta.tempoPreparazione}</span>
+									<div class="icon-top-right">
+										<i class="glyphicon glyphicon-comment vm-color icon"></i>
+										<span class="number vm-color">${ricetta.commenti.size()}</span>
+										<i class="glyphicon glyphicon-heart vm-color icon"></i>
+										<span class="number vm-color"> ${ricetta.likes} </span> 
 									</div> 
-								</div>
+									<a href="recipePage?ricetta_id=${ricetta.id}">
+										<h2><b>${ricetta.titolo}</b></h2>   
+									</a>
+									<p class="decs">${ricetta.descrizione}</p>
+								</div>	
+								<div class="icon-botton-left">
+									<i class="glyphicon glyphicon-cutlery vm-color icon"></i>
+									<span class="number vm-color">${ricetta.difficolta}</span>
+									<i class="glyphicon glyphicon-hourglass vm-color icon"></i>
+									<span class="number vm-color">${ricetta.tempoPreparazione}</span>
+								</div> 
 							</div>
 						</div>
+					</div>
 				</c:forEach>
 			
 			</div>

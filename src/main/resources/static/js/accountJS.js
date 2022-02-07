@@ -70,7 +70,102 @@ $(document).ready(function(){
 											'</div>'));
 			}
 		}
-	});		
+	});	
+	
+	
+	
+	var saveData = document.querySelector("#btn-save-data");
+	
+	saveData.addEventListener("click", function(event){
+		event.preventDefault();
+		
+		var nameInput = $("#name");
+		var lastNameInput = $("#lastName");
+		
+		nameUser = nameInput.val();
+		lastNameUser = lastNameInput.val();
+		
+		$.ajax({
+		type: "POST",
+		url: "/data",
+		data : {
+        		"name" : nameUser,
+        		"lastName" : lastNameUser
+    		},
+		
+		success: function(risposta) { 
+				if( risposta.nome === nameUser ) {
+					var userData = document.querySelector("#user-Data");
+					userData.innerHTML = "";
+					userData.append(risposta.nome + " " + risposta.cognome);
+					 $('#dataModal').modal('hide');
+						
+				} else if ( risposta.status === "Auth" ) {
+					alert("Modifiche non salvate.");
+				}
+				
+			}
+		});	
+	})
+		
+	var saveUsername = document.querySelector("#btn-save-username");
+	
+	saveUsername.addEventListener("click", function(event){
+		event.preventDefault();
+		
+		var usernameInput = $("#newUsername");
+		
+		newUsername = usernameInput.val();
+		
+		$.ajax({
+		type: "POST",
+		url: "/username",
+		data : {
+        		"newUsername" : newUsername
+    		},
+		
+		success: function(risposta) { 
+				if( risposta.username === newUsername ) {
+					var userData = document.querySelector("#user-Username");
+					userData.innerHTML = "";
+					userData.append(risposta.username);
+					 $('#usernameModal').modal('hide');
+						
+				} else if ( risposta.status === "Auth" ) {
+					alert("Modifiche non salvate.");
+				}
+				
+			}
+		});	
+	})
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+		
+	
 	
 	var save = document.querySelector("#btn-save");
 	
@@ -160,6 +255,8 @@ $(document).ready(function(){
 		});	
 	})
 	
+	
+	
 	function control(elem, lab) {
 		let regexPassword = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])");
 		
@@ -183,6 +280,13 @@ $(document).ready(function(){
 	}
 	
 });
+
+
+
+
+
+
+
 
 
 
@@ -237,19 +341,4 @@ function deleteInd(id) {
 	}
 	});
 }
-
-
-/*function copyInd(id) {
-
-	document.getElementById("via").innerHTML = document.getElementById("via-"+id).innerHTML;
-	document.getElementById("num").innerHTML = document.getElementById("num-"+id).innerHTML;
-	document.getElementById("cap").innerHTML = document.getElementById("cap-"+id).innerHTML;
-	document.getElementById("city").innerHTML = document.getElementById("city-"+id).innerHTML;
-	document.getElementById("prov").innerHTML = document.getElementById("prov-"+id).innerHTML;
-	document.getElementById("tel").innerHTML = document.getElementById("tel-"+id).innerHTML;
-
-	document.getElementById("ok").click();
-
-}*/
-
 	

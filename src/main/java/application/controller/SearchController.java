@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import application.model.Categoria;
@@ -79,30 +80,23 @@ public class SearchController {
 	
 	
 	@GetMapping("/removeRecipe")
-	public String deleteRecipeFormChef(@RequestParam("recipe") String ricetta, @RequestParam("chef") String chef, HttpServletRequest request) {
-
-		ModelAndView model = new ModelAndView("search");
+	@ResponseBody
+	public Messaggi deleteRecipeFormChef(@RequestParam("recipe") String ricetta, @RequestParam("chef") String chef, HttpServletRequest request) {
 		
 		Messaggi msg = new Messaggi();
 		
 		int idRicetta = Integer.parseInt(ricetta);
 		int idChef = Integer.parseInt(chef);
-		
-		String str = "redirect:/chef?key=" + idChef;
-		
 		if ( Database.getInstance().getFactory().getRicettaDao().deleteRecipeFormChef(idRicetta, idChef) ) {
 			msg.setStatus("Auth");
 			msg.setMessaggio("Auth");
-			model.addObject("messaggio", msg);
-
-			return str;
+			return msg;
 		}
 		
 		msg.setStatus("nonAuth");
-		msg.setMessaggio("La ricetta non e' stata eliminata");
-		model.addObject("messaggio", msg);
-		
-		return str;
+		msg.setMessaggio("La ricetta non e' stata eliminata.");
+
+		return msg;
 		
 	}
 	
