@@ -97,27 +97,13 @@ public class AccountController {
 		
 		return utenteOld;
 	}
-		
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 	
 	@PostMapping("/password")
-	public String verifyPassword(@RequestParam("newPassword") String newPassword, HttpServletRequest request) {
+	public Utente verifyPassword(@RequestParam("newPassword") String newPassword, HttpServletRequest request) {
+		
+		Utente utenteOld = (Utente) request.getSession().getAttribute("utente");
 		
 		Utente utente = (Utente) request.getSession().getAttribute("utente");
 		
@@ -126,9 +112,11 @@ public class AccountController {
 		if ( Database.getInstance().getFactory().getUtenteDao().updatePassword(utente) ) {
 			HttpSession session = request.getSession(true);
 			session.setAttribute("utente", utente);
+			
+			return utente;
 		}
 		
-		return "redirect:/account";
+		return utenteOld;
 	}
 	
 	@PostMapping("/verifyPassword")

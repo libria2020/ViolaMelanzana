@@ -130,25 +130,26 @@ public class CategoriaDaoJDBC implements CategoriaDao {
 	
 	@Override
 	public boolean saveCategoriesOfRecipe(int idRicetta, ArrayList<String> categorieRicetta) {
-		int idCategoria = findIdCategoriaByName(categorieRicetta.get(0));
-		
-		if(idCategoria == 0)
+		if (categorieRicetta == null)
 			return false;
 		
-		String query = "insert into ricetta_categoria values(?, ?)";
-		
-		try {
-			PreparedStatement pr = conn.prepareStatement(query);
-			pr.setInt(1, idRicetta);
-			pr.setInt(2, idCategoria);
-			pr.executeUpdate();
-			return true;
-		} catch(SQLException e) {
-			//TODO
-			e.printStackTrace();
-			return false;
+		for (String categoria : categorieRicetta) {
+			int idCategoria = findIdCategoriaByName(categoria);
+			if (idCategoria == 0)
+				return false;
+			String query = "insert into ricetta_categoria values(?, ?)";
+			try {
+				PreparedStatement pr = conn.prepareStatement(query);
+				pr.setInt(1, idRicetta);
+				pr.setInt(2, idCategoria);
+				pr.executeUpdate();
+			} catch (SQLException e) {
+				// TODO
+				e.printStackTrace();
+				return false;
+			}
 		}
-
+		return true;
 	}
 
 }

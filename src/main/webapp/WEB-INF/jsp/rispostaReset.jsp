@@ -14,10 +14,12 @@
 	<head>
 	
 		<meta charset="UTF-8">
-		<title><fmt:message key="answerReset"/></title>
+		<title>Risposta Reset</title>
 
 		<link href="css/authCSS.css" rel="stylesheet" type="text/css">
 		<link href="css/commonCSS.css" rel="stylesheet" type="text/css">
+		
+		<link rel="icon" type="image/x-icon" href="/images/favicon.ico">		
 		
 		<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>		
@@ -27,22 +29,26 @@
 	</head>
 	
 	<body>
+	
 		<div class="container lcont">
 			<div id="containerReset" class="form lform">
-				
+				<a href="/">
+					<img src= "/images/logo.png" id="logo">
+		    	</a>
+	    		
 				<form method="get" action="loginPage">
 					<c:choose>
 						<c:when test="${error != null }">
 							<div class="logo">
 								<div class="text-center">
-									<h1>${error}</h1>
+									<h2>${error}</h2>
 								</div>
 							</div>
 						</c:when>
 						<c:when test="${message != null }">
 							<div class="logo">
 								<div class="text-center">
-									<h1>${message}</h1>
+									<2>${message}</h2>
 								</div>
 							</div>
 						</c:when>

@@ -93,22 +93,21 @@ public class IngredienteDaoJDBC implements IngredienteDao{
 	}
 
 	@Override
-	public void saveIngredientOfRecipe(int idRicetta, ArrayList<IngredienteQuantita> listaIngredientiConQuantita) {
+	public boolean saveIngredientOfRecipe(int idRicetta, ArrayList<IngredienteQuantita> listaIngredientiConQuantita) {
 		String query = "INSERT INTO contiene VALUES(?, ?, ?, ?)";
-		
 		try {
-			for(IngredienteQuantita ing : listaIngredientiConQuantita) {
+			for (IngredienteQuantita ing : listaIngredientiConQuantita) {
 				PreparedStatement pr = conn.prepareStatement(query);
 				pr.setInt(1, idRicetta);
 				pr.setString(2, ing.getIngrediente().getNome());
 				pr.setInt(3, ing.getQuantita().getQuantita());
 				pr.setString(4, ing.getQuantita().getUnitaDiMisura());
-				
 				pr.executeUpdate();
-				
 			}
-		} catch(SQLException e) {
+			return true;
+		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 

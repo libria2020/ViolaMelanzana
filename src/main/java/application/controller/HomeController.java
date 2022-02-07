@@ -12,7 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import application.model.Categoria;
 import application.model.Chef;
-import application.model.Indirizzo;
 import application.model.RicettaProxy;
 import application.model.Utente;
 import application.persistenza.Database;

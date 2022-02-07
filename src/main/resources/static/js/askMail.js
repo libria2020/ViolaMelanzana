@@ -4,9 +4,23 @@ window.addEventListener("load", function(){
 
 
 function eventButton(){
-	var button = $("#sendButton");
-	button.click(function(){
-		var email = $("#email");
+	var button = $("#btnSend");
+	var lblMessage = document.querySelector("#lblMessage");
+	var email = $("#email");
+	
+	button.click(function(e){
+		e.preventDefault();
+	
+		$.ajax({
+			type: "POST",
+			url: "/sendMailRecoverPassword",
+			data: {
+				email: email.val()
+			}, 
+			success: function(res){
+				lblMessage.innerHTML = res;
+			}
+		})
 		
 	})
 }

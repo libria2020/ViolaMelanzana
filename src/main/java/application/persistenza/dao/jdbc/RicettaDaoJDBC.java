@@ -484,15 +484,10 @@ public class RicettaDaoJDBC implements RicettaDao {
 		return ricettaProxy;
 	}
 	
-	//Qui al save può essere una ricetta di un utente e in quel caso viene inserito l'utente che la pubblica, e viene messo a null lo chef,
-	//viene messa a a false l'approvazione in attesa che l'admin accetti, e anche la data a null.
-	//Altrimenti se la pubblica uno chef viene messo lo chef, l'utente viene messo a null, l'approvazione a true direttamente e la data di inserimento.
 	@Override
 	public boolean save(Ricetta ricetta) {
-		// TODO Auto-generated method stub
-		if(ricetta == null)
+		if (ricetta == null)
 			return false;
-		
 		try {
 			String query = "INSERT INTO ricetta VALUES(?, ?, ?, ?, ?, ?, ?, 0, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement pr = conn.prepareStatement(query);
@@ -503,45 +498,41 @@ public class RicettaDaoJDBC implements RicettaDao {
 			pr.setString(5, ricetta.getConsiglio());
 			pr.setString(6, ricetta.getCuriosita());
 			Utente utente = ricetta.getUtentePubblicatore();
-			
-			if(utente != null) {
+			if (utente != null) {
 				pr.setString(7, utente.getMail());
-				if(utente.isMaster()) {
-				java.util.Date today = new java.util.Date();
-				Date dat = new java.sql.Date(today.getTime());
-				pr.setBoolean(8, ricetta.isApprovazione());
-				pr.setDate(9, dat);
+				if (utente.isMaster()) {
+					java.util.Date today = new java.util.Date();
+					Date dat = new java.sql.Date(today.getTime());
+					pr.setBoolean(8, ricetta.isApprovazione());
+					pr.setDate(9, dat);
 				} else {
-				pr.setNull(9, Types.NULL);
-				pr.setNull(8, Types.NULL);
+					pr.setNull(9, Types.NULL);
+					pr.setNull(8, Types.NULL);
 				}
 			} else
 				pr.setNull(7, Types.NULL);
-			
-				pr.setInt(10, ricetta.getDifficolta());
-				pr.setInt(11, ricetta.getTempoPreparazione());
-				pr.setInt(12, ricetta.getTempoCottura());
-				pr.setString(13, ricetta.getDosi());
-				
-				if(ricetta.getChefPubblicatore() != null) {
-					pr.setInt(14, ricetta.getChefPubblicatore());
-					java.util.Date today = new java.util.Date();
-					Date dat = new java.sql.Date(today.getTime());
-				
-					pr.setDate(9, dat);
-					pr.setBoolean(8, ricetta.isApprovazione());
-				}
-			else {
+			pr.setInt(10, ricetta.getDifficolta());
+			pr.setInt(11, ricetta.getTempoPreparazione());
+			pr.setInt(12, ricetta.getTempoCottura());
+			pr.setString(13, ricetta.getDosi());
+			if (ricetta.getChefPubblicatore() != null) {
+				pr.setInt(14, ricetta.getChefPubblicatore());
+				java.util.Date today = new java.util.Date();
+				Date dat = new java.sql.Date(today.getTime());
+				pr.setDate(9, dat);
+				pr.setBoolean(8, ricetta.isApprovazione());
+			} else {
 				pr.setNull(14, Types.NULL);
 			}
-		
 			pr.setString(15, ricetta.getImg());
 			pr.setString(16, ricetta.getVideo());
 			pr.executeUpdate();
-			Database.getInstance().getFactory().getIngredienteDao().saveIngredientOfRecipe(ricetta.getId(), ricetta.getListaIngredientiConQuantita());
-			Database.getInstance().getFactory().getCategoriaDao().saveCategoriesOfRecipe(ricetta.getId(), ricetta.getCategorieRicetta());
+			Database.getInstance().getFactory().getIngredienteDao().saveIngredientOfRecipe(ricetta.getId(),
+					ricetta.getListaIngredientiConQuantita());
+			Database.getInstance().getFactory().getCategoriaDao().saveCategoriesOfRecipe(ricetta.getId(),
+					ricetta.getCategorieRicetta());
 			return true;
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}

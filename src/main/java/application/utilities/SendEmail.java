@@ -88,11 +88,73 @@ public class SendEmail {
 			message.setFrom(new InternetAddress(fromEmail));
 			
 			message.setSubject("Cambio password");
-			message.setText("Ciao!\n"
+			message.setText("Ciao "+ u.getUsername() + "!\n"
 							+ "Hai richiesto di cambiare la tua password,\n"
 							+ "Clicca il link qui sotto per cambiare la tua password.\n\n"
 							+ resetPasswordLink + "\n\n"
 							+ "Ignora questa mail se non hai richiesto il reset");
+			
+			Transport.send(message);
+			
+			res = true;
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return res;
+	}
+	
+	public boolean sendEmailDeclassMaster(Utente u) {
+		boolean res = false;
+		
+		String toEmail = u.getMail();
+		
+		try {
+			
+			Message message = new MimeMessage(session);
+			
+			message.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+			message.setFrom(new InternetAddress(fromEmail));
+			
+			message.setSubject("Declassamento");
+			message.setText("Ciao " + u.getUsername() + "\n"
+						   + "A seguito di comportamenti non adeguati hai perso i benefici di utente master\n"
+						   + "Ci dispiace molto.\n"
+						   + "Tutto il nostro team si augura potrai ritornarlo presto.\n"
+						   + "Team Viola Melanzana");
+			
+			Transport.send(message);
+			
+			res = true;
+			
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		return res;
+	}
+	
+	public boolean sendEmailWhenBecomingMaster(Utente u) {
+		boolean res = false;
+		
+		String toEmail = u.getMail();
+		
+		try {
+			
+			Message message = new MimeMessage(session);
+
+			message.setRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+			message.setFrom(new InternetAddress(fromEmail));
+			
+			message.setSubject("Promozione");
+			message.setText("Ciao " + u.getUsername() + "\n"
+						   + "Abbiamo ottime notizie!\n"
+						   + "A seguito dell'ottimo feedback rilasciato sulle tue ricette sei diventato un utente master!\n"
+						   + "Avrai la possibilità di rimuovere e aggiungere le tue ricette liberamente senza nessuna autorizzazione\n"
+						   + "Ovviamente si ricorda di mantenere un comportamento esemplare sui contenuti pubblicati, rischiando altrimenti un declassamento.\n"
+						   + "Tutto il nostro team si congratula con te.\n"
+						   + "Team Viola Melanzana");
 			
 			Transport.send(message);
 			

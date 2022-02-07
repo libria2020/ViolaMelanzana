@@ -23,7 +23,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import application.model.Amministratore;
+import application.model.Categoria;
 import application.model.Commento;
+import application.model.Ingrediente;
 import application.model.IngredienteQuantita;
 import application.model.NomiSequenze;
 import application.model.Prodotto;
@@ -169,114 +171,116 @@ public class RicettaController {
 	}
 
 	@GetMapping("/insertRecipePage")
-	public String ricettaPage(HttpServletRequest req) {
-		if(req.getSession().getAttribute("utente") == null)
-			return "redirect:/loginPage";
-		
-		return "insertRecipe";
+	public ModelAndView ricettaPage(HttpServletRequest req) {
+		ModelAndView model = new ModelAndView();
+		if (req.getSession().getAttribute("utente") == null) {
+			model.setViewName("redirect:/loginPage");
+		} else {
+			model.setViewName("insertRecipe");
+			ArrayList<Categoria> categorie = (ArrayList<Categoria>) Database.getInstance().getFactory()
+					.getCategoriaDao().findAll();
+			model.addObject("categorie", categorie);
+			ArrayList<Ingrediente> ingredienti = (ArrayList<Ingrediente>) Database.getInstance().getFactory()
+					.getIngredienteDao().findAll();
+			model.addObject("ingredienti", ingredienti);
+		}
+		return model;
 	}
 
-	 @GetMapping("/insertRecipeChefPage")
+	@GetMapping("/insertRecipeChefPage")
 	public ModelAndView ricettaChefPage(@RequestParam("key") int idChef, HttpServletRequest req) {
 		ModelAndView model = new ModelAndView();
-		
-		if(req.getSession().getAttribute("utente") == null) {
+		if (req.getSession().getAttribute("utente") == null) {
 			model.setViewName("redirect:/loginPage");
 			return model;
 		}
-		
 		model.addObject("key", idChef);
 		model.setViewName("insertRecipeChef");
 		return model;
 	}
 
-	 @PostMapping("/insertRecipe")
+	@PostMapping("/insertRecipe")
 	@ResponseBody
-	public String inserisciRicetta(@RequestParam("titolo") String titolo, @RequestParam("descrizione") String descrizione,
-	@RequestParam("preparazione")String preparazione, @RequestParam("consiglio") String consiglio, @RequestParam("curiosita") String curiosita,
-	@RequestParam("ingredientiQuantita") String ingredientiQuantita, @RequestParam("immagineBase64") String immagineBase64, @RequestParam("nameFile") String nameFile,
-	@RequestParam("video") String video, @RequestParam("difficolta") int difficolta, @RequestParam("tempoP") int tempoP,
-	@RequestParam("dosi") String dosi, @RequestParam("tempoC") int tempoC, @RequestParam("categoria") String categoria, HttpServletRequest req ) {
+	public String inserisciRicetta(@RequestParam("titolo") String titolo,
+			@RequestParam("descrizione") String descrizione, @RequestParam("preparazione") String preparazione,
+			@RequestParam("consiglio") String consiglio, @RequestParam("curiosita") String curiosita,
+			@RequestParam("ingredientiQuantita") String ingredientiQuantita,
+			@RequestParam("immagineBase64") String immagineBase64, @RequestParam("nameFile") String nameFile,
+			@RequestParam("video") String video, @RequestParam("difficolta") int difficolta,
+			@RequestParam("tempoP") int tempoP, @RequestParam("dosi") String dosi, @RequestParam("tempoC") int tempoC,
+			@RequestParam("categorie") String categorie, HttpServletRequest req) {
 		IngredienteQuantita[] ingrQ = null;
-		
+		String[] arrayCategorie = null;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			ingrQ = mapper.readValue(ingredientiQuantita, IngredienteQuantita[].class);
+			arrayCategorie = mapper.readValue(categorie, String[].class);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		Ricetta ricetta = new Ricetta();
-		
 		try {
 			ricetta.setId(IdBroker.getId(Database.getInstance().getConn(), NomiSequenze.RICETTA));
 		} catch (SQLException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-		
 		ricetta.setTitolo(titolo);
 		ricetta.setDescrizione(descrizione);
 		ricetta.setPreparazione(preparazione);
 		ricetta.setConsiglio(consiglio);
 		ricetta.setCuriosita(curiosita);
-		ricetta.getCategorieRicetta().add(categoria);
+		ArrayList<String> lista = new ArrayList<String>(Arrays.asList(arrayCategorie));
+		ricetta.setCategorieRicetta(lista);
 		Utente u = (Utente) req.getSession().getAttribute("utente");
 		ricetta.setUtentePubblicatore(u);
-		
-		if(u.isMaster())
+		if (u.isMaster())
 			ricetta.setApprovazione(true);
-		
 		ricetta.setLikes(0);
 		ricetta.setSegnalazioni(0);
-		
 		try {
-			ricetta.setImg("src/main/resources/images/" + nameFile + IdBroker.getId(Database.getInstance().getConn(), NomiSequenze.IMAGES) + ".txt");
+			ricetta.setImg("src/main/resources/images/" + nameFile
+					+ IdBroker.getId(Database.getInstance().getConn(), NomiSequenze.IMAGES) + ".txt");
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
 		ArrayList<IngredienteQuantita> listaIngredienti = new ArrayList<IngredienteQuantita>(Arrays.asList(ingrQ));
 		ricetta.setListaIngredientiConQuantita(listaIngredienti);
 		ricetta.setBase64Image(immagineBase64);
-		
-		if(video.contains("=")) {
+		if (video.contains("=")) {
 			String[] videoPart = video.split("=");
 			ricetta.setVideo(videoPart[1]);
 		}
-		
 		ricetta.setDosi(dosi);
 		ricetta.setDifficolta(difficolta);
 		ricetta.setTempoCottura(tempoC);
 		ricetta.setTempoPreparazione(tempoP);
-		
-		if(!Database.getInstance().getFactory().getRicettaDao().save(ricetta))
+		if (!Database.getInstance().getFactory().getRicettaDao().save(ricetta))
 			return "NO";
-		
 		PrintWriter out;
-		
 		try {
 			out = new PrintWriter(ricetta.getImg());
 			out.println(immagineBase64);
 			out.close();
-		return "OK";
+			return "OK";
 		} catch (FileNotFoundException e) {
 			return "NO";
 		}
 	}
 
-	 @PostMapping("/insertRecipeChef")
+	@PostMapping("/insertRecipeChef")
 	@ResponseBody
-	public String inserisciRicettaChef(@RequestParam("titolo") String titolo, @RequestParam("descrizione") String descrizione,
-	@RequestParam("preparazione")String preparazione, @RequestParam("consiglio") String consiglio, @RequestParam("curiosita") String curiosita,
-	@RequestParam("ingredientiQuantita") String ingredientiQuantita, @RequestParam("immagineBase64") String immagineBase64, @RequestParam("nameFile") String nameFile,
-	@RequestParam("video") String video, @RequestParam("difficolta") int difficolta, @RequestParam("tempoP") int tempoP,
-	@RequestParam("dosi") String dosi, @RequestParam("tempoC") int tempoC, @RequestParam("idChef") int idChef, @RequestParam("categoria") String categoria,
-	HttpServletRequest req ) {
+	public String inserisciRicettaChef(@RequestParam("titolo") String titolo,
+			@RequestParam("descrizione") String descrizione, @RequestParam("preparazione") String preparazione,
+			@RequestParam("consiglio") String consiglio, @RequestParam("curiosita") String curiosita,
+			@RequestParam("ingredientiQuantita") String ingredientiQuantita,
+			@RequestParam("immagineBase64") String immagineBase64, @RequestParam("nameFile") String nameFile,
+			@RequestParam("video") String video, @RequestParam("difficolta") int difficolta,
+			@RequestParam("tempoP") int tempoP, @RequestParam("dosi") String dosi, @RequestParam("tempoC") int tempoC,
+			@RequestParam("idChef") int idChef, @RequestParam("categoria") String categoria, HttpServletRequest req) {
 		IngredienteQuantita[] ingrQ = null;
-		
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			ingrQ = mapper.readValue(ingredientiQuantita, IngredienteQuantita[].class);
@@ -284,16 +288,13 @@ public class RicettaController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		Ricetta ricetta = new Ricetta();
-		
 		try {
 			ricetta.setId(IdBroker.getId(Database.getInstance().getConn(), NomiSequenze.RICETTA));
 		} catch (SQLException e2) {
 			// TODO Auto-generated catch block
 			e2.printStackTrace();
 		}
-		
 		ricetta.setTitolo(titolo);
 		ricetta.setDescrizione(descrizione);
 		ricetta.setPreparazione(preparazione);
@@ -304,33 +305,27 @@ public class RicettaController {
 		ricetta.setLikes(0);
 		ricetta.setSegnalazioni(0);
 		ricetta.getCategorieRicetta().add(categoria);
-		
 		try {
-			ricetta.setImg("src/main/resources/images/" + nameFile + IdBroker.getId(Database.getInstance().getConn(), NomiSequenze.IMAGES) + ".txt");
+			ricetta.setImg("src/main/resources/images/" + nameFile
+					+ IdBroker.getId(Database.getInstance().getConn(), NomiSequenze.IMAGES) + ".txt");
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
 		ArrayList<IngredienteQuantita> listaIngredienti = new ArrayList<IngredienteQuantita>(Arrays.asList(ingrQ));
 		ricetta.setListaIngredientiConQuantita(listaIngredienti);
 		ricetta.setBase64Image(immagineBase64);
-		
-		if(video.contains("=")) {
+		if (video.contains("=")) {
 			String[] videoPart = video.split("=");
 			ricetta.setVideo(videoPart[1]);
 		}
-		
 		ricetta.setDosi(dosi);
 		ricetta.setDifficolta(difficolta);
 		ricetta.setTempoCottura(tempoC);
 		ricetta.setTempoPreparazione(tempoP);
-		
-		if(!Database.getInstance().getFactory().getRicettaDao().save(ricetta))
+		if (!Database.getInstance().getFactory().getRicettaDao().save(ricetta))
 			return "NO";
-		
 		PrintWriter out;
-		
 		try {
 			out = new PrintWriter(ricetta.getImg());
 			out.println(immagineBase64);

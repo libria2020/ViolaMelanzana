@@ -29,11 +29,11 @@ public class ResetPasswordController {
 		Utente u = Database.getInstance().getFactory().getUtenteDao().findByToken(token);
 		
 		if(u == null) {
-			model.addObject("error", "Scusaci, non è possibile aggiornare la password da questo link. Richiedine uno nuovo");
+			model.addObject("error", "Scusaci, non Ã¨ possibile aggiornare la password da questo link. Richiedine uno nuovo");
 		} else {
 			
 			if(!Database.getInstance().getFactory().getUtenteDao().resetPassword(u, password))
-				model.addObject("error", "Scusaci, al momento non è possibile cambiare la password. Riprova più tardi");
+				model.addObject("error", "Scusaci, al momento non Ã¨ possibile cambiare la password. Riprova piï¿½ tardi");
 			else {
 				model.addObject("message", "Password resettata correttamente");
 			}

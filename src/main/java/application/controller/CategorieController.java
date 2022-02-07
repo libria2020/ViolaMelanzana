@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import application.model.Categoria;
@@ -11,6 +13,7 @@ import application.persistenza.Database;
 
 @Controller
 public class CategorieController {
+	
 	@GetMapping("/getListCategories")
 	public ModelAndView getListIngredientsPage() {
 		ModelAndView model = new ModelAndView("listOfCategories");
@@ -22,5 +25,13 @@ public class CategorieController {
 		}
 		
 		return model;
+	}
+	
+	@PostMapping("/getCategories")
+	@ResponseBody
+	public ArrayList<Categoria> getAllCategories() {
+		ArrayList<Categoria> categorie = (ArrayList<Categoria>) Database.getInstance().getFactory().getCategoriaDao().findAll();
+
+		return categorie;
 	}
 }

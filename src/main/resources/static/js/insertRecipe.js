@@ -2,7 +2,10 @@ window.addEventListener("load", function(){
 	aggiungiIngredienteView();
 	showSelectedImage();
 	evento();
-	//eventoChangeCategorie();
+	getAllIngredients();
+	getAllCategories();
+	removeImage();
+	aggiungiCategoria();
 })
 
 function Ingrediente(nome){
@@ -39,7 +42,7 @@ var inserisciRicetta = function(){
 	var tempoC = $("#tempoC").val();
 	var dosi = $("#dosi").val();
 	var video = $("#video").val();
-	var categoria = $("#categoria").val();
+	//var categoria = $("#categoria").val();
 	
 	var righeTabellaIngredienti = document.querySelectorAll("#riga");
 	var ingredientiQuantita = [];
@@ -55,6 +58,15 @@ var inserisciRicetta = function(){
 		ingredientiQuantita.push(ingrQuant);
 
 	})
+	
+	var spanCate = document.querySelectorAll("#spanCategorie");		
+	var categorie = [];
+	
+	spanCate.forEach(function(elem, indice){
+		var nome = elem.firstChild.textContent;
+		categorie.push(nome);
+	})
+
 	
 	$.ajax({
 		type: "POST",
@@ -73,14 +85,14 @@ var inserisciRicetta = function(){
 			tempoP:tempoP,
 			tempoC:tempoC,
 			dosi:dosi,
-			categoria:categoria
+			categorie:JSON.stringify(categorie)
 		},	
 		success: function(risposta){
 			if(risposta === "OK"){
-				/*alert("aggiunta con successo");*/
+				
 			}
 			else{
-				/*alert("NOPE DATABSE");*/
+				
 			}
 		},
 		error: function(xhr){
@@ -89,6 +101,27 @@ var inserisciRicetta = function(){
 	})
 }
 
+var allIngredients;
+function getAllIngredients(){
+	$.ajax({
+		method: "POST",
+		url: "getIngredients",
+		success: function(res){
+			allIngredients = res;
+		}
+	})
+}
+
+var allCategories;
+function getAllCategories(){
+	$.ajax({
+		method: "POST",
+		url: "getCategories",
+		success: function(res){
+			allCategories = res;
+		}
+	})
+}
 
 function controlli(){
 	var res = true;
@@ -123,6 +156,18 @@ function controlli(){
 		lblDescrizione.innerHTML = "";
 	}
 	
+	var listaIngredienti = document.querySelectorAll("#riga");
+	var lblNomeI= document.querySelector("#lblNomeIngrediente");
+	var nomeI = $("#nomeIngrediente");
+	if(listaIngredienti.length === 0){
+		res = false;
+		nomeI.addClass("makeRed");
+		lblNomeI.innerHTML = "Ci deve essere almeno un ingrediente";
+	} else{
+		nomeI.removeClass("makeRed");
+		lblNomeI.innerHTML = "";
+	}
+	
 	var preparazione = $("#preparazione");
 	var lblPreparazione = document.querySelector("#lblPreparazione");
 	if(preparazione.val().length === 0){
@@ -140,7 +185,7 @@ function controlli(){
 		
 	var immagine = $("#imageRicetta");	
 	var lblImmagine = document.querySelector("#lblImmagine");
-	if(typeof immagine.attr("src") === 'undefined'){
+	if(immagine.attr("src") === ''){
 		immagine.addClass("makeRed");
 		res = false;
 		lblImmagine.innerHTML = "Immagine obbligatoria";
@@ -149,14 +194,38 @@ function controlli(){
 		lblImmagine.innerHTML = "";
 	}
 		
-	var categoria = $("#categoria");
+	/*var categoria = $("#categoria");
 	var lblCategoria = document.querySelector("#lblCategoria");
 	if(categoria.val().length === 0){
 		res = false;
 		categoria.addClass("makeRed");
 		lblCategoria.innerHTML = "Deve esserci una categoria";
 	} else{
-		categoria.removeClass("makeRed");
+		var ok = false;
+		for(var i = 0 ; i < allCategories.length && ok === false; ++i){
+			if(categoria.val() === allCategories[i].nome){
+				ok = true;	
+			}	
+		}
+		if(!ok){
+			res = false;
+			categoria.addClass("makeRed");
+			lblCategoria.innerHTML = "Categoria non esistente. Prova a consultare la lista delle categorie";	
+		} else{
+			categoria.removeClass("makeRed");
+			lblCategoria.innerHTML = "";
+		}
+	}*/
+	
+	var listaCategorie = document.querySelectorAll("#spanCategorie");
+	var lblCategoria= document.querySelector("#lblCategoria");
+	var nomeC = $("#categoria");
+	if(listaCategorie.length === 0){
+		res = false;
+		nomeC.addClass("makeRed");
+		lblCategoria.innerHTML = "Ci deve essere almeno una categoria";
+	} else{
+		nomeC.removeClass("makeRed");
 		lblCategoria.innerHTML = "";
 	}
 		
@@ -230,18 +299,28 @@ function evento(){
 		
 		if(controlli()){
 			inserisciRicetta();
-			alert("aggiunta con successo");
 			var form = document.querySelector("#form-insert");
 			form.submit();	
+			alert("Inserita con successo");
 		}
 	});
 }
+
+/*function eventoRaddoppia(){
+	var button = document.querySelector("#raddoppiaButton");
+	button.addEventListener("click", function(event){
+		event.preventDefault();
+		var qua = document.querySelectorAll("#quantita");
+		qua.forEach(function(elem, indice){
+			elem.textContent = elem.textContent * 2;
+		})
+	})
+}*/
 
 function aggiungiIngredienteView(){
 	var btnAggiungiIngrediente = $("#btnAggiungiIngrediente");
 
 	btnAggiungiIngrediente.click(function(){
-		
 		
 		var nomeIngrediente = $("#nomeIngrediente");
 		var quantita = $("#quantita");
@@ -257,15 +336,40 @@ function aggiungiIngredienteView(){
 			lblNomeIngrediente.innerHTML = "";
 		}
 			
+		var ok = false;
+		for(var i = 0 ; i <  allIngredients.length && ok === false; ++i){
+			if(allIngredients[i].nome === nomeIngrediente.val())
+				ok=true;
+		}
+		
+		if(!ok){
+			nomeIngrediente.addClass("makeRed");
+			lblNomeIngrediente.innerHTML = "Ingrediente non presente. Prova a consultare la lista degli ingredienti";
+			return;
+		}
+		
+		nomeIngrediente.removeClass("makeRed");
+		lblNomeIngrediente.innerHTML = "";	
+		
+		//ok = true;
+		var allIngredienti = document.querySelectorAll("#riga");
+		allIngredienti.forEach(function(nome, indice){
+			if(nome.cells[0].textContent === nomeIngrediente.val()){
+				ok=false;
+			}
+		});
+		
+		if(!ok){
+			nomeIngrediente.addClass("makeRed");
+			lblNomeIngrediente.innerHTML = "Ingrediente già inserito";
+			return;
+		}
+	
+		nomeIngrediente.removeClass("makeRed");
+		lblNomeIngrediente.innerHTML = "";	
 		
 		var table = document.querySelector("#tableIngredienti");
 		table.style.visibility = "visible";
-		
-		var allIngredienti = document.querySelectorAll("#riga");
-		allIngredienti.forEach(function(nome, indice){
-				
-				console.log(nome.cells[0].textContent);
-		});
 		
 		var bodyTable = document.querySelector("#tableIngredienti tbody");
 		var riga = bodyTable.insertRow(-1);
@@ -278,15 +382,18 @@ function aggiungiIngredienteView(){
 		
 		var col2 = riga.insertCell(1);
 		col2.innerHTML = quantita.val(); 
+		col2.setAttribute("id", "quantita");
 		
 		var col3 = riga.insertCell(2);
 		col3.innerHTML = udMisura.val(); 
 		
 		var col4 = riga.insertCell(3);
-		col4.innerHTML = "<input class=\"btn\" id=\"btnRimuoviIngrediente" + nomeIngrediente.val() + "\""  + " type=\"button\" value = \"-\"/>";
-		var rimuovi = $("#btnRimuoviIngrediente" + nomeIngrediente.val());
+		var nomeIngredienteWithoutSpace = nomeIngrediente.val().replaceAll(" ", "_");
 		
-		rimuovi.click(function(){
+		col4.innerHTML = "<input class=\"btn\" id=\"btnRimuoviIngrediente" + nomeIngredienteWithoutSpace + "\" type=\"button\" value = \"Rimuovi\"/>";
+		var rimuovi = document.querySelector("#btnRimuoviIngrediente" + nomeIngredienteWithoutSpace);
+		
+		rimuovi.addEventListener("click", function(){
 			riga.remove();
 			
 			if(table.rows.length === 1)
@@ -321,30 +428,71 @@ function showSelectedImage(){
 
 		};
 		 fr.readAsDataURL(this.files[0]);
-	
+		 $("#removeImage").css("display", "inline");
 	})
-	
 }
 
-/*function eventoChangeCategorie(){
-	var inputCategorie = document.querySelector("#inputCategorie");
-	inputCategorie.addEventListener("input", function(e){
+function removeImage(){
+	var button = $("#removeImage");
+	button.click(function(e){
+		e.preventDefault();
+		var img = document.querySelector("#imageRicetta");
+		img.src = '';
 		
-		$.ajax({
-			type: "POST",
-			url: "/getCategorie",
-			data: {
-				chiave:e.target.value
-			},	
-			success: function(risposta){
-				console.log(risposta);
-				for(var i = 0 ; i < risposta.length ; ++i)
-					document.querySelector("#consiglio").innerHTML += risposta[i].nome;
-			},
-			error: function(xhr){
-				
+		button.css("display", "none");
+	})
+}
+
+function aggiungiCategoria(){
+	var button = $("#addCategory");
+	button.click(function(e){
+		var categoria = $("#categoria");	
+		var divCategories = document.querySelector("#div-categories");	
+		var lblCategoria = document.querySelector("#lblCategoria");
+		
+		if(categoria.val().length === 0){
+			categoria.addClass("makeRed");
+			lblCategoria.innerHTML = "Deve esserci una categoria";
+			return;
+		} else{
+			var ok = false;
+			for(var i = 0 ; i < allCategories.length && ok === false; ++i){
+				if(categoria.val() === allCategories[i].nome){
+					ok = true;	
+				}	
+			}
+			if(!ok){
+				categoria.addClass("makeRed");
+				lblCategoria.innerHTML = "Categoria non esistente. Prova a consultare la lista delle categorie";
+				return;	
+			} else{
+				categoria.removeClass("makeRed");
+				lblCategoria.innerHTML = "";
+			}
+		}
+		
+		var spanCate = document.querySelectorAll("#spanCategorie");
+		var ok = true;
+		spanCate.forEach(function(elem, indice){
+			if(elem.firstChild.textContent === categoria.val()){
+				categoria.addClass("makeRed");
+				lblCategoria.innerHTML = "Categoria già inserita";
+				ok = false;
 			}
 		})
+		
+		if(!ok)
+			return;
+		
+		divCategories.innerHTML += "<span id=\"spanCategorie\" style=\"margin-right: 3px\">" + 
+									   "<label>" + categoria.val() + "</label>" +
+									   "<button id=\"" + categoria.val() + "\" class=\"btnRemoveCategories\" type=\"button\" onclick=\"eventoRemove(this)\"><i class=\"fa fa-times\" aria-hidden=\"true\" style=\"font-size:12px\"></i></button>" +
+									"</span>";
+		categoria.val(""); 
+		
 	})
+}
 
-}*/
+function eventoRemove(x){
+	x.parentElement.remove()
+}

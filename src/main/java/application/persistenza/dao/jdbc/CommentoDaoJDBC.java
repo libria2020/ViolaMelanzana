@@ -21,23 +21,20 @@ private Connection conn;
 
 	@Override
 	public synchronized boolean save(Commento commento) {
-		System.out.println("in");
 		if(commento== null)
 			return false;
 		
 		try {
-			String insert = "INSERT INTO commento VALUES(?,?,?,?,?,?);";
+			String insert = "INSERT INTO commento VALUES(?,?,?,?,?);";
 			PreparedStatement prst = conn.prepareStatement(insert);
 			int id_comm= IdBroker.getId(conn, NomiSequenze.COMMENTO);
 			prst.setLong(1,id_comm);
 			prst.setString(2,commento.getPubblicatore().getMail());
 			prst.setLong(3, commento.getIdRicetta());
 			prst.setString (4, commento.getContenuto());
-			prst.setInt(5,12);
-			prst.setTimestamp(6,commento.getData());
+			prst.setTimestamp(5,commento.getData());
 			
 			prst.executeUpdate();
-			System.out.println("salvato");
 			return true;
 			
 		} catch(SQLException e) {

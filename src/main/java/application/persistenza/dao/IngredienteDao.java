@@ -15,5 +15,5 @@ public interface IngredienteDao {
 	public boolean delete(Ingrediente ingrediente);
 
 	public ArrayList<IngredienteQuantita> findByRecipe(int idRicetta);
-	public void saveIngredientOfRecipe(int id, ArrayList<IngredienteQuantita> listaIngredientiConQuantita);
+	public boolean saveIngredientOfRecipe(int id, ArrayList<IngredienteQuantita> listaIngredientiConQuantita);
 }

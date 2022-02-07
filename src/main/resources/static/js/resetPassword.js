@@ -42,25 +42,67 @@ function eventButton(){
 		
 		var success = true;
 		
-		var pass = $("#password");
+		let regexPassword = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])");
+
+		var password = $("#password");
 		var confirm = $("#confirmPassword");
 		
-		var info = document.querySelector("#info");
-		var infoConfirm = document.querySelector("#infoConfirm");
+		var lblPassword = document.querySelector("#info");
+		var lblConfirm = document.querySelector("#infoConfirm");
 		
-		if(pass.val() !== confirm.val()){
-			pass.addClass("makeRed");
-			confirm.addClass("makeRed");
-			info.innerHTML += "Password diverse";
-			infoConfirm.innerHTML += "Password Diverse";
+		if(password.val().length < 8){
+			password.addClass("makeRed");
+			lblPassword.innerHTML = "Password troppo corta";
+			success = false;
+		}
+		else if(password.val().length > 20){
+			password.addClass("makeRed");
+			lblPassword.innerHTML = "Password troppo lunga";
+			success = false;
+		}
+		else if(!regexPassword.test(password.val())){
+			password.addClass("makeRed");
+			lblPassword.innerHTML = "La password deve contenere almeno una lettera minuscola, una maiuscola, un numero e $%@#!*^&";
 			success = false;
 		} else{
-			pass.removeClass("makeRed");
-			confirm.removeClass("makeRed");
-			info.innerHTML = "";
-			infoConfirm.innerHTML = "";
+			password.removeClass("makeRed");
+			lblPassword.innerHTML = "";
 		}
 		
+		
+		if(confirm.val().length < 8){
+			confirm.addClass("makeRed");
+			lblConfirm.innerHTML = "Password troppo corta";
+			success = false;
+		}
+		else if(confirm.val().length > 20){
+			confirm.addClass("makeRed");
+			lblConfirm.innerHTML = "Password troppo lunga";
+			success = false;
+		}
+		else if(!regexPassword.test(confirm.val())){
+			confirm.addClass("makeRed");
+			lblConfirm.innerHTML = "La password deve contenere almeno una lettera minuscola, una maiuscola, un numero e $%@#!*^&";
+			success = false;
+		} else{
+			confirm.removeClass("makeRed");
+			lblConfirm.innerHTML = "";
+		}
+		
+		if(success){
+			if(password.val() !== confirm.val()){
+				password.addClass("makeRed");
+				confirm.addClass("makeRed");
+				lblPassword.innerHTML = "Password diverse";
+				lblConfirm.innerHTML = "Password Diverse";
+				success = false;
+			} else{
+				password.removeClass("makeRed");
+				confirm.removeClass("makeRed");
+				lblPassword.innerHTML = "";
+				lblConfirm.innerHTML = "";
+			}	
+		}
 		
 		if(success){
 			var form = document.querySelector("#formReset");

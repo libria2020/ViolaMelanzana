@@ -108,6 +108,8 @@ $(document).ready(function(){
 		});	
 	})
 		
+		
+		
 	var saveUsername = document.querySelector("#btn-save-username");
 	
 	saveUsername.addEventListener("click", function(event){
@@ -139,32 +141,6 @@ $(document).ready(function(){
 		});	
 	})
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-		
 	
 	
 	var save = document.querySelector("#btn-save");
