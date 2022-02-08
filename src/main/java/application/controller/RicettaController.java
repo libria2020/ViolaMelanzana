@@ -279,11 +279,14 @@ public class RicettaController {
 			@RequestParam("immagineBase64") String immagineBase64, @RequestParam("nameFile") String nameFile,
 			@RequestParam("video") String video, @RequestParam("difficolta") int difficolta,
 			@RequestParam("tempoP") int tempoP, @RequestParam("dosi") String dosi, @RequestParam("tempoC") int tempoC,
-			@RequestParam("idChef") int idChef, @RequestParam("categoria") String categoria, HttpServletRequest req) {
+			@RequestParam("idChef") int idChef, @RequestParam("categorie") String categorie, HttpServletRequest req) {
+		
 		IngredienteQuantita[] ingrQ = null;
+		String[] arrayCategorie = null;
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			ingrQ = mapper.readValue(ingredientiQuantita, IngredienteQuantita[].class);
+			arrayCategorie = mapper.readValue(categorie, String[].class);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -304,7 +307,8 @@ public class RicettaController {
 		ricetta.setChefPubblicatore(idChef);
 		ricetta.setLikes(0);
 		ricetta.setSegnalazioni(0);
-		ricetta.getCategorieRicetta().add(categoria);
+		ArrayList<String> lista = new ArrayList<String>(Arrays.asList(arrayCategorie));
+		ricetta.setCategorieRicetta(lista);
 		try {
 			ricetta.setImg("src/main/resources/images/" + nameFile
 					+ IdBroker.getId(Database.getInstance().getConn(), NomiSequenze.IMAGES) + ".txt");

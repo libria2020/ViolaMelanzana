@@ -13,7 +13,7 @@
 	<head>
 	
 		<meta charset="UTF-8">
-		<title>Login</title>
+		<title>Accedi</title>
 
 		<link href="../css/authCSS.css" rel="stylesheet" type="text/css">
 		<link href="../css/commonCSS.css" rel="stylesheet" type="text/css">
@@ -29,6 +29,8 @@
 		<meta name="google-signin-client_id" content="765224026751-f8qujqku5n37rmv05ro5rs8n7ptaoc74.apps.googleusercontent.com">		
 		<script language="javascript" src="../js/googleLogin.js"></script>
 		<script language="javascript" src="../js/login.js"></script>
+		
+		<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 	</head>
 	
 	<body>	
@@ -36,16 +38,16 @@
 			<div id="containerLogin" class="form lform">
 				<div class="logo">
 					<div class="text-center">
-						<h1>Login</h1>
+						<h1>Accedi</h1>
 					</div>
 				</div>
 				<c:if test="${error != null}">
-					<label class="text-danger">${error }</label>
+					<label class="text-danger">${error}</label>
 				</c:if>
 				<form id="formLogin" method="post" action="doLogin">
 					<div class="form-group">
-	                    <label>Username</label>
-	                    <input id="username" type="text" class="form-control" placeholder="Username" name="username">
+	                    <label>Nome Utente</label>
+	                    <input id="username" type="text" class="form-control" placeholder="Nome Utente" name="username">
 						<label id="lblUsername" style="color:red; font-size: 12"></label>
                 	</div>
 
@@ -61,21 +63,25 @@
 	                </div>
 	                
 	                <div>
-	                	<button id="buttonLogin" type="submit" class="btn btn-block mbtn tx-tfm vm-background-color">Login</button>
+	                	<button id="buttonLogin" type="submit" class="btn btn-block mbtn tx-tfm vm-background-color">Accedi</button>
 					</div>
 					
 					<div>
 						<div class="login-or">
 							<hr class="hr-or">
-							<span class="span-or">or</span>
+							<span class="span-or">oppure</span>
 						</div>
 					</div>
 					
 					<div class="g-signin2 form-group" data-width="446" data-height="38" data-theme="dark" data-longtitle="true" data-onsuccess="onSignIn" data-onfailed="onFailed"></div>
 			
 					<div class="form-group">
-						<p class="text-center">Don't have account? <a href="signUpPage">Sign up here</a></p>
-					</div>						
+						<p class="text-center">Non sei iscritto? <a href="signUpPage">Registrati subito</a></p>
+					</div>	
+					
+					<div class="form-group text-center">
+						<a href="/">Pagina Principale</a>
+					</div>					
 				</form>
 			</div>
 		</div>

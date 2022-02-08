@@ -101,9 +101,10 @@ public class AccountController {
 	
 	
 	@PostMapping("/password")
-	public Utente verifyPassword(@RequestParam("newPassword") String newPassword, HttpServletRequest request) {
+	@ResponseBody
+	public Messaggi verifyPassword(@RequestParam("newPassword") String newPassword, HttpServletRequest request) {
 		
-		Utente utenteOld = (Utente) request.getSession().getAttribute("utente");
+		Messaggi msg = new Messaggi();
 		
 		Utente utente = (Utente) request.getSession().getAttribute("utente");
 		
@@ -113,10 +114,15 @@ public class AccountController {
 			HttpSession session = request.getSession(true);
 			session.setAttribute("utente", utente);
 			
-			return utente;
+			msg.setStatus("Auth");
+			msg.setMessaggio("Auth");
+			return msg;
 		}
 		
-		return utenteOld;
+		msg.setStatus("nonAuth");
+		msg.setMessaggio("Modifiche non salvate.");
+		
+		return msg;
 	}
 	
 	@PostMapping("/verifyPassword")
@@ -173,17 +179,20 @@ public class AccountController {
 		}
 		
 		msg.setStatus("nonAuth");
-		msg.setMessaggio("Si e' verificato un problema. L'indirizzo non e' stato rimosso");
+		msg.setMessaggio("Si e' verificato un problema. L'indirizzo non e' stato rimosso.");
 		
 		return msg;
 	}
 	
 	@PostMapping("/saveAddres")
-	public String saveAddress(@RequestParam("via") String via, @RequestParam("num") String num, 
+	@ResponseBody
+	public Messaggi saveAddress(@RequestParam("via") String via, @RequestParam("num") String num, 
 							  @RequestParam("cap") String cap, @RequestParam("city") String city, 
 							  @RequestParam("prov") String prov, @RequestParam("tel") String tel,
 							  HttpServletRequest request) {
 				
+		Messaggi msg = new Messaggi();
+		
 		Utente utente = (Utente) request.getSession().getAttribute("utente");
 		
 		Indirizzo ind = new Indirizzo();
@@ -197,9 +206,16 @@ public class AccountController {
 		ind.setMail(utente.getMail());
 		ind.setAttivo(true);
 		
-		Database.getInstance().getFactory().getIndirizzoDao().saveOrUpdate(ind);
+		if (  Database.getInstance().getFactory().getIndirizzoDao().saveOrUpdate(ind) ) {
+			msg.setStatus("Auth");
+			msg.setMessaggio("Auth");
+			return msg;
+		}
 		
-		return "redirect:/account";
+		msg.setStatus("nonAuth");
+		msg.setMessaggio("Modifiche non salvate.");
+		
+		return msg;
 	}
 	
 }

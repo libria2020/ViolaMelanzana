@@ -23,7 +23,7 @@ public class Database {
 	
 	private Database() {
 		try {
-			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/VMF", "postgres", "postgres");
+			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/VMN", "postgres", "postgres");
 			factory = new DaoJDBCFactory();
 		} catch (SQLException e) {
 			e.printStackTrace();

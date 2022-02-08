@@ -25,15 +25,27 @@
 	
 	</head>
 	
-<body>
-		<jsp:include page="navbar.jsp"></jsp:include>
-
-	
 	<body>
+		<jsp:include page="navbar.jsp"></jsp:include>
 		
 			<div class="container" style="text-align: center; margin-top: 10%;">
 				<img src="images/errorGif.gif" />
 				<h2>Si è verificato un errore durante la navigazione</h2>
 			</div>
+			
+			
+			<footer style="background-color: WhiteSmoke; padding-bottom: 6px; padding-top: 6px; margin-top: 12px;">
+				<div style="text-align: center;">
+		     		<a class="" href="/">
+						<img src= "/images/logo.png" id="logo">
+					</a>
+		   		</div>
+		   		<div style="text-align: center; margin-top: 18px;">
+		     		<h4>Corso di Web Computing</h4>
+		     		<div>Laurea Triennale in Informatica</div>	
+		     		<div>Università della Calabria</div>
+		     		<div>Anno Accademico 2021-2022</div>
+		   		</div>
+			</footer>
 	</body>
 </html>	

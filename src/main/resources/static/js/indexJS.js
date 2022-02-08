@@ -150,7 +150,6 @@ $(document).ready(function(){
 	});
 	
 	
-	
 	// ***** ***** ***** ***** ***** ***** ***** ***** *****
 	// Popular Recipes
 	$.ajax({

@@ -88,7 +88,7 @@
 	<div class="container space-nd">	
 		<div class="row">
 			<div class="vm-sec-header">
-				<h2><fmt:message key="chefs"/></h2>
+				<h2>I Nostri Chefs</h2>
 			</div>
 			<div class="vm-sec-cntl">
 				<button id="chef_previous" class="vm-nav-btn disabled">
@@ -112,7 +112,7 @@
 		<div class="container space-nd">
 			<div class="row">
 				<div class="vm-sec-header">
-					<h2><fmt:message key="your.recipes"/></h2>
+					<h2>Le Tue Pubblicazioni</h2>
 				</div>
 				<div class="vm-sec-cntl">
 					<button id="user_previous" class="vm-nav-btn disabled" disabled onclick="previous()">
@@ -126,7 +126,7 @@
 			
 			<div id = "user-row" class="row">
 				<c:forEach items="${ricettaUtente}" var="ricetta" begin="0" end="3">
-					<div class="col-md-3">
+					<div class="col-md-3 col-sm-3 col-xs-12">
 						<div class="vm-card">
 							<a href="recipePage?ricetta_id=${ricetta.id}">
 								<img src="${ricetta.base64Image}" alt="Avatar" class="card-img">
@@ -157,7 +157,7 @@
 	<div class="container space-nd">
 		<div class="row">
 			<div class="vm-sec-header">
-				<h2><fmt:message key="recently.added"/></h2>
+				<h2>Le Più Recente</h2>
 			</div>
 			<div class="vm-sec-cntl">
 				<button id="recent_previous" class="vm-nav-btn disabled">
@@ -170,6 +170,7 @@
 		</div>
 		
 		<div id = "recent-row" class="row"></div>
+		
 	</div>
 
 
@@ -178,7 +179,7 @@
 	<div id="popular" class="container space-nd">
 		<div class="row">
 			<div class="vm-sec-header">
-				<h2><fmt:message key="most.voted"/></h2>
+				<h2>Le Più Votate</h2>
 			</div>
 		</div>
 	</div>
@@ -188,9 +189,23 @@
 	<!-- Load More Content -->
 	<div class="container space">
 		<div>
-			<button id="load" class="vm-btn-load vm-background-color"> Load more </button>
+			<button id="load" class="vm-btn-load vm-background-color"> Carica altre ricette popolari </button>
 		</div>
 	</div>
+	
+	<footer style="background-color: WhiteSmoke; padding-bottom: 6px; padding-top: 6px; margin-top: 12px;">
+		<div style="text-align: center;">
+     		<a class="" href="/">
+				<img src= "/images/logo.png" id="logo">
+			</a>
+   		</div>
+   		<div style="text-align: center; margin-top: 18px;">
+     		<h4>Corso di Web Computing</h4>
+     		<div>Laurea Triennale in Informatica</div>	
+     		<div>Università della Calabria</div>
+     		<div>Anno Accademico 2021-2022</div>
+   		</div>
+	</footer>
 
 </body>
 </html>

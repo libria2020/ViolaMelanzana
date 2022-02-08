@@ -5,6 +5,7 @@ window.addEventListener("load", function(){
 	getAllIngredients();
 	getAllCategories();
 	removeImage();
+	aggiungiCategoria();
 })
 
 function Ingrediente(nome){
@@ -42,7 +43,6 @@ var inserisciRicetta = function(){
 	var dosi = $("#dosi").val();
 	var video = $("#video").val();
 	var idChef = $("#idChefHidden").val();
-	var categoria = $("#categoria").val();
 	
 	var righeTabellaIngredienti = document.querySelectorAll("#riga");
 	var ingredientiQuantita = [];
@@ -58,6 +58,15 @@ var inserisciRicetta = function(){
 		ingredientiQuantita.push(ingrQuant);
 
 	})
+	
+	var spanCate = document.querySelectorAll("#spanCategorie");		
+	var categorie = [];
+	
+	spanCate.forEach(function(elem, indice){
+		var nome = elem.firstChild.textContent;
+		categorie.push(nome);
+	})
+	
 	
 	$.ajax({
 		type: "POST",
@@ -77,7 +86,7 @@ var inserisciRicetta = function(){
 			tempoC:tempoC,
 			dosi:dosi,
 			idChef:idChef,
-			categoria:categoria
+			categorie:JSON.stringify(categorie)
 		},	
 		success: function(risposta){
 			if(risposta === "OK"){
@@ -89,7 +98,7 @@ var inserisciRicetta = function(){
 			}
 		},
 		error: function(xhr){
-			
+			alert("Ci scusiamo ma abbiamo un problema interno. Riprova più tardi");
 		}
 	})
 }
@@ -165,27 +174,16 @@ function controlli(){
 		lblImmagine.innerHTML = "";
 	}
 	
-	var categoria = $("#categoria");
-	var lblCategoria = document.querySelector("#lblCategoria");
-	if(categoria.val().length === 0){
+	var listaCategorie = document.querySelectorAll("#spanCategorie");
+	var lblCategoria= document.querySelector("#lblCategoria");
+	var nomeC = $("#categoria");
+	if(listaCategorie.length === 0){
 		res = false;
-		categoria.addClass("makeRed");
-		lblCategoria.innerHTML = "Deve esserci una categoria";
+		nomeC.addClass("makeRed");
+		lblCategoria.innerHTML = "Ci deve essere almeno una categoria";
 	} else{
-		var ok = false;
-		for(var i = 0 ; i < allCategories.length && ok === false; ++i){
-			if(categoria.val() === allCategories[i].nome){
-				ok = true;	
-			}	
-		}
-		if(!ok){
-			res = false;
-			categoria.addClass("makeRed");
-			lblCategoria.innerHTML = "Categoria non esistente. Prova a consultare la lista delle categorie";	
-		} else{
-			categoria.removeClass("makeRed");
-			lblCategoria.innerHTML = "";
-		}
+		nomeC.removeClass("makeRed");
+		lblCategoria.innerHTML = "";
 	}
 	
 	var difficolta = $("#difficolta");
@@ -409,4 +407,58 @@ function removeImage(){
 		
 		button.css("display", "none");
 	})
+}
+
+function aggiungiCategoria(){
+	var button = $("#addCategory");
+	button.click(function(e){
+		var categoria = $("#categoria");	
+		var divCategories = document.querySelector("#div-categories");	
+		var lblCategoria = document.querySelector("#lblCategoria");
+		
+		if(categoria.val().length === 0){
+			categoria.addClass("makeRed");
+			lblCategoria.innerHTML = "Deve esserci una categoria";
+			return;
+		} else{
+			var ok = false;
+			for(var i = 0 ; i < allCategories.length && ok === false; ++i){
+				if(categoria.val() === allCategories[i].nome){
+					ok = true;	
+				}	
+			}
+			if(!ok){
+				categoria.addClass("makeRed");
+				lblCategoria.innerHTML = "Categoria non esistente. Prova a consultare la lista delle categorie";
+				return;	
+			} else{
+				categoria.removeClass("makeRed");
+				lblCategoria.innerHTML = "";
+			}
+		}
+		
+		var spanCate = document.querySelectorAll("#spanCategorie");
+		var ok = true;
+		spanCate.forEach(function(elem, indice){
+			if(elem.firstChild.textContent === categoria.val()){
+				categoria.addClass("makeRed");
+				lblCategoria.innerHTML = "Categoria già inserita";
+				ok = false;
+			}
+		})
+		
+		if(!ok)
+			return;
+		
+		divCategories.innerHTML += "<span id=\"spanCategorie\" style=\"margin-right: 3px\">" + 
+									   "<label>" + categoria.val() + "</label>" +
+									   "<button id=\"" + categoria.val() + "\" class=\"btnRemoveCategories\" type=\"button\" onclick=\"eventoRemove(this)\"><i class=\"fa fa-times\" aria-hidden=\"true\" style=\"font-size:12px\"></i></button>" +
+									"</span>";
+		categoria.val(""); 
+		
+	})
+}
+
+function eventoRemove(x){
+	x.parentElement.remove()
 }

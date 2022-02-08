@@ -37,7 +37,7 @@
 			<div class="form" class="col-lg-6 col-md-12 col-sm-12">
 				<div class="logo">
 					<div class="text-center">
-						<h1>Signup</h1>
+						<h1>Registrati</h1>
 					</div>
 				</div>
 				<c:choose>
@@ -53,29 +53,29 @@
 				<form id="formRegister" method="post" action="register">
 					<div class="form-group">
 						<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
-						<label>First Name</label>
-						<input type="text" id="nome" class="form-control" placeholder="Enter Firstname" name="nome">
+						<label>Nome</label>
+						<input type="text" id="nome" class="form-control" placeholder="Il tuo nome" name="nome">
 						<label id="lblNome" style="color:red; font-size: 12"></label>
 					</div>
 					
 					<div class="form-group">
 						<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
-						<label>Last Name</label>
-						<input type="text" id="cognome" class="form-control" placeholder="Enter Lastname" name="cognome">
+						<label>Cognome</label>
+						<input type="text" id="cognome" class="form-control" placeholder="Il tuo cognome" name="cognome">
 						<label id="lblCognome" style="color:red; font-size: 12"></label>
 					</div>
 					
 					<div class="form-group">
 						<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
-						<label>Email address</label>
-						<input type="email" id="mail" class="form-control" placeholder="Enter email" name="mail">
+						<label>Email</label>
+						<input type="email" id="mail" class="form-control" placeholder="Email" name="mail">
 						<label id="lblMail" style="color:red; font-size: 12"></label>
 					</div>
 					
 					<div class="form-group">
 						<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
-						<label>Username</label>
-						<input type="text" id="username" class="form-control" placeholder="Enter username" name="username">
+						<label>Nome Utente</label>
+						<input type="text" id="username" class="form-control" placeholder="Il tuo nome utente" name="username">
 						<label id="lblUsername" style="color:red; font-size: 12"></label>
 					</div>
 					
@@ -83,7 +83,7 @@
 						<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
 						<label>Password</label>
 						<div class="form-row">
-							<input type="password" id="password" class="form-control" placeholder="Enter Password" name="password">
+							<input type="password" id="password" class="form-control" placeholder="La tua password" name="password">
 							<i class="far fa-eye" id="togglePassword" style="margin-left: -35px; margin-top: 10px; cursor: pointer;"></i>
 						</div>
 						<label id="lblPassword" style="color:red; font-size: 12"></label>
@@ -91,20 +91,24 @@
 					
 					<div class="form-group">
 						<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
-						<label>Confirm Password</label>
+						<label>Conferma Password</label>
 						<div class="form-row">
-							<input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password" name="confirmPassword">
+							<input type="password" id="confirmPassword" class="form-control" placeholder="Conferma la tua password" name="confirmPassword">
 							<i class="far fa-eye" id="toggleConfirmPassword" style="margin-left: -35px; margin-top: 10px; cursor: pointer;"></i>
 						</div>
 						<label id="lblConfirmPassword" style="color:red; font-size: 12"></label>
 					</div>
 					
 					<div>
-	                	<button type="submit" id="buttonRegister" class="btn btn-block mbtn tx-tfm vm-background-color">Signup</button>
+	                	<button type="submit" id="buttonRegister" class="btn btn-block mbtn tx-tfm vm-background-color">Registrati</button>
 					</div>
 					
 					<div class="form-group spc">
-						<p class="text-center"><a href="loginPage">Already have an account?</a></p>
+						<p class="text-center"><a href="loginPage">Sei già registrato?</a></p>
+					</div>
+					
+					<div class="form-group text-center">
+						<a href="/">Pagina Principale</a>
 					</div>
 				</form>
 			</div>

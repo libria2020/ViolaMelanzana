@@ -2,12 +2,6 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ page isELIgnored="false" %>
-
-<fmt:setLocale value="it"/>
-<fmt:setBundle basename="messages/messages"/>
-
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -129,18 +123,22 @@
 					<label class="label lbl-warning" for="curiosita">Max 1000 characters</label>
 				</div>
 				
-				<div class="form-row">
-					<div class="form-group" >
-						<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
-						<label>Categoria</label>
-						<input id="categoria" class="form-control" type="text" placeholder="Inserisci la categoria del piatto"  >
-						<label id="lblCategoria" style="color:red; font-size: 12"></label>
-					</div>
+  				<div class="form-group">
+					<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>
+					<label>Categoria</label>
+					
 					<div class="form-group">
+						<input id="categoria" class="form-control" type="text" placeholder="Inserisci la categoria del piatto"  >
+						<label id="lblCategoria" style="color:red; font-size: 12" for="categoria"></label>
+						<button id="addCategory" class="btn" type="button">Aggiungi categoria</button>
 						<a href="/getListCategories" target="_blank" rel="noopener noreferrer">Visualizza lista Categorie</a>
 					</div>
 				</div>
-  
+				
+				<div id="div-categories" class="form-group">
+					
+				</div>
+  				
 				<div class = "form-row">
 					<div class="form-group col-md-2">
 						<i class="fa fa-asterisk ast" aria-hidden="true" style="font-size:12px"></i>

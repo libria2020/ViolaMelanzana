@@ -40,73 +40,8 @@
 					<img src= "/images/logo.png" id="logo">
 				</a>
 	   		</div>
-		
-		
-		
-			<div>
-				<ul class="vm-user nav navbar-nav">
-				
-					<c:if test="${admin == true }">
-						<li class="vm-text"> Admin ${utente.username}! </li>
-						<li class="dropdown">
-							<a class="fa fa-user-o vm-color vm-icon dropdown-toggle" data-toggle="dropdown" href="#"></a>
-							
-							<ul class="dropdown-menu" style="margin-left: -110px;">
-							    <li><a href="requestAdminView">Richieste Utente</a></li>
-							    <li><a href="ordiniInConsegna">Ordini</a></li>
-							    <li><a href="insertChefPage">Nuovo Chef</a></li>
-							    <li><a href="logOut">Logout</a></li>
-						    </ul>
-						</li>
-					</c:if>
-					
-					
-					
-					
-					
-					<c:if test="${admin == null }">
-						<c:if test="${utente != null }">
-							<li class="vm-text"> Benvenuto ${utente.username}! </li>
-							<li class="dropdown">
-								<a class="fa fa-user-o vm-color vm-icon dropdown-toggle" data-toggle="dropdown" href="#"></a>
-								
-								<ul class="dropdown-menu">
-									    <li><a href="account">Il mio Profilo</a></li>
-									    <li><a href="account">I miei Ordini</a></li>
-									    <li><a href="insertRecipePage">Nuova Ricetta</a></li>
-									    <li><a href="logOut">Logout</a></li>
-							    </ul>
-							</li>
-							<li><a href="folderLike" class="fa fa-heart-o vm-color vm-icon"></a></li>
-							<li><a href="cart" class="fa fa-opencart fa-lg vm-color vm-icon"></a></li>	
-						</c:if>	
-						
-						
-						
-						<c:if test="${utente == null }">
-							<li class="vm-text"> Ciao, accedi! </li>
-							<li class="dropdown">
-								<a class="fa fa-user-o vm-color vm-icon dropdown-toggle" data-toggle="dropdown" href="#"></a>
-								
-								<ul class="dropdown-menu" style="margin-left: -109px;">
-									    <li><a href="loginPage">Il mio Profilo</a></li>
-									    <li><a href="loginPage">I miei Ordini</a></li>
-									    <li><a href="loginPage">Nuova Ricetta</a></li>
-									    <li><a href="loginPage">Login</a></li>
-							    </ul>
-							</li>
-							<li><a href="loginPage" class="fa fa-heart-o vm-color vm-icon"></a></li>
-							<li><a href="loginPage" class="fa fa-opencart fa-lg vm-color vm-icon"></a></li>	
-						</c:if>
-					</c:if>
-				
-				</ul>	
-			</div>
-			 
-			 
-			 
-			 
-			<div class="vm-input-group">
+	   		
+	   		<div class="vm-input-group">
 				<form action="/ricerca" method="get">
 					<select id="nav-bar-cat" name="filter" class="vm-text">
 					    <option value="all" selected="selected"> Tutte le categorie </option>
@@ -114,7 +49,64 @@
 					<input type="text" placeholder="Search" name="search">
 					<button type="submit" class="fa fa-search vm-color vm-icon"></button>
 				</form> 
-			</div>	
+			</div>
+		
+			<div class="vm-user nav navbar-nav">
+			
+				<c:if test="${admin == true }">
+					<li class="vm-text" id="hello"> Admin ${utente.username}! </li>
+					<li class="dropdown">
+						<a class="fa fa-user-o vm-color vm-icon dropdown-toggle" data-toggle="dropdown" href="#"></a>
+						
+						<ul class="dropdown-menu" style="margin-left: -110px;">
+						    <li><a href="requestAdminView">Richieste Utente</a></li>
+						    <li><a href="ordiniInConsegna">Ordini</a></li>
+						    <li><a href="insertChefPage">Nuovo Chef</a></li>
+						    <li><a href="logOut">Logout</a></li>
+					    </ul>
+					</li>
+				</c:if>
+				
+				
+				
+				<c:if test="${admin == null }">
+					<c:if test="${utente != null }">
+						<li class="vm-text" id="hello"> Benvenuto ${utente.username}! </li>
+						<li class="dropdown">
+							<a class="fa fa-user-o vm-color vm-icon dropdown-toggle" data-toggle="dropdown" href="#"></a>
+							
+							<ul class="dropdown-menu">
+								    <li><a href="account">Il mio Profilo</a></li>
+								    <li><a href="account">I miei Ordini</a></li>
+								    <li><a href="insertRecipePage">Nuova Ricetta</a></li>
+								    <li><a href="logOut">Logout</a></li>
+						    </ul>
+						</li>
+						<li><a href="folderLike" class="fa fa-heart-o vm-color vm-icon"></a></li>
+						<li><a href="cart" class="fa fa-opencart fa-lg vm-color vm-icon"></a></li>	
+					</c:if>	
+					
+					
+					
+					<c:if test="${utente == null }">
+						<li class="vm-text" id="hello"> Ciao, accedi! </li>
+						<li class="dropdown">
+							<a class="fa fa-user-o vm-color vm-icon dropdown-toggle" data-toggle="dropdown" href="#"></a>
+							
+							<ul class="dropdown-menu" style="margin-left: -109px;">
+								    <li><a href="loginPage">Il mio Profilo</a></li>
+								    <li><a href="loginPage">I miei Ordini</a></li>
+								    <li><a href="loginPage">Nuova Ricetta</a></li>
+								    <li><a href="loginPage">Login</a></li>
+						    </ul>
+						</li>
+						<li><a href="loginPage" class="fa fa-heart-o vm-color vm-icon"></a></li>
+						<li><a href="loginPage" class="fa fa-opencart fa-lg vm-color vm-icon"></a></li>	
+					</c:if>
+				</c:if>
+
+			</div>
+		 	
 			
 		</div>
 	</nav>

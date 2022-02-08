@@ -10,10 +10,8 @@
 
 .vm-input-group {
 	text-align: center;
-}
-
-.vm-user {
-	float: right;
+	float: left;
+	padding-left: 64px;
 }
 
 .vm-input-group input[type=text] {
@@ -53,6 +51,10 @@
 	color: #4d0099;
 }
 
+.vm-user {
+	float: right;
+}
+
 .vm-icon:focus {
 	color: #4d0099;
 }
@@ -84,3 +86,47 @@
 .dropdown-menu li {
 	font-size: 16px;
 }
+
+
+
+
+
+
+
+
+@media screen and (max-width: 1100px) {
+	#hello {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.navbar-header {
+		width: 100%;
+	}
+	
+	.vm-input-group {
+		width: 100%;
+	}
+	
+	.vm-user {
+		position: relative;
+		display: inline-flex;
+	}
+}
+
+@media screen and (max-width: 575px) {
+	.vm-input-group {
+		float: right;
+	}
+	
+	.vm-user {
+		float: right;
+	}
+	
+	.vm-input-group select {
+		width: 120px;
+		overflow: hidden;
+	}
+}
+

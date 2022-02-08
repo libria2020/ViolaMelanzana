@@ -116,9 +116,6 @@ body {
 
 
 
-
-
-
 @media screen and (max-width: 1199px) {
 	.vm-cat-content a {
 		display: none;
@@ -183,6 +180,7 @@ body {
 		width: 180px !important;
 		height: 180px !important;
 	}
+
 }
 
 
@@ -454,3 +452,5 @@ body {
 	text-decoration: underline;
 	color: #4d0099;
 }
+
+
