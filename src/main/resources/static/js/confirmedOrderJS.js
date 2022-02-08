@@ -1,3 +1,20 @@
+window.addEventListener("load", function(){
+	
+	window.addEventListener('resize', function(){
+		
+		var w = window.screen.width;
+		var elem = document.getElementById("tabella_prodotti");
+		
+  		if( w <= 400) {
+			elem.className = "table-responsive";	
+		} else {
+			elem.className = "cart-container prod-container";
+		}
+	});
+
+});
+
+
 const { PDFDocument, StandardFonts, rgb } = PDFLib
 
     async function createPdf() {

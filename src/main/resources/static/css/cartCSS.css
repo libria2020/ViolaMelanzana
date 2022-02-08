@@ -215,4 +215,8 @@ thead {
 	}
 }
 
-
+@media screen and (max-width: 475px) {
+	.vm-btn-deliver {
+		width: 100%;
+	}
+}

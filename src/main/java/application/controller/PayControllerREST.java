@@ -80,7 +80,7 @@ public class PayControllerREST {
         long now = System.currentTimeMillis();
         Date sqlDate = new Date(now);
 		ordine.setData(sqlDate);
-		System.out.println(ordine.getData());
+		
 		if (!utenteLoggato.isNull(req) && Database.getInstance().getFactory().getOrdineDao().saveOrUpdate(ordine)) {
 			messaggio.setStatus("OK");
 			messaggio.setMessaggio("Data aggiornata");
@@ -112,7 +112,7 @@ public class PayControllerREST {
 			for(var prodotto:ordine.getProdottiInOrder().keySet()) {
 				prodotto.setQuantitaDisponibile(prodotto.getQuantitaDisponibile() - ordine.getProdottiInOrder().get(prodotto));
 				Database.getInstance().getFactory().getProdottoDao().saveOrUpdate(prodotto);
-				System.out.println(prodotto.getQuantitaDisponibile());
+				
 			}
 			Database.getInstance().getFactory().getOrdineDao().saveOrUpdate(ordine);
 		}else {
@@ -135,7 +135,7 @@ public class PayControllerREST {
 			for(var prodotto:ordine.getProdottiInOrder().keySet()) {
 				prodotto.setQuantitaDisponibile(prodotto.getQuantitaDisponibile() + ordine.getProdottiInOrder().get(prodotto));
 				Database.getInstance().getFactory().getProdottoDao().saveOrUpdate(prodotto);
-				System.out.println(prodotto.getQuantitaDisponibile());
+				
 			}
 			Database.getInstance().getFactory().getOrdineDao().saveOrUpdate(ordine);
 		}else {

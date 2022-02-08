@@ -89,6 +89,7 @@ function aggiungiEventi(){
 							//window.location.href = 'cart';
 							document.querySelector("#tr_"+e.target.name).remove();
 							controlloCarrelloVuoto();
+							inserimentoDatiPrezzo();
 						}
 					},
 					error: function(xhr){

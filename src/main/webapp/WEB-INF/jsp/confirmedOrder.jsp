@@ -25,40 +25,41 @@
 			<div class="order">
 				<h3>Numero dell’ordine: <label id="id_ordine">${ordine.id}</label> </h3>
 				<div class="row"> 
-					<div class="col-md-4">
+					<div class="col-md-4 col-sm-4 col-4">
 						<b>Data dell’ordine</b> <br> <label id="data_ordine">${ordine.data}</label>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-4 col-sm-4 col-4">
 						<b>Totale</b> <br> <label id="totale_ordine"> ${ordine.totale}  € </label>
 					</div>
-					<div class="col-md-4">
+					<div class="col-md-4 col-sm-4 col-4">
 						<b>Stato del ordine</b> <br> <label id="stato_ordine">${ordine.stato}</label>
 					</div>
 				</div>
 			</div>
 											
-			<table class="table table-hover space">
-				<thead>
-					<tr>
-						<td>Nome</td>
-						<td>Quantità</td>
-						<td>Unità di Misura</td>
-						<td>Prezzo</td>
-					</tr>	
-				</thead>
-				
-				<tbody>
-					<c:forEach items="${ordine.prodottiInOrder}" var="ord">
+			<div id="tabella_prodotti">
+				<table class="table table-hover space">
+					<thead>
 						<tr>
-							<td id="${ord.key.nome}" class="nomeProdotti">${ord.key.nome}</td>	
-							<td class="quantita"> ${ord.value} </td>
-							<td> <label class="unitaDiMisura" >${ord.key.unitaDiMisura}</label>  </td>
-							<td> <label class="prezzo">${ord.key.prezzo}</label> <label> c/d </label> </td>
-						</tr>
-					</c:forEach>
-				</tbody>
-			</table>
-			
+							<td>Nome</td>
+							<td>Quantità</td>
+							<td>Unità di Misura</td>
+							<td>Prezzo</td>
+						</tr>	
+					</thead>
+					
+					<tbody>
+						<c:forEach items="${ordine.prodottiInOrder}" var="ord">
+							<tr>
+								<td id="${ord.key.nome}" class="nomeProdotti">${ord.key.nome}</td>	
+								<td class="quantita"> ${ord.value} </td>
+								<td> <label class="unitaDiMisura" >${ord.key.unitaDiMisura}</label>  </td>
+								<td> <label class="prezzo">${ord.key.prezzo}</label> <label> c/d </label> </td>
+							</tr>
+						</c:forEach>
+					</tbody>
+				</table>
+			</div>
 
 			
 		<div class="container">
