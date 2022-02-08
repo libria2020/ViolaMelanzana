@@ -205,8 +205,6 @@ $(document).ready(function(){
 					
 					
 					if(ok){
-						/*var changePasword = document.querySelector("#changePasword");
-						changePasword.submit();*/
 						
 						$.ajax({
 							type: "POST",
@@ -238,12 +236,12 @@ $(document).ready(function(){
 	saveAddress.addEventListener("click", function(event){
 		event.preventDefault();
 		
-		var viaInput = $("#via");
-		var numInput = $("#num");
-		var capInput = $("#cap");
-		var cityInput = $("#city");
-		var provInput = $("#prov");
-		var telInput = $("#tel");
+		var viaInput = $("#viaAdd");
+		var numInput = $("#numAdd");
+		var capInput = $("#capAdd");
+		var cityInput = $("#cityAdd");
+		var provInput = $("#provAdd");
+		var telInput = $("#telAdd");
 		
 		var via = viaInput.val();
 		var num = numInput.val();
@@ -252,10 +250,12 @@ $(document).ready(function(){
 		var prov = provInput.val();
 		var tel = telInput.val();
 		
+		
 		$.ajax({
 		type: "POST",
 		url: "/saveAddres",
 		data : {
+				"id" : 0,
         		"via" : via, 
 				"num": num,
 				"cap" : cap,
@@ -271,6 +271,55 @@ $(document).ready(function(){
 						
 				} else if( risposta.status === "Auth" ) {
 					$('#addressModal').modal('hide');
+					document.getElementById("address-tab").innerHTML = "";
+					loadAddress();	
+				}
+				
+			}
+		});	
+	})
+	
+	var modAddress = document.querySelector("#btn-mod-address");
+	
+	modAddress.addEventListener("click", function(event){
+		event.preventDefault();
+		
+		var idInput = $("#idAddress");
+		var viaInput = $("#via");
+		var numInput = $("#num");
+		var capInput = $("#cap");
+		var cityInput = $("#city");
+		var provInput = $("#prov");
+		var telInput = $("#tel");
+		
+		var id = idInput.val();
+		var via = viaInput.val();
+		var num = numInput.val();
+		var cap = capInput.val();
+		var city = cityInput.val();
+		var prov = provInput.val();
+		var tel = telInput.val();
+		
+		$.ajax({
+		type: "POST",
+		url: "/saveAddres",
+		data : {
+				"id" : id,
+        		"via" : via, 
+				"num": num,
+				"cap" : cap,
+				"city" : city, 
+				"prov" : prov, 
+				"tel" : tel
+    		},
+		
+		success: function(risposta) { 
+			
+				if( risposta.status === "nonAuth" ) {
+					alert(risposta.messaggio);
+						
+				} else if( risposta.status === "Auth" ) {
+					$('#addressModModal').modal('hide');
 					document.getElementById("address-tab").innerHTML = "";
 					loadAddress();	
 				}
@@ -417,6 +466,9 @@ function modAddress(id) {
 		
 		success: function(risposta) {
 			
+			var idAddress = document.getElementById("idAddress");
+			idAddress.value = risposta.id;
+			
 			var via = document.getElementById("via");
 			via.value = risposta.indirizzo;
 			
@@ -435,7 +487,7 @@ function modAddress(id) {
 			var tel = document.getElementById("tel");
 			tel.value = risposta.telefono;
 			
-			$('#addressModal').modal('show');
+			$('#addressModModal').modal('show');
 		}
 	});	
 	

@@ -83,7 +83,6 @@ public class IndirizzoDaoJDBC implements IndirizzoDao{
 	@Override
 	public boolean saveOrUpdate(Indirizzo indirizzo) {
 		String query;
-		System.out.println(indirizzo.getId());
 		if(indirizzo.getId() == 0) {
 			//INSERT
 			try {

@@ -226,17 +226,18 @@ public class AccountController {
 	
 	@PostMapping("/saveAddres")
 	@ResponseBody
-	public Messaggi saveAddress(@RequestParam("via") String via, @RequestParam("num") String num, 
+	public Messaggi saveAddress(@RequestParam("id") int id, @RequestParam("via") String via, @RequestParam("num") String num, 
 							  @RequestParam("cap") String cap, @RequestParam("city") String city, 
 							  @RequestParam("prov") String prov, @RequestParam("tel") String tel,
 							  HttpServletRequest request) {
-				
+		
 		Messaggi msg = new Messaggi();
 		
 		Utente utente = (Utente) request.getSession().getAttribute("utente");
 		
 		Indirizzo ind = new Indirizzo();
 		
+		ind.setId(id);
 		ind.setIndirizzo(via);
 		ind.setN_civico(num);
 		ind.setCap(cap);

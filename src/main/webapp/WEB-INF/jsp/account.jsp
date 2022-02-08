@@ -323,8 +323,8 @@
 	
 	
 	
-	<!-- Add Address -->
-	<div class="modal fade" id="addressModal" role="dialog">
+	<!-- Mod Address -->
+	<div class="modal fade" id="addressModModal" role="dialog">
     	<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -333,7 +333,8 @@
 				</div>
 				
 				<div class="modal-body">
-					<form action="/saveAddres" method="post">
+					<form action="saveAddres" method="post">
+						<input type="text" class="form-control" id="idAddress"  placeholder="Via" name="via" style="display:none;">
 						<div class="form-group">
 							<label for="via">Via</label>
 							<input type="text" class="form-control" id="via" placeholder="Via" name="via">
@@ -362,6 +363,58 @@
 						<div class="form-group">
 							<label for="tel">Telefono</label>
 							<input type="text" class="form-control" id="tel" placeholder="Telefono" name="tel">
+						</div>
+						
+						<div class="modal-footer">
+	          				<button type="submit" class="btn btn-default" id="btn-mod-address">Salva</button>
+	        			</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<!-- Add Address -->
+	<div class="modal fade" id="addressModal" role="dialog">
+    	<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h2>Agginge un nuovo indirizzo</h2>
+					<span class="close" data-dismiss="modal">&times;</span>
+				</div>
+				
+				<div class="modal-body">
+					<form action="/saveAddres" method="post">
+						<div class="form-group">
+							<label for="via">Via</label>
+							<input type="text" class="form-control" id="viaAdd" placeholder="Via" name="via">
+						</div>
+						
+						<div class="form-group">
+							<label for="num">Numero civico</label>
+							<input type="text" class="form-control" id="numAdd" placeholder="Numero civico" name="num">
+						</div>
+						
+						<div class="form-group">
+							<label for="cap">CAP</label>
+							<input type="text" class="form-control" id="capAdd" placeholder="CAP" name="cap">
+						</div>
+						
+						<div class="form-group">
+							<label for="city">Città</label>
+							<input type="text" class="form-control" id="cityAdd" placeholder="Città" name="city">
+						</div>
+						
+						<div class="form-group">
+							<label for="prov">Provincia</label>
+							<input type="text" class="form-control" id="provAdd" placeholder="Provincia" name="prov">
+						</div>
+						
+						<div class="form-group">
+							<label for="tel">Telefono</label>
+							<input type="text" class="form-control" id="telAdd" placeholder="Telefono" name="tel">
 						</div>
 						
 						<div class="modal-footer">
