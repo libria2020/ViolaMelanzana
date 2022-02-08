@@ -49,30 +49,79 @@ $(document).ready(function(){
 	saveUsername.addEventListener("click", function(event){
 		event.preventDefault();
 		
-		var usernameInput = $("#newUsername");
+		var ok = true;
 		
-		newUsername = usernameInput.val();
+		var usernameInput = $("#newUsername");
+		var newUsername = usernameInput.val();
+		
+		var lblNewUsername = document.querySelector("#lblNewUsername");
+		
+		var regexUsername = /^[a-zA-Z0-9._-]+$/
+		
+		if(newUsername.length < 4){
+			usernameInput.addClass("makeRed");
+			lblNewUsername.innerHTML = "Username troppo corto";
+			ok = false;
+		} else if(newUsername.length > 20){
+			usernameInput.addClass("makeRed");
+			lblNewUsername.innerHTML = "Username troppo lungo";
+			ok = false;
+		} else if(!regexUsername.test(newUsername)){
+			usernameInput.addClass("makeRed");
+			lblNewUsername.innerHTML = "Lo Username può avere solo lettere, numeri o (_-.)";
+			ok = false;
+		} else {
+			usernameInput.removeClass("makeRed");
+			lblNewUsername.innerHTML = "";
+		}
 		
 		$.ajax({
-		type: "POST",
-		url: "/username",
-		data : {
-        		"newUsername" : newUsername
-    		},
-		
-		success: function(risposta) { 
-				if( risposta.username === newUsername ) {
-					var userData = document.querySelector("#user-Username");
-					userData.innerHTML = "";
-					userData.append(risposta.username);
-					$('#usernameModal').modal('hide');
-						
-				} else if ( risposta.status === "Auth" ) {
-					alert("Modifiche non salvate.");
+			async: false,
+			type: "POST",
+			url: "/checkUsername",
+			data : {
+	        		"newUsername" : newUsername
+	    		},
+			
+			success: function(risposta) { 
+				 if ( risposta.status === "exist" ) {
+					ok = false;
+					lblNewUsername.innerHTML = risposta.messaggio;
 				}
 				
 			}
 		});	
+		
+		if (ok) {
+			$.ajax({
+				type: "POST",
+				url: "/username",
+				data : {
+		        		"newUsername" : newUsername
+		    		},
+				
+				success: function(risposta) { 
+						if( risposta.status === "Auth" ) {
+							var userData = document.querySelector("#user-Username");
+							userData.innerHTML = "";
+							userData.append(newUsername);
+							
+							
+							var userCurrent = document.querySelector("#current_username");
+							userCurrent.innerHTML = "";
+							userCurrent.append(newUsername);
+							
+							$('#usernameModal').modal('hide');
+								
+						} else if ( risposta.status === "nonAuth" ) {
+							alert(risposta.messaggio);
+						}
+						
+					}
+			});	
+		}
+	
+
 	})
 	
 	

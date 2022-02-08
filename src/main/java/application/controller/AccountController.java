@@ -80,9 +80,9 @@ public class AccountController {
 	
 	@PostMapping("/username")
 	@ResponseBody
-	public Utente setUsername(@RequestParam("newUsername") String newUsername, HttpServletRequest request) {
+	public Messaggi setUsername(@RequestParam("newUsername") String newUsername, HttpServletRequest request) {
 		
-		Utente utenteOld = (Utente) request.getSession().getAttribute("utente");
+		Messaggi msg = new Messaggi();
 		
 		Utente utente = (Utente) request.getSession().getAttribute("utente");
 		
@@ -92,10 +92,39 @@ public class AccountController {
 			HttpSession session = request.getSession(true);
 			session.setAttribute("utente", utente);
 			
-			return utente;
+			msg.setStatus("Auth");
+			msg.setMessaggio("Auth");
+			return msg;
 		}
 		
-		return utenteOld;
+		msg.setStatus("nonAuth");
+		msg.setMessaggio("Modifiche non salvate.");
+		
+		return msg;
+	}
+	
+	@PostMapping("/checkUsername")
+	@ResponseBody
+	public Messaggi checkUsername(@RequestParam("newUsername") String newUsername, HttpServletRequest request) {
+		
+		Messaggi msg = new Messaggi();
+		
+		Utente utente = (Utente) request.getSession().getAttribute("utente");
+				
+		if ( utente.getUsername().equals(newUsername) ) {
+			msg.setStatus("exist");
+			msg.setMessaggio("Non hai modificato il tuo nome utente.");
+			return msg;
+		} else if ( Database.getInstance().getFactory().getUtenteDao().findByUnique(newUsername) != null ) {
+			msg.setStatus("exist");
+			msg.setMessaggio("Nome utente esistente.");
+			return msg;
+		}
+		
+		msg.setStatus("nonExist");
+		msg.setMessaggio("");
+		
+		return msg;
 	}
 
 	

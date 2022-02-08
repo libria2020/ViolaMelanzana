@@ -141,7 +141,7 @@
 							<div class="vm-container-s">
 								<i class="glyphicon glyphicon-comment vm-color icon"></i>
 								<span class="number vm-color">${ricetta.commenti.size()}</span>
-								<i class="glyphicon glyphicon-star vm-color icon"></i>
+								<i class="glyphicon glyphicon-heart vm-color icon"></i>
 								<span class="number vm-color">${ricetta.likes}</span>
 							</div>
 						</div> 

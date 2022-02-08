@@ -143,7 +143,7 @@
  			
  			
  			<div class="col-md-9">
- 				<div id="Dati" class="tabcontent">
+ 				<div id="Dati" class="tabcontent" style="height: 54.4%;">
 					<h2 class="right-container">Dati personali</h2>
 					
 					<div class="row right-container">
@@ -257,12 +257,13 @@
 				<div class="modal-body">
 					<div> <b> Nome utente corrente</b></div>
 					
-					<div class="sep"> ${utente.username} </div>
+					<div class="sep" id="current_username"> ${utente.username} </div>
 					
 					<form action="/username" method="post">
 						<div class="form-group">
-							<label for="formGroupExampleInput">Nuovo nome utente</label>
+							<label for="newUsername">Nuovo nome utente</label>
 							<input type="text" class="form-control" id="newUsername" placeholder="Nome utente" name="newUsername">
+							<label id="lblNewUsername" style="color:red; font-size: 12"></label>
 						</div>
 						
 						<div class="modal-footer">
