@@ -411,150 +411,100 @@ public class UtenteDaoJDBC implements UtenteDao{
 
 
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	@Override
 	public synchronized List<Utente> findAllWithRequest() {
 		List<Utente> utenti = null;
 		List<Utente> utentiNo = null;
-		String query ="SELECT * from utente WHERE enable is TRUE;";
-		
+		String query = "SELECT * from utente WHERE enable is TRUE;";
 		try {
 			utenti = new ArrayList<Utente>();
 			utentiNo = new ArrayList<Utente>();
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(query);
-			
-			while(rs.next()) {
+			while (rs.next()) {
 				Utente utente = new Utente();
 				utente.setMail(rs.getString("mail"));
 				utente.setUsername(rs.getString("username"));
 				utente.setNome(rs.getString("nome"));
 				utente.setCognome(rs.getString("cognome"));
 				utente.setMaster(rs.getBoolean("master"));
-				utente.setPassword(rs.getString("password"));
-				String haveRequest= "SELECT COUNT(*) as numero FROM ricetta WHERE mail_utente_pubblicatore='"+ utente.getMail() + "' AND approvazione is NULL;";
-				
-				try {
-					Statement pr = conn.createStatement();
-					ResultSet richiesta = pr.executeQuery(haveRequest);
-					if (richiesta.next()) {
-						if( !richiesta.getString(1).equals("0")) {
-							utenti.add(utente);
-						}
-					}	
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				
-				String haveRequest1= "SELECT COUNT(*) as numero1 FROM richiesta_rimozione_ricetta WHERE mail_utente='"+ utente.getMail() + "' AND accettata is NULL;";
-				
-				try {
-					Statement pr1 = conn.createStatement();
-					ResultSet richiesta1 = pr1.executeQuery(haveRequest1);
-					if (richiesta1.next() && (!utenti.contains(utente))) {
-						if( !richiesta1.getString(1).equals("0")) {
-							utenti.add(utente);
-						}
-					}
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			
-				if(!utenti.contains(utente))
+				if (this.getUserRequest(utente.getMail()).size() > 0) {
+					utente.setRequest(true);
+					utenti.add(utente);
+				} else {
+					utente.setRequest(false);
 					utentiNo.add(utente);
-				
+				}
 			}
-	
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			e.getStackTrace();
 		}
-		
 		utenti.addAll(utentiNo);
 		return utenti;
 	}
 
 	@Override
-	public synchronized List<List<String>> getUserRequest(String mail){
+	public synchronized List<List<String>> getUserRequest(String mail) {
 		List<List<String>> userRequest = null;
-		List<String> oneRequest=null;
-		String haveRequest= "SELECT * FROM ricetta WHERE mail_utente_pubblicatore=? AND approvazione is NULL;";
-		
+		List<String> oneRequest = null;
+		String haveRequest = "SELECT * FROM ricetta WHERE mail_utente_pubblicatore=? AND approvazione is NULL;";
 		try {
-			userRequest= new ArrayList<List<String>>();
+			userRequest = new ArrayList<List<String>>();
 			PreparedStatement pr = conn.prepareStatement(haveRequest);
 			pr.setString(1, mail);
 			ResultSet rs = pr.executeQuery();
-			
 			while (rs.next()) {
-				oneRequest=new LinkedList<String>();
+				oneRequest = new LinkedList<String>();
 				oneRequest.add("aggiunta ricetta");
 				oneRequest.add(rs.getString("titolo"));
 				oneRequest.add(String.valueOf(rs.getInt("id")));
 				oneRequest.add("/");
 				userRequest.add(oneRequest);
 			}
-		
 		} catch (SQLException e) {
-		e.printStackTrace();
+			e.printStackTrace();
 		}
-		
-		String haveRequest1= "SELECT * FROM richiesta_rimozione_ricetta WHERE mail_utente=? AND accettata is NULL;";
-		
+		String haveRequest1 = "SELECT * FROM richiesta_rimozione_ricetta WHERE mail_utente=? AND accettata is NULL;";
 		try {
 			PreparedStatement pr1 = conn.prepareStatement(haveRequest1);
 			pr1.setString(1, mail);
 			ResultSet rs1 = pr1.executeQuery();
-			
 			while (rs1.next()) {
-				Ricetta ricetta= Database.getInstance().getFactory().getRicettaDao().findByPrimaryKey(rs1.getInt("id_ricetta"));
-				oneRequest=new LinkedList<String>();
+				Ricetta ricetta = Database.getInstance().getFactory().getRicettaDao()
+						.findByPrimaryKey(rs1.getInt("id_ricetta"));
+				oneRequest = new LinkedList<String>();
 				oneRequest.add("rimozione ricetta");
 				oneRequest.add(ricetta.getTitolo());
 				oneRequest.add(String.valueOf(ricetta.getId()));
 				oneRequest.add(rs1.getString("motivazione"));
 				userRequest.add(oneRequest);
 			}
-		
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 		if (this.findByPrimaryKey(mail).isMaster() == false) {
-			
-			String master= "SELECT * FROM ricetta WHERE mail_utente_pubblicatore=? AND approvazione is TRUE;";
-			
+			String master = "SELECT * FROM ricetta WHERE mail_utente_pubblicatore=? AND approvazione is TRUE;";
 			try {
-				int cont=0;
-				PreparedStatement pr2 = conn.prepareStatement(master,ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+				int cont = 0;
+				PreparedStatement pr2 = conn.prepareStatement(master, ResultSet.TYPE_SCROLL_INSENSITIVE,
+						ResultSet.CONCUR_UPDATABLE);
 				pr2.setString(1, mail);
 				ResultSet rs2 = pr2.executeQuery();
-				
-				if(rs2.next()) {
+				if (rs2.next()) {
 					rs2.last();
-					
-					if( (rs2.getRow()) >= 15) {
+					if ((rs2.getRow()) >= 15) {
 						rs2.beforeFirst();
 						while (rs2.next()) {
-							Ricetta ricetta= Database.getInstance().getFactory().getRicettaDao().findByPrimaryKey(rs2.getInt("id"));
+							Ricetta ricetta = Database.getInstance().getFactory().getRicettaDao()
+									.findByPrimaryKey(rs2.getInt("id"));
 							if (ricetta.getLikes() >= 100)
-							cont++;
+								cont++;
 						}
 					}
 				}
-				
-				if(cont >= 15 ) {
-					oneRequest=new LinkedList<String>();
+				if (cont >= 15) {
+					oneRequest = new LinkedList<String>();
 					oneRequest.add("promozione a master");
 					oneRequest.add("utente idoneo");
 					oneRequest.add("/");
@@ -562,35 +512,31 @@ public class UtenteDaoJDBC implements UtenteDao{
 					userRequest.add(oneRequest);
 				}
 			} catch (SQLException e) {
-			e.printStackTrace();
+				e.printStackTrace();
 			}
 		}
-		
 		if (this.findByPrimaryKey(mail).isMaster() == true) {
-			
-			String master= "SELECT * FROM ricetta WHERE mail_utente_pubblicatore=? AND approvazione is TRUE;";
+			String master = "SELECT * FROM ricetta WHERE mail_utente_pubblicatore=? AND approvazione is TRUE;";
 			try {
-				int cont=0;
-				PreparedStatement pr2 = conn.prepareStatement(master,ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+				int cont = 0;
+				PreparedStatement pr2 = conn.prepareStatement(master, ResultSet.TYPE_SCROLL_INSENSITIVE,
+						ResultSet.CONCUR_UPDATABLE);
 				pr2.setString(1, mail);
 				ResultSet rs2 = pr2.executeQuery();
-				
-				if(rs2.next()) {
+				if (rs2.next()) {
 					rs2.last();
-					
-					if( (rs2.getRow()) >= 15) {
-					rs2.beforeFirst();
+					if ((rs2.getRow()) >= 15) {
+						rs2.beforeFirst();
 						while (rs2.next()) {
-							Ricetta ricetta= Database.getInstance().getFactory().getRicettaDao().findByPrimaryKey(rs2.getInt("id"));
-						
+							Ricetta ricetta = Database.getInstance().getFactory().getRicettaDao()
+									.findByPrimaryKey(rs2.getInt("id"));
 							if (ricetta.getLikes() >= 100)
-							cont++;
+								cont++;
 						}
 					}
 				}
-				
-				if(cont < 15 ) {
-					oneRequest=new LinkedList<String>();
+				if (cont < 15) {
+					oneRequest = new LinkedList<String>();
 					oneRequest.add("declassare utente master");
 					oneRequest.add("utente non più idoneo");
 					oneRequest.add("/");
@@ -601,7 +547,6 @@ public class UtenteDaoJDBC implements UtenteDao{
 				e.printStackTrace();
 			}
 		}
-		
 		return userRequest;
 	}
 
@@ -614,10 +559,11 @@ public class UtenteDaoJDBC implements UtenteDao{
 			prst.setString(2, mail_utente);
 			prst.executeUpdate();
 			return true;
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
 	}
+
 	
 }

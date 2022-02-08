@@ -27,7 +27,7 @@ public class ShippingListController {
 		}
 		model.setViewName("redirect:/");
 		return model;
-}
+	}
 	
 	@PostMapping("/pay")
 	public String ControllShipping() {
@@ -38,4 +38,5 @@ public class ShippingListController {
 	public String Shipping() {
 				return "shipping";
 	}
+
 }

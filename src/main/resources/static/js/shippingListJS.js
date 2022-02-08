@@ -24,8 +24,6 @@ function aggiungiEventi(){
 
 	for(let i = 0; i < btnModifica.length; ++i){
 		btnElimina[i].addEventListener("click",function(e){
-			var result = confirm("Conferma eliminazione dell'indirizzo?");
-			if(result){
 	        	$.ajax({
 					type: "POST",
 					url: "/deleteShipping",
@@ -34,8 +32,7 @@ function aggiungiEventi(){
 					success: function(risposta){
 						console.log(risposta);
 						if (risposta.status === "OK"){
-							document.querySelector("#div_" + e.target.name).remove();
-							controlloListaIndirizzi();
+							window.location.href = '/shippingList';
 						}
 					},
 					error: function(xhr){
@@ -45,7 +42,6 @@ function aggiungiEventi(){
 						window.location.href = '/';
 					}
 			});
-			}
 		});
 	}
 	

@@ -153,6 +153,22 @@ dt{
 	
 }
 
+.desc {
+	overflow: hidden;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	display: -webkit-box;
+	
+	text-align: justify;
+	font-size: 16;
+	
+	
+	
+	padding-left: 20px;
+	padding-right: 10px;
+	padding-bottom: 2px;
+	
+}
 
 
 .icon-botton-left {
@@ -217,20 +233,6 @@ a{
 	color: black;
 }
 
-/*#load{
-	width:750px;
-	float:right;
-	text-align:center;
-	text-decoration-color: #4d0099;
-    box-shadow: 0 2px 4px 0  #4d0099;
-  	margin-right: 12px;
-  	border: none;
-}
-
-#load:hover{
-	  box-shadow: 0 8px 16px 0  #4d0099;
-	
-}*/
 
 .vm-btn-load {
 	
@@ -252,61 +254,151 @@ a{
 
 
 
-@media screen and (max-width: 992px) {
-		
-	#orizCard{
-		height:150px;
+
+
+@media screen and (max-width: 991px){
+	
+	.card{
+		height:22%;
 	}
 	
-	
-	.icon-top-right {
-		text-align: right;
-		
+	#cardImg{
+		width:40%;
+		height:100%;
 	}
 	
-	.number{
-		font-size:10px;
+	.card-body{
+		position:relative;
+		margin-top:-40%;
+		margin-left:50%;
+		width:90%;
+		height:100%;
+	
 	}
 	
-	.glyphicon{
-		font-size:10px;
-	}
 	#title{
-		text-align:center;
-		padding-right:70px;
-		padding-top:5px;
-		font-size:15px;
-		color:#4d0099;
-		
+		font-size:20px;
+		margin-left:15%;
+		margin-top:-5%;
 	}
-	.decs {
-		overflow: hidden;
-		-webkit-line-clamp: 2;
-		-webkit-box-orient: vertical;
-		display: -webkit-box;
-		text-align: justify;
-		font-size: 12;
+	
+	.decs{
+		font-size:13px;
+		margin-right:10%;
+	}
+	
+	.icon-botton-left{
+		margin-left:55%;
+		margin-top:-5%;
 	}
 	
 
-	img{
-		width:180px;
-		height:150px;
+	#c1{
+		margin-left:5%;
+		margin-right:45%;
+		margin-top:-30%;
 	}
 	
-	
-	#load{
-		width:450px;
-		float:right;
-		text-align:center;
-		text-decoration-color: #4d0099;
-	    box-shadow: 0 2px 4px 0  #4d0099;
-	  	margin-right: 12px;
-	  	border: none;
-	}
 	#removeRecipeFromFolder{
-		font-size:10px;
+		margin-left:30%;
 	}
-			
 }
+
+@media screen and (max-width:765px){
+
+	
+	.card-body{
+		position:relative;
+		margin-top:-33%;
+		margin-left:50%;
+		width:90%;
+		height:100%;
+	
+	}
+	
+	.decs{
+		font-size:13px;
+		margin-right:10%;
+	}
+	
+	.icon-top-right{
+		margin-top:5%;
+	}
+	
+	.icon-botton-left{
+		margin-left:55%;
+		margin-top:-5%;
+	}
+	
+	.desc{
+		margin-top:5%;
+		margin-bottom:20%;
+	}
+	
+	#c1{
+		margin-left:5%;
+		margin-right:45%;
+		margin-top:-30%;
+	}
+	
+	#removeRecipeFromFolder{
+		margin-left:35%;
+	}
+
+}
+
+@media screen and (max-width:645px){
+
+	
+	.card-body{
+		position:relative;
+		margin-top:-39%;
+		margin-left:50%;
+		width:90%;
+		height:100%;
+	
+	}
+	
+	#title{
+		font-size:20px;
+		margin-left:15%;
+		margin-top:-5%;
+		
+	}
+	
+	.decs{
+		font-size:13px;
+		margin-right:10%;
+		margin-bottom:20%;
+	}
+	
+	.icon-top-right{
+		margin-top:5%;
+	}
+	
+	.icon-botton-left{
+		margin-left:55%;
+		margin-top:-5%;
+	}
+	
+	.desc{
+		margin-top:5%;
+		margin-bottom:20%;
+		font-size:10px;
+		margin-left:-40%;
+	}
+	
+	#c1{
+		margin-left:5%;
+		margin-right:45%;
+		margin-top:-30%;
+	}
+	
+	#removeRecipeFromFolder{
+		margin-left:35%;
+	}
+
+}
+
+
 

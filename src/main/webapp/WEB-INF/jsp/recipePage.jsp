@@ -15,6 +15,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Viola Melanzana</title>
+	<meta name="viewport" content="width=device-width, user-scalable=no">
 	
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -26,11 +27,13 @@
 	<link href="../css/homeCSS.css" rel="stylesheet" type="text/css">
 	<link href="../css/commonCSS.css" rel="stylesheet" type="text/css">
 	<link href="../css/recipePageCSS.css" rel="stylesheet" type="text/css">
-
+	<link href="../css/utilCSS.css" rel="stylesheet" type="text/css">
+	
 	<script src="../js/recipePageJS.js"></script>
 	
 	<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+	
 	
 </head>
 	
@@ -41,22 +44,31 @@
 	<div class="container space-nd" id="mainContainer">
 		   
 		   
+		<input type="hidden" id="idRicetta" value="${ricetta.id}">
+		<input type="hidden" id="mailUtente" value="${utente.mail}">
+		<input type="hidden" id="usernameUtente" value="${utente.username}">
+		
 		<div class="likeUp">		   
+			 <c:if test="${utente != null }">	
+				 <c:if test="${admin == null }">
+					 	<c:if test="${like == false }">	
+							<button class="fa fa-heart-o fa-2x submitLike" aria-hidden="true" id="submitLike" name="submitLike" onclick="gestisciLike(this)"></button>
+							<span class="likeUpNum">${ricetta.likes}</span>	
+						</c:if>
+						<c:if test="${like == true }">	
+							<button class="fa fa-heart fa-2x submitLike" aria-hidden="true" id="submitLike" name="submitLike" onclick="gestisciLike(this)"></button>
+							<span class="likeUpNum">${ricetta.likes}</span>	
+						</c:if>
+					</c:if>
+			  </c:if>
 			<c:if test="${utente != null }">	
-				<form id="handleLike" method="post" action="handleLike">	
-				   	<c:if test="${like == false }">	
-						<button type="submit" class="fa fa-heart-o fa-2x" aria-hidden="true" id="submitLikeUp" name="submitLike" onClick="myFunction(this)"></button>
-						<span class="likeUpNum">${ricetta.likes}</span>	
-					</c:if>
-					<c:if test="${like == true }">	
-						<button type="submit" class="fa fa-heart fa-2x" aria-hidden="true" id="submitLikeUp" name="submitLike" onClick="myFunction(this)"></button>
-						<span class="likeUpNum">${ricetta.likes}</span>	
-					</c:if>
-				</form>
+				 <c:if test="${admin == true }">
+				 	<button class="fa fa-heart-o fa-2x submitLike" aria-hidden="true"></button>
+					<span class="likeUpNum">${ricetta.likes}</span>
+				 </c:if>
 			</c:if>
-			
 			<c:if test="${utente == null }">	
-				<button  type="submit" class="fa fa-heart-o fa-2x" aria-hidden="true" id="submitLikeUp" onClick="notLoggedFunction()"></button>
+				<button  type="submit" class="fa fa-heart-o fa-2x submitLike" aria-hidden="true" id="submitLikeUp" onClick="notLoggedFunction()"></button>
 				<span class="likeUpNum">${ricetta.likes}</span>					
 			</c:if>
 		</div>
@@ -66,16 +78,19 @@
 			<div class="shadow">
 				<div class="media" >
 					<div class="media-left col-md-8 ">
-						<img id="img" src="${ricetta.base64Image}" alt="recipe image">
-						<p id="by">by ${ricetta.utentePubblicatore.mail}</p>
+						<img id="imgRecipe" src="${ricetta.base64Image}" alt="recipe image">
+						<c:if test="${ricetta.utentePubblicatore.mail != null}">
+							<p id="by">by ${ricetta.utentePubblicatore.mail}</p>
+						</c:if>
+						<c:if test="${ricetta.utentePubblicatore.mail == null}">
+							<p id="by">by chef n° ${ricetta.chefPubblicatore}</p>
+						</c:if>
 					</div>
 				
 					<div class="remove">
 						<c:if test="${ricetta.utentePubblicatore == utente}">
 							<c:if test="${ricetta.utentePubblicatore.master == true}">	
-								<form id="removeRecipeMaster"  method="post" action="removeRecipeMaster" >
-									<button type= "submit" id="remove" class="fa fa-trash-o fa-2x" aria-hidden="true" onClick="return confirm('Sicuro di voler rimuovere DEFINITIVAMENTE la tua ricetta dal sito web?')">Rimuovi</button>
-								</form>
+								<button id="remove" class="fa fa-trash-o fa-2x" aria-hidden="true" onClick="removeRecipeMaster()"></button>
 							</c:if>
 							
 							
@@ -86,7 +101,7 @@
 						</c:if>
 					</div>
 				
-					<div class="media-right col-md-4 col-sm-8 col-xs-1" >
+					<div class="media-right col-md-4 col-sm-8 col-xs-12" >
 						<dl>
 							<dt >
 								<span class="fa fa-cutlery" aria-hidden="true" id="icon"></span>   Difficolta:
@@ -127,7 +142,7 @@
 		<h3 class="titleSection">Ingredienti</h3>
 		<ul>
 			<c:forEach items="${ingredienti}" var="ingrediente">
-				<li class="ing">${ingrediente}</li>
+				<li class="ing">${ingrediente.ingrediente.nome} ${ingrediente.quantita}</li>
 			</c:forEach>
 		</ul>
 	
@@ -158,46 +173,45 @@
 	
 	
 	
+	<c:if test="${admin == null }">	
+	
 	
 	<c:if test="${utente != null }">					 
 		<div class="navbar navbar-light blue-grey lighten-5" id="buttonBar1">
-			<form  class="navbar-form navbar-left" id="handleLike" method="post" action="handleLike" >	
-				<button type="submit"  id="buttonType1" >			
-					<span class="fa fa-heart-o" aria-hidden="true" id="imgBut"></span>Mi piace
-				</button>
-	 		</form>
-	 	
-	 	<c:if test="${ban == false }">	
-			<div class="navbar-form navbar-right" >	
-				<button id="buttonType1" class="openmodal" onClick="modalFunction('#modalBan')">		
-					<span class="fa fa-ban" aria-hidden="true" id="imgBut"></span>  Segnala
-				</button>
-			</div>
-		</c:if>
-			
-		<c:if test="${ban == true }">
-			<div class="navbar-form navbar-right" >		
-				<button id="buttonType1" class="button disabled" title="Hai già segnalato questa ricetta" >		
-					<span class="fa fa-ban" aria-hidden="true" id="imgBut"></span>  Segnala
-				</button>
-			</div>
-		</c:if>
-	 	
-	 	<div class="navbar-form navbar-right" >
-			<button id="buttonType1" class="openmodal" onClick="modalFunction('#modalSave')">
-				<span class="fa fa-folder" aria-hidden="true" id="imgBut"></span>  Salva
+		
+		<div class="navbar-form navbar-left">	
+			<button class="buttonType1 " id="buttonLike" onclick="gestisciLike('#submitLike')">			
+				<span class="fa fa-heart-o" aria-hidden="true" id="imgBut"></span>Mi piace
 			</button>
 		</div>
-		
-		
-		<form id="addCart" class="navbar-form navbar-left" method="post" action="addCart" >	
-			<button type="submit" id="buttonType1" onClick="return confirm('Alcuni ingredienti potrebbero non essere presenti nel nostro store.Aggiungere i prodotti disponibli?');">
-				<span class="fa fa-shopping-basket" aria-hidden="true" id="imgBut"></span>Acquista
+			
+		<div class="navbar-form navbar-left" >	
+			<button class="buttonType1" id="buyButton" >
+					<span class="fa fa-shopping-basket" aria-hidden="true" id="imgBut"></span>Acquista
 			</button>
-		</form>
+	 	</div>
+	 	
+	 	<div class="navbar-form navbar-right" >
+	 		<button class="buttonType1" class="openmodal" onClick="modalFunction('#modalSave')">
+					<span class="fa fa-folder" aria-hidden="true" id="imgBut"></span>  Salva
+			</button>	
+		</div>
 		
-	
-	 </div>
+	 	<div class="navbar-form navbar-right" id="banBar" >
+		
+		 	<c:if test="${ban == false }">	
+					<button class="buttonType1" id="banButton" class="openmodal" onClick="modalFunction('#modalBan')">		
+						<span class="fa fa-ban" aria-hidden="true" id="imgBut"></span>  Segnala
+					</button>
+			</c:if>
+				
+			<c:if test="${ban == true }">
+					<button class="buttonType1" id="disabledButton" class="button disabled" title="Hai già segnalato questa ricetta" >		
+						<span class="fa fa-ban" aria-hidden="true" id="imgBut"></span>  Segnala
+					</button>
+			</c:if>
+		</div> 	
+	</div>
 </c:if>
 		 	
 		 	
@@ -212,25 +226,26 @@
 			
 					</div>
 						    
-					<div class="modal-body">
-						<c:if test="${folderList != null }">					 						
-							<form action= "addRecipe" method="post">
+					<div class="modal-body" id="addToFolderBody">
+						<c:if test="${folderList != null }">
+								<div class="modalSel" id="modalSelBody">
+														 						
 									<c:forEach items="${folderList}" var="raccolta">
-										<div class="form-check">
-											<input name="raccoltaSel" type="radio" id="${raccolta}" value="${raccolta}" checked="checked">
+										<div class="form-check" id="formRaccolte_${raccolta}">
+											<input name="raccoltaSel" type="radio" id="raccoltaSel" value="${raccolta}" checked="checked">
 											<label for="${raccolta}">${raccolta}</label>
 										</div>
-											   
-									</c:forEach>									     
-								    <button type="submit" class="btn btn-block mbtn tx-tfm vm-background-color">Aggiungi</button>									
-						   </form>
+									</c:forEach>		
+								</div>
+									<button id="submitAddToFolder" class="btn btn-block mbtn tx-tfm vm-background-color" >Aggiungi</button>
+														     
 						   <h1 id="opp">Oppure</h1>
-						    <button type="submit" class="btn btn-block mbtn tx-tfm vm-background-color" onClick="modalFunction('#myModal')">+ Nuova Raccolta</button>	
+						    <button type="submit" class="btn btn-block mbtn tx-tfm vm-background-color" onClick="modalFunction('#createNewFolder')">+ Nuova Raccolta</button>	
 						   
 						</c:if>
 							
 						<c:if test="${folderList == null }">	
-							 <button id="myBtn" onClick="modalFunction('#myModal')">+ Nuova Raccolta</button>	
+							 <button id="myBtn" onClick="modalFunction('#createNewFolder')">+ Nuova Raccolta</button>	
 						</c:if>
 					</div> 
 			</div>
@@ -245,30 +260,27 @@
 				    </div>
 				    
 				    <div class="modal-body">
-						  <form action= "ban" method="post">
 								  <div class="form-check">
-									    <input name="segnalazione" type="radio" id="Il contenuto è inappropriato" value="Il contenuto è inappropriato" checked="checked">
+									    <input name="segnalazione" type="radio" id="motivazione" value="Il contenuto è inappropriato" checked="checked">
 									    <label for="Il contenuto è inappropriato">Il contenuto è inappropriato</label>
 								  </div>
 								  
 								   <div class="form-check">
-									    <input name="segnalazione" type="radio" id="E' spam" value="E' spam" >
+									    <input name="segnalazione" type="radio" id="motivazione" value="E' spam" >
 									    <label for="E' spam">E' spam</label>
 								   </div>
 								   <div class="form-check">
-								  	  <input name="segnalazione" type="radio" value="La descrizione non corrisponde al titolo" >
+								  	  <input name="segnalazione" type="radio" id="motivazione" value="La descrizione non corrisponde al titolo" >
 								   	 <label for="La descrizione non corrisponde al titolo">La descrizione non corrisponde al titolo</label>
 								   </div>
 								   
 								   <div class="form-check"> 
-								   	  <input name="segnalazione" type="radio" value="altro" >							   
+								   	  <input name="segnalazione" type="radio" id="motivazione" value="altro" >							   
 								   	  <label for="altro">altro</label>
 								   </div>
 			
 
-						      	<button type="submit" id="ban" class="btn btn-block mbtn tx-tfm vm-background-color">Invia</button>
-							
-						 </form>
+						      	<button id="ban" class="btn btn-block mbtn tx-tfm vm-background-color">Invia</button>							
 						</div> 
 				    </div>
 			</div>
@@ -282,39 +294,36 @@
 				    </div>
 				    
 				    <div class="modal-body">
-						  <form action= "removeRecipe" method="post">
 								  <div class="form-check">
-									    <input name="remove" type="radio" id="r1" value="Voglio migliorare la ricetta" checked="checked">
+									    <input name="remove" type="radio" id="motivazioneRem" value="Voglio migliorare la ricetta" checked="checked">
 									    <label for="r1">Voglio migliorare la ricetta</label>
 								  </div>
 								  
 								   <div class="form-check">
-									    <input name="remove" type="radio" id="r2" value="Non è stata apprezzata dagli altri utenti" checked="checked">
+									    <input name="remove" type="radio" id="motivazioneRem" value="Non è stata apprezzata dagli altri utenti" checked="checked">
 									    <label for="r2">Non è stata apprezzata dagli altri utent</label>
 								  </div>
 								   <div class="form-check">
-									    <input name="remove" type="radio" id="r3" value="Non mi piace più" checked="checked">
+									    <input name="remove" type="radio" id="motivazioneRem" value="Non mi piace più" checked="checked">
 									    <label for="r3">Non mi piace più</label>
 								  </div>
 								   
 								   <div class="form-check">
-									    <input name="remove" type="radio" id="r4" value="Ci sono degli errori" checked="checked">
+									    <input name="remove" type="radio" id="motivazioneRem" value="Ci sono degli errori" checked="checked">
 									    <label for="r4">Ci sono degli errori</label>
 								  </div>
 								     <div class="form-check">
-									    <input name="remove" type="radio" id="r5" value="altro" checked="checked">
+									    <input name="remove" type="radio" id="motivazioneRem" value="altro" checked="checked">
 									    <label for="r5">altro</label>
 								  </div>
 			
 
-						      	<button type="submit" id="removeR" class="btn btn-block mbtn tx-tfm vm-background-color">Invia</button>
-							
-						 </form>
+						      	<button id="removeR" class="btn btn-block mbtn tx-tfm vm-background-color">Invia</button>
 						</div> 
 				    </div>
 			</div>
 				
-			<div id="myModal" class="modal">
+			<div class="modal" id="createNewFolder">
 			  <!-- Modal content -->
 			  <div class="modal-content">
 			    <div class="modal-header">
@@ -324,15 +333,13 @@
 			    </div>
 			    
 			    <div class="modal-body">
-			      <form action="newFolderRec"  method="post" >
 					<div class="form-group">
 						<label>Nome</label>
-						<input type="text" id="nome" class="form-control" placeholder="Assegna un nome alla tua raccolta..." name="nome">
+						<input type="text" id="nomeRaccolta" class="form-control" placeholder="Assegna un nome alla tua raccolta..." name="nome">
 						<label id="Nome"></label>
-					<button type="submit" id="saveFolder" name="submit" value="Submit" class="btn btn-block mbtn tx-tfm vm-background-color">Crea</button>
-					<button type="reset" data-dismiss="modal"class="btn btn-block mbtn tx-tfm vm-background-color">Annulla</button>
+						<button id="saveFolder" class="btn btn-block mbtn tx-tfm vm-background-color">Crea</button>
+						<button type="reset" data-dismiss="modal"class="btn btn-block mbtn tx-tfm vm-background-color">Annulla</button>
 					</div>
-				</form>
 			    </div>
 			    
 			  </div>			
@@ -367,21 +374,20 @@
 		</c:if>
 		<c:if test="${utente != null }">
 			<div class="text-center">
-				<form action="saveComment" id="saveComment" method="post" >
-					<div class="form-group">
-						<textarea name="contenuto"  rows="4" id="contenuto" class="form-control" placeholder="Scrivi qui il tuo commento "></textarea>
-						 <input type="submit"  class="fa fa-comment" aria-hidden="true" value="Commenta" id="submitComment" onClick="alert('Commento inserito');">
-					</div>
-				</form>
+				<div class="form-group">
+					<textarea id="contenuto" name="contenuto" rows="4" class="form-control" placeholder="Scrivi qui il tuo commento "></textarea>
+					<button id="submitComment" class="fa fa-comment" aria-hidden="true">Commenta</button>
+				</div>
 			</div>
 		</c:if>
-		<div class="text-center">
-	
-		<c:forEach items="${commentiRicetta}" var="commento" >
+	</c:if>
+		
+		<div id="divCommenti" class="text-center">
+			<c:forEach items="${commentiRicetta}" var="commento" >
 				<div class="card">
   					<div class="card-header">
 						<h1>${commento.pubblicatore.username}:</h1>
-						<img src="/images/logo.png"></img>
+						<img  src="/images/logo.png"></img>
 					</div>
 					 <div class="card-body">
 					 	<p class="card-text ">${commento.contenuto}</p>
@@ -405,17 +411,17 @@
 	</div>	
 	
 	<footer style="background-color: WhiteSmoke; padding-bottom: 6px; padding-top: 6px; margin-top: 12px;">
-			<div style="text-align: center;">
-	     		<a class="" href="/">
-					<img src= "/images/logo.png" id="logo">
-				</a>
-	   		</div>
-	   		<div style="text-align: center; margin-top: 18px;">
-	     		<h4>Corso di Web Computing</h4>
-	     		<div>Laurea Triennale in Informatica</div>	
-	     		<div>Università della Calabria</div>
-	     		<div>Anno Accademico 2021-2022</div>
-	   		</div>
+		<div style="text-align: center;">
+     		<a class="" href="/">
+				<img src= "/images/logo.png" id="logo">
+			</a>
+   		</div>
+   		<div style="text-align: center; margin-top: 18px;">
+     		<h4>Corso di Web Computing</h4>
+     		<div>Laurea Triennale in Informatica</div>	
+     		<div>Università della Calabria</div>
+     		<div>Anno Accademico 2021-2022</div>
+   		</div>
 	</footer>
 				
 	</body>

@@ -13,7 +13,7 @@ $(document).ready(function(){
 					for (var j = 0; j < 4; j++) {
 
 						if (j < risposta.length) {
-								$('#likeRecipe').append($('<div class="card mb-3 vm-card" id="orizCard">'+
+								$('#likeRecipe').append($('<div class="card mb-3 vm-card" id="orizCard_'+ risposta[j].id +'">'+
 										'<div class="row no-gutters">'+
 										'<div class="col-md-4">'+
 										'<a href="recipePage?ricetta_id=' + risposta[j].id + '">'+
@@ -23,9 +23,7 @@ $(document).ready(function(){
 										'<div class="col-md-8">'+
 										'<div class="card-body">'+ 
 										'<div class="icon-top-right">'+
-										'<form action="removeFromFolder" method="post" id="removeFromFolder">'+
-										'<button type="submit" id="removeRecipeFromFolder" name="removeRecipeFromFolder" value="'+risposta[j].id+ '" onClick="return confirm()">'+'Rimuovi</button>' +
-										'</form>'+
+										'<button id="removeRecipeFromFolder" name="removeRecipeFromFolder" value="'+risposta[j].id+ '" onClick="removeRecipe(' + risposta[j].id + ')">'+'Rimuovi</button>' +
 										'<i class="glyphicon glyphicon-comment vm-color icon"></i>'+
 										'<span class="number vm-color">'+ risposta[j].commenti.length + '</span>' +
 										'<i class="glyphicon glyphicon-heart vm-color icon"></i>' +
@@ -66,7 +64,7 @@ $(document).ready(function(){
 					if (count < risposta.length){
 						for (var j = count1; j < count1+4; j++) {
 							if (j < risposta.length) {
-									$('#likeRecipe').append($('<div class="card mb-3 vm-card" id="orizCard">'+
+									$('#likeRecipe').append($('<div class="card mb-3 vm-card" id="orizCard_'+ risposta[j].id +'">'+
 										'<div class="row no-gutters">'+
 										'<div class="col-md-4">'+
 										'<a href="recipePage?ricetta_id=' + risposta[j].id + '">'+
@@ -76,9 +74,7 @@ $(document).ready(function(){
 										'<div class="col-md-8">'+
 										'<div class="card-body">'+ 
 										'<div class="icon-top-right">'+
-										'<form action="removeFromFolder" method="post" id="removeFromFolder">'+
-										'<button type="submit" id="removeRecipeFromFolder" name="removeRecipeFromFolder" value="'+risposta[j].id+ '">'+'Rimuovi</button>' +
-										'</form>'+
+										'<button type="submit" id="removeRecipeFromFolder" name="removeRecipeFromFolder" value="'+risposta[j].id+ '" onClick="removeRecipe(' + risposta[j].id + ')">'+'Rimuovi</button>' +
 										'<i class="glyphicon glyphicon-comment vm-color icon"></i>'+
 										'<span class="number vm-color">'+ risposta[j].commenti.length + '</span>' +
 										'<i class="glyphicon glyphicon-heart vm-color icon"></i>' +
@@ -108,3 +104,28 @@ $(document).ready(function(){
 		});
 	});
 });
+
+function removeRecipe(idRicetta){ 
+	
+	var res= confirm('Sicuro di voler rimuovere quetsa ricetta dalla raccolta?');
+	if (res){
+		$.ajax({
+			type: "POST",
+			url: "/removeFromFolder",
+			data: {
+				id_ricetta: idRicetta
+				
+			},
+			success: function(risposta) { 
+				if(risposta== "OK"){
+					alert('Ricetta rimossa correttamente')
+					$("#orizCard_"+ idRicetta).remove();
+				}
+				else 
+					alert('Ricetta rimossa correttamente');
+			}
+		});	
+	}
+}		
+
+

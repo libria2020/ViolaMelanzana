@@ -13,16 +13,15 @@ $(document).ready(function(){
 
 		success: function(risposta) { 		
 					for (var j = 0; j < 4; j++) {
-					console.log(risposta[j].base64Image);
 						if (j < risposta.length) {
-								$('#likeRecipe').append($('<div class="card mb-3 vm-card" id="orizCard">'+
+								$('#likeRecipe').append($('<div class="card mb-3 vm-card" id="orizCard_"'+ risposta[j].id + '>'+
 										'<div class="row no-gutters">'+
-										'<div class="col-md-4">'+
+										'<div class="col-md-4 col-sl-6">'+
 										'<a href="recipePage?ricetta_id=' + risposta[j].id + '">'+
 										'<img src="' + risposta[j].base64Image + '"class="card-img" alt="..." id="cardImg">' +
 										'</a>' +
 										'</div>'+
-										'<div class="col-md-8">'+
+										'<div class="col-md-8 col-xs-9">'+
 										'<div class="card-body">'+ 
 										'<div class="icon-top-right">'+
 										'<i class="glyphicon glyphicon-comment vm-color icon"></i>'+

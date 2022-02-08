@@ -20,7 +20,7 @@ import application.utilities.Messaggi;
 @Controller
 public class SearchController {
 	
-	@GetMapping("search/category")
+	@GetMapping("category")
 	public ModelAndView getRecipeCategory(@RequestParam String categoria, HttpServletRequest request) { 
 		
 		ModelAndView model = new ModelAndView("search");
@@ -36,7 +36,7 @@ public class SearchController {
 		return model;
 	}
 	
-	@GetMapping("search/chef")
+	@GetMapping("chef")
 	public ModelAndView getRecipeChef(@RequestParam String key, HttpServletRequest request) { 
 		
 		ModelAndView model = new ModelAndView("search");

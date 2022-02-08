@@ -15,7 +15,7 @@
 	<head>
 	<meta charset="UTF-8">
 	<title>Viola Melanzana</title>
-	
+	<meta name="viewport" content="width=device-width, user-scalable=no">
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	<!-- jQuery library -->
@@ -41,7 +41,7 @@
 
 	 <div id="mainContainer" class="row">
 	 	<div class="container space-nd" id="mainContainer">
-			<div class="col-sm-3" id="left">
+			<div class="col-sm-3 " id="left">
 			    <h2 id="foldHead">Le mie raccolte</h2>			
 			    <dl>			
 				     <c:forEach items="${raccolteUtente}" var="raccolta">
@@ -58,7 +58,7 @@
 				</dl>
 			</div>
 			
-				<div class="col-sm-9" id="likeRecipe">
+				<div class="col-sm-9 " id="likeRecipe">
 					  	<h1 id="preferiti">I miei Preferiti</h1>
 					   	<div id="likeRecipe">
 					   	

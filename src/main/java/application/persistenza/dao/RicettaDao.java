@@ -3,6 +3,7 @@ package application.persistenza.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.model.IngredienteQuantita;
 import application.model.Ricetta;
 import application.model.RicettaProxy;
 import application.model.Utente;
@@ -11,9 +12,9 @@ public interface RicettaDao {
 
 	public Ricetta findByPrimaryKey(int id);
 
-	List<String> findIngredientByRecipeId(int id);
+	public ArrayList<IngredienteQuantita> findIngredientByRecipeId(int id);
 	public List<RicettaProxy> findAll();
-	public boolean deleteRequest(Ricetta ricetta,Utente utente,String motivazione);
+	public boolean deleteRequest(int idRicetta,String mailUtente,String motivazione);
 
 	
 	public List<RicettaProxy> findByPublisher(String key);

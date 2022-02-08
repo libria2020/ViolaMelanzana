@@ -15,8 +15,17 @@ public class Utente {
 	private boolean enable;
 	private String verificationCode;
 	private String tokenResetPassword;
+	private boolean request;
 	
 	public Utente() {}
+	
+	public boolean getRequest() {
+		return request;
+	}
+
+	public void setRequest(boolean request) {
+		this.request = request;
+	}
 	
 	public Utente(String mail, String nome, String cognome, boolean master) {
 		super();

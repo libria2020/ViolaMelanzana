@@ -23,7 +23,7 @@ public class CategoriaDaoJDBC implements CategoriaDao {
 	public List<Categoria> findAll() {
 		ArrayList<Categoria> categorie = null;
 
-		String query ="select * from categoria";
+		String query ="select * from categoria order by id";
 		
 		try {
 			categorie = new ArrayList<Categoria>();

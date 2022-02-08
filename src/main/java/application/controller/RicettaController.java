@@ -39,135 +39,140 @@ import application.persistenza.dao.jdbc.IdBroker;
 public class RicettaController {
 	
 	@GetMapping("/recipePage")
-	public String chooseRecipe(@RequestParam String ricetta_id, HttpServletRequest req) {
+	public ModelAndView chooseRecipe(@RequestParam String ricetta_id, HttpServletRequest req) {
 		HttpSession session = req.getSession();
-			
+
+		ModelAndView model = new ModelAndView("recipePage");
 		Utente ut = null;
-		
-		if ( session.getAttribute("utente") instanceof Utente ) {
+
+		if (session.getAttribute("utente") instanceof Utente) {
 			ut = (Utente) session.getAttribute("utente");
-		} else {
-			Amministratore admin = (Amministratore) session.getAttribute("utente");
 		}
-		
-		Ricetta ricetta = Database.getInstance().getFactory().getRicettaDao().findByPrimaryKey(Integer.parseInt(ricetta_id));
-		System.out.println(ricetta.getTitolo());
-		List<String> ingredienti=  Database.getInstance().getFactory().getRicettaDao().findIngredientByRecipeId(Integer.parseInt(ricetta_id));
-		if(ut!= null) {
-			boolean isLike= Database.getInstance().getFactory().getLikesRicettaDao().findForRecipeAndUser(ut.getMail(),Integer.parseInt(ricetta_id));
-			session.setAttribute("like", isLike);
-			boolean isBan= Database.getInstance().getFactory().getSegnalazioniRicettaDao().findForRecipeAndUser(ut.getMail(),Integer.parseInt(ricetta_id));
-			session.setAttribute("ban", isBan);
-			List <String> raccolteOk=new ArrayList<String>();
-			raccolteOk=Database.getInstance().getFactory().getRaccoltaDao().getFolderWithNoRecipe(ut.getMail(), ricetta);
-			if (raccolteOk.size()>0)
-				session.setAttribute("folderList", raccolteOk);
-			else
-				session.setAttribute("folderList", null);
+
+		Ricetta ricetta = Database.getInstance().getFactory().getRicettaDao()
+				.findByPrimaryKey(Integer.parseInt(ricetta_id));
+
+		ArrayList<IngredienteQuantita> ingredienti = Database.getInstance().getFactory().getRicettaDao().findIngredientByRecipeId(Integer.parseInt(ricetta_id));
+
+		if (ut != null) {
+			boolean isLike = Database.getInstance().getFactory().getLikesRicettaDao().findForRecipeAndUser(ut.getMail(),
+					Integer.parseInt(ricetta_id));
+			model.addObject("like", isLike);
+			boolean isBan = Database.getInstance().getFactory().getSegnalazioniRicettaDao()
+					.findForRecipeAndUser(ut.getMail(), Integer.parseInt(ricetta_id));
+			model.addObject("ban", isBan);
+			List<String> raccolteOk = new ArrayList<String>();
+			raccolteOk = Database.getInstance().getFactory().getRaccoltaDao().getFolderWithNoRecipe(ut.getMail(),
+					ricetta);
+			if (raccolteOk.size() > 0)
+				model.addObject("folderList", raccolteOk);
 		}
-		List <Commento> comm = new ArrayList<Commento>();
+		List<Commento> comm = new ArrayList<Commento>();
 		comm = Database.getInstance().getFactory().getCommentoDao().findForRecipe(ricetta.getId());
-		session.setAttribute("commentiRicetta", comm);
-		session.setAttribute("ricetta", ricetta);
-		session.setAttribute("ingredienti", ingredienti);
-		
-		return "recipePage";
+		model.addObject("commentiRicetta", comm);
+		model.addObject("ricetta", ricetta);
+		model.addObject("ingredienti", ingredienti);
+
+		return model;
 	}
-	
 	
 	@PostMapping("handleLike")
-	public String handleLike(HttpServletRequest req) {
-		HttpSession session = req.getSession();
-		Ricetta ricetta= (Ricetta) session.getAttribute("ricetta");
-		Utente ut= (Utente)session.getAttribute("utente");
-		Database.getInstance().getFactory().getLikesRicettaDao().handleLike(ricetta.getId() ,ut.getMail());
-		session.removeAttribute("like");
-		return "redirect:/recipePage?ricetta_id="+ ricetta.getId() ;
-			
+	@ResponseBody
+	public String handleLike(HttpServletRequest req, @RequestParam("idRicetta") int idRicetta,
+			@RequestParam("mail") String mail) {
+		String res = Database.getInstance().getFactory().getLikesRicettaDao().handleLike(idRicetta, mail);
+
+		return res;
 	}
-	
+
 	@PostMapping("addRecipe")
-	public String addRecipe(HttpServletRequest req,@RequestParam("raccoltaSel") String raccoltaSel) {
-		HttpSession session =req.getSession();
-		Ricetta ricetta= (Ricetta) session.getAttribute("ricetta");
-		Utente ut= (Utente)session.getAttribute("utente");
-		Database.getInstance().getFactory().getRaccoltaDao().addRecipeToFolder(raccoltaSel,ut.getMail(), ricetta.getId());
-		return "redirect:/recipePage?ricetta_id="+ ricetta.getId() ;
-			
-	}
-	
-	
-	@PostMapping("saveComment")
-	public String register(HttpServletRequest req, @RequestParam("contenuto") String contenuto) {
-		HttpSession session =req.getSession();
-		Ricetta ricetta= (Ricetta) session.getAttribute("ricetta");
-		Utente ut=(Utente) session.getAttribute("utente");
-		Utente publ= Database.getInstance().getFactory().getUtenteDao().findByUnique(ut.getUsername());
-		Timestamp data= Timestamp.valueOf(LocalDateTime.now());
-		Commento commento=new Commento(1,ricetta.getId(),publ,contenuto,data);
-		Database.getInstance().getFactory().getCommentoDao().save(commento);
-
-		return "redirect:/recipePage?ricetta_id="+ ricetta.getId() ;
-	}
-	
-	@PostMapping("addCart")
-	public String addCart(HttpServletRequest req) {
-		HttpSession session =req.getSession();
-		Ricetta ricetta= (Ricetta) session.getAttribute("ricetta");
-		Utente ut=(Utente) session.getAttribute("utente");
-		List<Prodotto> prodotti= new ArrayList<Prodotto>();
-		prodotti= Database.getInstance().getFactory().getProdottoDao().findProductByRecipeId(ricetta.getId());
-		if (Database.getInstance().getFactory().getOrdineDao().newOrder(ut.getMail(),prodotti))
-			session.setAttribute("ordineSalvato", "ok");
+	@ResponseBody
+	public String addRecipe(HttpServletRequest req, @RequestParam("raccoltaSel") String raccoltaSel,
+			@RequestParam("idRicetta") int idRicetta, @RequestParam("mail") String mail) {
+		if (Database.getInstance().getFactory().getRaccoltaDao().addRecipeToFolder(raccoltaSel, mail, idRicetta))
+			return "AGGIUNTA";
 		else
-			session.setAttribute("ordineSalvato", "no");
-
-		return "redirect:/recipePage?ricetta_id="+ ricetta.getId() ;
+			return "NON AGGIUNTA";
 
 	}
-	
+
+	@PostMapping("saveComment")
+	@ResponseBody
+	public String register(HttpServletRequest req, @RequestParam("contenuto") String contenuto,
+			@RequestParam("idRicetta") int idRicetta, @RequestParam("mail") String mail,
+			@RequestParam("username") String username) {
+
+		Utente publ = Database.getInstance().getFactory().getUtenteDao().findByUnique(username);
+
+		Timestamp data = Timestamp.valueOf(LocalDateTime.now());
+
+		Commento commento = new Commento(1, idRicetta, publ, contenuto, data);
+
+		if (Database.getInstance().getFactory().getCommentoDao().save(commento)) {
+			return "OK";
+		} else {
+			return "NO";
+		}
+	}
+
+	@PostMapping("addCart")
+	@ResponseBody
+	public String addCart(HttpServletRequest req, @RequestParam("idRicetta") int idRicetta,
+			@RequestParam("mail") String mail) {
+		List<Prodotto> prodotti = new ArrayList<Prodotto>();
+		prodotti = Database.getInstance().getFactory().getProdottoDao().findProductByRecipeId(idRicetta);
+		if (Database.getInstance().getFactory().getOrdineDao().newOrder(mail, prodotti))
+			return "ORDINE OK";
+		else
+			return "ORDINE NO";
+	}
+
 	@PostMapping("ban")
-	public String ban(HttpServletRequest req) {
-		HttpSession session =req.getSession();
-		Ricetta ricetta= (Ricetta) session.getAttribute("ricetta");
-		Utente ut=(Utente) session.getAttribute("utente");
-		Database.getInstance().getFactory().getSegnalazioniRicettaDao().add(ricetta.getId(), ut.getMail());
-		return "redirect:/recipePage?ricetta_id="+ ricetta.getId() ;		
+	@ResponseBody
+	public String ban(HttpServletRequest req, @RequestParam("idRicetta") int idRicetta,
+			@RequestParam("mail") String mail, @RequestParam("motivazione") String motivazione) {
+		if (Database.getInstance().getFactory().getSegnalazioniRicettaDao().add(idRicetta, mail, motivazione))
+			return "BAN";
+		else
+			return "NO";
 	}
-	
-	@PostMapping ("removeRecipeMaster")
-	public String removeRecipeMaster(HttpServletRequest req) {
-		HttpSession session =req.getSession();
-		Ricetta ricetta= (Ricetta) session.getAttribute("ricetta");
-		Database.getInstance().getFactory().getRicettaDao().delete(ricetta.getId());
-		return "redirect:/";
+
+	@PostMapping("removeRecipeMaster")
+	@ResponseBody
+	public String removeRecipeMaster(HttpServletRequest req, @RequestParam("idRicetta") int idRicetta) {
+		if (Database.getInstance().getFactory().getRicettaDao().update(idRicetta, false))
+			return "OK";
+		else
+			return "ERROR";
 	}
-	
+
 	@PostMapping("removeRecipe")
-	public String removeRecipe(HttpServletRequest req, @RequestParam("remove") String motivazione) {
-		HttpSession session =req.getSession();
-		Ricetta ricetta= (Ricetta) session.getAttribute("ricetta");
-		Utente ut=(Utente) session.getAttribute("utente");
-		Database.getInstance().getFactory().getRicettaDao().deleteRequest(ricetta,ut,motivazione);
-		return "redirect:/recipePage?ricetta_id="+ ricetta.getId() ;		
+	@ResponseBody
+	public String removeRecipe(HttpServletRequest req, @RequestParam("remove") String motivazione,
+			@RequestParam("idRicetta") int idRicetta, @RequestParam("mail") String mail) {
+		if (Database.getInstance().getFactory().getRicettaDao().deleteRequest(idRicetta, mail, motivazione))
+			return "OK";
+		else
+			return "NO";
 	}
-	
+
 	@PostMapping("newFolderRec")
-	public String newFolder(HttpServletRequest req,@RequestParam("nome") String nameFolder) {
-		HttpSession session = req.getSession();
-		Utente ut=(Utente) session.getAttribute("utente");
-		Ricetta ricetta= (Ricetta) session.getAttribute("ricetta");
-		List <Raccolta> raccolteUtente=new ArrayList<Raccolta>();
-		raccolteUtente=Database.getInstance().getFactory().getRaccoltaDao().getFolderForUser(ut.getMail());
-		for (Raccolta raccolta: raccolteUtente) {
+	@ResponseBody
+	public String newFolder(HttpServletRequest req, @RequestParam("nome") String nameFolder,
+			@RequestParam("mail") String mail) {
+		List<Raccolta> raccolteUtente = new ArrayList<Raccolta>();
+		raccolteUtente = Database.getInstance().getFactory().getRaccoltaDao().getFolderForUser(mail);
+		for (Raccolta raccolta : raccolteUtente) {
 			if (raccolta.getNome().equals(nameFolder)) {
-				return "redirect:/recipePage?ricetta_id="+ ricetta.getId() ;
-	
+				return "ESISTE";
+
 			}
 		}
-		Database.getInstance().getFactory().getRaccoltaDao().newFolder(nameFolder, ut.getMail(),ricetta);
-		return "redirect:/recipePage?ricetta_id="+ ricetta.getId() ;
-	
+		if (Database.getInstance().getFactory().getRaccoltaDao().newFolder(nameFolder, mail))
+			return "CREATA";
+		else
+			return "NO";
+
 	}
 
 	@GetMapping("/insertRecipePage")
@@ -339,6 +344,5 @@ public class RicettaController {
 			return "NO";
 		}
 	}
-	
-	
+
 }

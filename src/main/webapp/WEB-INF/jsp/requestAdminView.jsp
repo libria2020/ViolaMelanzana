@@ -22,12 +22,12 @@
 	<script src="../js/requestAdminViewJS.js"></script>
 	<link rel="icon" type="image/x-icon" href="/images/favicon.ico">
 	
-	
 </head>
 		<body>
 		
-			   <jsp:include page="navbar.jsp"></jsp:include>
-		
+			 <jsp:include page="navbar.jsp"></jsp:include>
+			
+			 <c:if test="${admin == true }">	
 				<div class="container space-nd" id="mainContainer">
 					<div class="row">
 
@@ -48,12 +48,12 @@
 
 										<div class="table-responsive table mt-2" id="dataTableDiv"
 											role="grid" aria-describedby="dataTable_info">
-											<table class="table my-0" id="dataTable">
+											<table class="table table-hover" id="dataTable">
 											
 												<thead>
 													<tr>
 														<th>Username</th>
-														<th>N°richieste</th>
+														<th>Stato richieste</th>
 													</tr>
 												</thead>
 												<tbody id="allUsersTableView">
@@ -62,39 +62,46 @@
 												<tfoot>
 													<tr>
 														<th><strong>Username</strong></th>
-														<th><strong>N°richieste</strong></th>
+														<th><strong>Stato richieste</strong></th>
 														
 													</tr>
 												</tfoot>												
 											</table>
+											
 										</div>											
 								     	<a href="" onclick="banList()">Segnalazioni</a>
 									</div>
-									
+								
 								</div>
+									<div class="row legDiv">
+											<p>*<span class="fa fa-check-square-o" aria-hidden="true" style="color:green" ></span>= non ci sono nuove richieste</p>
+											<p>*<span class="fa fa-minus-square-o" aria-hidden="true" style="color:red"></span>= ci sono richieste in sospeso</p>
+									</div>
 							</div>
 
 							<div class="col-12 col-lg-9" id="userReqTable">
 								<div class="card shadow mb-3">
 
-									<div class="card-header py-3">
-										<p class="text-primary m-0 fw-bold" id="user">Richieste di: </p>
+									<div class="card-header py-3" id="user">
+										
 									</div>
 
 									<div class="card-body shadow">
 
-									<div class="table-responsive table mt-1" id="dataTable"role="grid" aria-describedby="dataTable_info">
-											<table class="table my-0" id="dataTable">
+									<div class="table-responsive table mt-1" id="dataTable1"role="grid" aria-describedby="dataTable_info">
+											<table class="table table-hover" id="dataTable1">
 												<thead>
 													<tr>
 														<th>Ambito richiesta</th>
 														<th>Descrizione</th>
 														<th>ID</th>
 														<th>Altro</th>
+														<th></th>
+														<th></th>
 													</tr>
 												</thead>
 												<tbody id="requestTableView">
-													
+												
 												</tbody>
 											
 											</table>
@@ -114,7 +121,7 @@
 									<div class="card-body shadow">
 
 									<div class="table-responsive table mt-1" id="dataTableBan"role="grid" aria-describedby="dataTable_info">
-											<table class="table my-0" id="dataTable">
+											<table class="table table-hover" id="dataTable">
 												<thead>
 													<tr>
 														<th>Titolo</th>
@@ -139,25 +146,24 @@
 				</div>
 			<div class="modal" id="modalRecipe">
 				 <div class="modal-content">
-					<div id="container-insert" class="container fluid">
-					</div>
+
 				</div>
 			</div>
+			</c:if>
 			
-			
-			<footer style="background-color: WhiteSmoke; padding-bottom: 6px; padding-top: 6px; margin-top: 12px;">
-				<div style="text-align: center;">
-		     		<a class="" href="/">
-						<img src= "/images/logo.png" id="logo">
-					</a>
-		   		</div>
-		   		<div style="text-align: center; margin-top: 18px;">
-		     		<h4>Corso di Web Computing</h4>
-		     		<div>Laurea Triennale in Informatica</div>	
-		     		<div>Università della Calabria</div>
-		     		<div>Anno Accademico 2021-2022</div>
-		   		</div>
-			</footer>
-			
+		<footer style="background-color: WhiteSmoke; padding-bottom: 6px; padding-top: 6px; margin-top: 12px;">
+			<div style="text-align: center;">
+	     		<a class="" href="/">
+					<img src= "/images/logo.png" id="logo">
+				</a>
+	   		</div>
+	   		<div style="text-align: center; margin-top: 18px;">
+	     		<h4>Corso di Web Computing</h4>
+	     		<div>Laurea Triennale in Informatica</div>	
+	     		<div>Università della Calabria</div>
+	     		<div>Anno Accademico 2021-2022</div>
+	   		</div>
+		</footer>
+	
 		</body>
 </html>

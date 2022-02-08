@@ -38,7 +38,7 @@ public class FolderController {
 		session.setAttribute("raccolteUtente", raccolteUtente);
 		return "folderLike";
 	}
-	
+		
 	@PostMapping("newFolder")
 	public String newFolder(HttpServletRequest req,@RequestParam("nome") String nameFolder) {
 		HttpSession session = req.getSession();
@@ -49,7 +49,52 @@ public class FolderController {
 			if (raccolta.getNome().equals(nameFolder)) 
 				return "folderLike";
 		}
-		Database.getInstance().getFactory().getRaccoltaDao().newFolder(nameFolder, ut.getMail(),null);
+		Database.getInstance().getFactory().getRaccoltaDao().newFolder(nameFolder, ut.getMail());
+		return "redirect:/singleFolder?nome="+nameFolder;
+
+	}
+	
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	@GetMapping("search/like")
+	@ResponseBody
+	public List <Ricetta> getLikeOther(HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		Utente ut=(Utente) session.getAttribute("utente");
+		List <Ricetta> ricettePreferite=new ArrayList<Ricetta>();
+		ricettePreferite=Database.getInstance().getFactory().getLikesRicettaDao().findForUser(ut.getMail());
+		return ricettePreferite;
+	}
+	
+	@GetMapping("search/folderLike")
+	public String getFolderLikeOther(HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		Utente ut=(Utente) session.getAttribute("utente");
+		List <Raccolta> raccolteUtente=new ArrayList<Raccolta>();
+		raccolteUtente=Database.getInstance().getFactory().getRaccoltaDao().getFolderForUser(ut.getMail());
+		session.setAttribute("raccolteUtente", raccolteUtente);
+		return "folderLike";
+	}
+		
+	@PostMapping("search/newFolder")
+	public String newFolderOther(HttpServletRequest req,@RequestParam("nome") String nameFolder) {
+		HttpSession session = req.getSession();
+		Utente ut=(Utente) session.getAttribute("utente");
+		List <Raccolta> raccolteUtente=new ArrayList<Raccolta>();
+		raccolteUtente=(List<Raccolta>) session.getAttribute("raccolteUtente");
+		for (Raccolta raccolta: raccolteUtente) {
+			if (raccolta.getNome().equals(nameFolder)) 
+				return "folderLike";
+		}
+		Database.getInstance().getFactory().getRaccoltaDao().newFolder(nameFolder, ut.getMail());
 		return "redirect:/singleFolder?nome="+nameFolder;
 
 	}

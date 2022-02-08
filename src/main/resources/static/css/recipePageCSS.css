@@ -111,7 +111,7 @@
 	font-size:110%;
 }
 
-#img{
+#imgRecipe{
 	width:450px;
 	height:300px;
 }
@@ -131,7 +131,7 @@ dt{
 	
 }
 
-#submitLikeUp{
+.submitLike{
 	background:transparent;
     border:none; 
 }
@@ -171,6 +171,7 @@ dt{
 	width:45%;	
 	margin:5% auto;
 	margin-left:25%;
+
 }
 
 #buttonType{
@@ -184,7 +185,7 @@ dt{
 	  background-color: #4d0099;
 }
 
- #buttonType1{
+ .buttonType1{
 	  border-radius: 20%/40%;
 	  border: none;
 	  color: white;
@@ -203,7 +204,7 @@ dt{
 .fa:hover {
   color: #4d0099;
 }
-.disabled {
+#disabledButton {
     opacity: 0.6;
     cursor: not-allowed;
 }
@@ -280,8 +281,8 @@ p{
 }
 
 #video{
+	margin-top: -0.5%;
 	text-align:center;
-	margin-top:40%;
 }
 
 iframe{
@@ -347,7 +348,7 @@ textarea{
 	 background-color: #320d6f;
 }
 
-#buttonType1:hover {
+.buttonType1:hover {
 	 background-color: #320d6f;
 }
 
@@ -368,69 +369,62 @@ textarea{
 }
 
 
-@media screen and (max-width: 992px) {
- .media{
-	margin: auto ;
-  }
-  
-  .media-body{
-  	float:right;
-  	bottom:420px;
-  	margin-left:350px;
-  }
-  
-  #by{
-  	float:right;
-  }
-
- .shadow img {
- 	object-fit: contain;
- }
- #img{
- 	width:350px;
- }
- .shadow{
- 	  height: 400px;
- 	
- }
-#remove{
-	padding-bottom:60px;
-}
- 
-}
-
-@media screen and (max-width: 768px) {
 
 
-	.media-body{
-  		bottom:220px;
-  		float:left;
-  		margin-left:0px;
-  		
-  }
-  .shadow{
- 	  height: 450px;
- 	
- }
- #img{
- 	padding-bottom:50px;
- }
-
-	.remove {
-	height:1px;
-} 
-#remove{
-	position:relative;
-	top:-50px;
-}
-	#by{
-		float:left;
-		padding-top: 70px;
-	}
- 
+@media screen and (max-width:991px) {
+		#imgRecipe {
+			width:350px;
+			height:200px;
+			margin-top:10% ;
+			margin-left:30%;
+		}
+		
+		.media-right {
+			margin-top:-25% ;
+			margin-left:30%;
+		}
+		
+		#by{
+			margin-top:40%;
+		}
+		
+		#remove{
+			margin-top:-100%;
+		}
+		
+		#buttonBar1{
+			width:70%;
+			margin-left:16%;
+		}
+		.card-header img{
+			margin-top:-8%;
+		}
 
 } 
 
 
 
+@media screen and (max-width:616px){
+	#imgRecipe {
+			width:300px;
+			height:150px;
+			margin-top:10% ;
+			margin-left:20%;
+		}
+		
+		.media-right {
+			margin-top:-40% ;
+			margin-left:20%;
+		}
+		
+		#by{
+			margin-top:65%;
+		}
+		
+		#remove{
+			margin-top:-100%;
+		}
+		
+
+}
 

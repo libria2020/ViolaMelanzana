@@ -20,7 +20,7 @@ private Connection conn;
 	}
 	
 	@Override
-	public synchronized boolean newFolder(String nome,String mail_utente,Ricetta ricetta) {
+	public synchronized boolean newFolder(String nome,String mail_utente) {
 		if(mail_utente==null)
 			return false;
 		try {
@@ -28,10 +28,7 @@ private Connection conn;
 			PreparedStatement prst = conn.prepareStatement(insert);
 			
 			prst.setString(1,mail_utente);
-			if(ricetta==null)
-				prst.setInt(2, 1);
-			else
-				prst.setInt(2, ricetta.getId());
+			prst.setInt(2, 1);
 			prst.setString (3, nome);
 
 			prst.executeUpdate();
@@ -53,7 +50,6 @@ private Connection conn;
 			ResultSet rs= prst.executeQuery();
 			
 			if(!rs.next()) {
-				System.out.println("la raccolta scelta non esiste");
 				return false;
 			}
 			

@@ -20,42 +20,38 @@ public class LikesRicettaDaoJDBC implements LikesRicettaDao {
 		}
 
 		@Override
-		public synchronized boolean handleLike(int idRicetta, String mail_utente) {
-			if(mail_utente == null)
-				return false;
-			
+		public synchronized String handleLike(int idRicetta, String mail_utente) {
+			if (mail_utente == null)
+				return "NO";
+
 			String check = "SELECT * FROM likes_ricetta WHERE mail_utente=? AND id_ricetta=?;";
-			String query=null;
-			boolean save=true;
+			String query = null;
+			String res = null;
 			try {
-				
+
 				PreparedStatement prst = conn.prepareStatement(check);
-				prst.setString(1,mail_utente);
+				prst.setString(1, mail_utente);
 				prst.setInt(2, idRicetta);
-				System.out.println("LRDJ35 " + mail_utente + "  " + idRicetta);
+
 				ResultSet rs = prst.executeQuery();
 				if (rs.next()) {
 					query = "DELETE from likes_ricetta WHERE mail_utente=? AND id_ricetta=?;";
-					System.out.println("delete");
-					save=false;
+					res = "LIKEOFF";
+				} else {
+					query = "INSERT INTO likes_ricetta VALUES(?,?);";
+					res = "LIKEON";
 				}
-				else {
-					query="INSERT INTO likes_ricetta VALUES(?,?);";
-					System.out.println("add");
-					
-				}
-					
-	
+
 				PreparedStatement prst1 = conn.prepareStatement(query);
-				prst1.setString(1,mail_utente);
+				prst1.setString(1, mail_utente);
 				prst1.setInt(2, idRicetta);
-				
+
 				prst1.executeUpdate();
-				return save;
-					
-				} catch(SQLException e) {
-					e.printStackTrace();
-					return false;
+				return res;
+
+			} catch (SQLException e) {
+				e.printStackTrace();
+				return "NO";
 			}
 
 		}

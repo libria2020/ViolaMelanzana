@@ -16,6 +16,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.model.Ingrediente;
+import application.model.IngredienteQuantita;
+import application.model.Quantita;
 import application.model.Ricetta;
 import application.model.RicettaProxy;
 import application.model.Utente;
@@ -234,16 +237,20 @@ public class RicettaDaoJDBC implements RicettaDao {
 	@Override
 	public Ricetta findByPrimaryKey(int id) {
 		Ricetta ricetta = null;
-		String query ="SELECT * from ricetta WHERE id=?;";
-		
+		String query = "SELECT * from ricetta WHERE id=?;";
+
 		try {
 			PreparedStatement pr = conn.prepareStatement(query);
 			pr.setInt(1, id);
 
 			ResultSet rs = pr.executeQuery();
-			if(rs.next()) {
-				ricetta= new Ricetta();
-				ricetta.setApprovazione(rs.getBoolean("approvazione"));;
+			if (rs.next()) {
+				ricetta = new Ricetta();
+				ArrayList<IngredienteQuantita> ingredienti = new ArrayList<IngredienteQuantita>();
+				ingredienti = this.findIngredientByRecipeId(id);
+				ricetta.setListaIngredientiConQuantita(ingredienti);
+				ricetta.setApprovazione(rs.getBoolean("approvazione"));
+				;
 				ricetta.setCommenti(Database.getInstance().getFactory().getCommentoDao().findForRecipe(id));
 				ricetta.setConsiglio(rs.getString("consiglio"));
 				ricetta.setDescrizione(rs.getString("descrizione"));
@@ -258,12 +265,14 @@ public class RicettaDaoJDBC implements RicettaDao {
 				ricetta.setDosi(rs.getString("dosi"));
 				ricetta.setImg(rs.getString("image_ricetta"));
 				ricetta.setVideo(rs.getString("video_preparazione"));
-				
-				if(ricetta.getImg() != null) {
+				ricetta.setChefPubblicatore(rs.getInt("chef"));
+				;
+
+				if (ricetta.getImg() != null) {
 					BufferedReader read;
 					try {
 						read = new BufferedReader(new FileReader(ricetta.getImg()));
-						if(read.ready()) {
+						if (read.ready()) {
 							String base64 = read.readLine();
 							ricetta.setBase64Image(base64);
 						}
@@ -276,35 +285,43 @@ public class RicettaDaoJDBC implements RicettaDao {
 						e.printStackTrace();
 					}
 				}
-				
-				Utente ut = Database.getInstance().getFactory().getUtenteDao().findByPrimaryKey(rs.getString("mail_utente_pubblicatore"));
+
+				Utente ut = Database.getInstance().getFactory().getUtenteDao()
+						.findByPrimaryKey(rs.getString("mail_utente_pubblicatore"));
 				ricetta.setUtentePubblicatore(ut);
-			}	
-		} catch(SQLException e) {
+			}
+		} catch (SQLException e) {
 			e.getStackTrace();
 		}
-		
+
 		return ricetta;
 	}
-	
+
 	@Override
-	public List<String> findIngredientByRecipeId(int id) {
-		List<String> ingredienti=new ArrayList<String>();
-		String query ="SELECT * from contiene WHERE id_ricetta=?;";
+	public ArrayList<IngredienteQuantita> findIngredientByRecipeId(int id) {
+		ArrayList<IngredienteQuantita> ingredienti = new ArrayList<IngredienteQuantita>();
+		String query = "SELECT * from contiene WHERE id_ricetta=?;";
 		try {
 			PreparedStatement pr = conn.prepareStatement(query);
 			pr.setInt(1, id);
 			ResultSet rs = pr.executeQuery();
-			while(rs.next()) {
-				String ingr= rs.getString("nome_ingrediente") + " " + String.valueOf(rs.getInt("quantita")) + " " + rs.getString("unita_di_misura");
-				ingredienti.add(ingr);
+			while (rs.next()) {
+				Ingrediente i = new Ingrediente();
+				Quantita q = new Quantita();
+				i.setNome(rs.getString("nome_ingrediente"));
+				q.setQuantita(rs.getInt("quantita"));
+				q.setUnitaDiMisura(rs.getString("unita_di_misura"));
+				IngredienteQuantita ing = new IngredienteQuantita();
+				ing.setIngrediente(i);
+				ing.setQuantita(q);
+				ingredienti.add(ing);
 			}
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			e.getStackTrace();
 		}
-		
+
 		return ingredienti;
-		
+
 	}
 	
 	@Override
@@ -545,20 +562,16 @@ public class RicettaDaoJDBC implements RicettaDao {
 	}
 
 	@Override
-	public boolean deleteRequest(Ricetta ricetta, Utente utente, String motivazione) {
-		if (ricetta == null)
-			return false;
-		
+	public boolean deleteRequest(int idRicetta, String mail_utente, String motivazione) {
 		try {
 			String query = "INSERT INTO richiesta_rimozione_ricetta VALUES(?,?,?)";
 			PreparedStatement pr = conn.prepareStatement(query);
-			pr.setInt(1,ricetta.getId());
-			pr.setString(2,utente.getMail());
+			pr.setInt(1, idRicetta);
+			pr.setString(2, mail_utente);
 			pr.setString(3, motivazione);
 			pr.executeUpdate();
 			return true;
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -609,17 +622,18 @@ public class RicettaDaoJDBC implements RicettaDao {
 	@Override
 	public List<Ricetta> getWithBan() {
 		ArrayList<Ricetta> ricetta = null;
-		String query ="select * FROM ricetta WHERE approvazione IS TRUE order by segnalazioni desc;";
-		
+		String query = "select * FROM ricetta WHERE approvazione IS TRUE order by segnalazioni desc;";
+
 		try {
 			ricetta = new ArrayList<Ricetta>();
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(query);
-			
-			while(rs.next()) {
-				if(rs.getInt("segnalazioni") > 0 ) {
+
+			while (rs.next()) {
+				if (rs.getInt("segnalazioni") > 0) {
 					Ricetta r = new Ricetta();
-					Utente u= Database.getInstance().getFactory().getUtenteDao().findByPrimaryKey(rs.getString("mail_utente_pubblicatore"));
+					Utente u = Database.getInstance().getFactory().getUtenteDao()
+							.findByPrimaryKey(rs.getString("mail_utente_pubblicatore"));
 					r.setId(rs.getInt("id"));
 					r.setTitolo(rs.getString("titolo"));
 					r.setUtentePubblicatore(u);
@@ -627,13 +641,12 @@ public class RicettaDaoJDBC implements RicettaDao {
 					ricetta.add(r);
 				}
 			}
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			e.getStackTrace();
 		}
-		
+
 		return ricetta;
 	}
-
 
 	@Override
 	public boolean delete(int id_ricetta) {
@@ -645,14 +658,14 @@ public class RicettaDaoJDBC implements RicettaDao {
 			PreparedStatement p4 = conn.prepareStatement("DELETE FROM raccolta WHERE id_ricetta=?;");
 			PreparedStatement p5 = conn.prepareStatement("DELETE FROM ricetta_categoria WHERE id_ricetta=?;");
 			PreparedStatement p6 = conn.prepareStatement("DELETE FROM ricetta WHERE id=?;");
-		
+
 			p.setInt(1, id_ricetta);
 			p.executeUpdate();
 			p1.setInt(1, id_ricetta);
 			p1.executeUpdate();
 			p2.setInt(1, id_ricetta);
 			p2.executeUpdate();
-			p3.setInt(1,id_ricetta);
+			p3.setInt(1, id_ricetta);
 			p3.executeUpdate();
 			p4.setInt(1, id_ricetta);
 			p4.executeUpdate();
@@ -664,29 +677,43 @@ public class RicettaDaoJDBC implements RicettaDao {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		return true;
 	}
 
-
 	@Override
-	public boolean update(int id_ricetta,boolean approvazione) {
-		System.out.println("quetsa RICETTA " + id_ricetta + " - " + approvazione);
+	public boolean update(int id_ricetta, boolean approvazione) {
 		try {
 			String query = "UPDATE ricetta SET data_pubblicazione=?,approvazione=? WHERE id=?";
 			PreparedStatement pr = conn.prepareStatement(query);
-			Timestamp date= Timestamp.from(Instant.now());
-			pr.setTimestamp(1,date);
+			Timestamp date = Timestamp.from(Instant.now());
+			pr.setTimestamp(1, date);
 			pr.setBoolean(2, approvazione);
-			pr.setInt(3,id_ricetta);
+			pr.setInt(3, id_ricetta);
 			pr.executeUpdate();
+			if (approvazione == false) {
+				try {
+					String query1 = "DELETE FROM raccolta WHERE id_ricetta=?";
+					String query2 = "DELETE FROM likes_ricetta WHERE id_ricetta=?";
+					PreparedStatement pr1 = conn.prepareStatement(query1);
+					PreparedStatement pr2 = conn.prepareStatement(query2);
+					pr1.setInt(1, id_ricetta);
+					pr2.setInt(1, id_ricetta);
+					pr1.executeUpdate();
+					pr2.executeUpdate();
+				} catch (SQLException e) {
+					e.printStackTrace();
+					return false;
+				}
+
+			}
 			return true;
-		}
-		catch (SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
 		}
 	}
-	
+
+
 
 }

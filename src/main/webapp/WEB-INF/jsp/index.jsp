@@ -189,7 +189,7 @@
 	<!-- Load More Content -->
 	<div class="container space">
 		<div>
-			<button id="load" class="vm-btn-load vm-background-color"> Carica altre ricette popolari </button>
+			<button id="load" class="vm-btn-load vm-background-color"> Carica altro </button>
 		</div>
 	</div>
 	

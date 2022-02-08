@@ -24,44 +24,97 @@ public class SingleFolderController {
 		return "singleFolder";
 	}
 	
-	@GetMapping("/folder")
+	@GetMapping("folder")
 	@ResponseBody
 	public List<Ricetta> getFolder(HttpServletRequest req) { 
 		HttpSession session = req.getSession();
 		Utente ut=(Utente) session.getAttribute("utente");
 		String nome = (String) session.getAttribute("nome");
-		System.out.println("nome= " + nome);
 		List<Ricetta> list = Database.getInstance().getFactory().getRaccoltaDao().getRecipeForFolder(ut.getMail(), nome);
 		return list;
 	}
 	
-	/*@GetMapping("/removeFolder")
-	public String removeRecipe(@RequestParam String id_ricetta,@RequestParam String nome, HttpServletRequest req) { 
-		HttpSession session = req.getSession();
-		Utente ut=(Utente) session.getAttribute("utente");
-		Database.getInstance().getFactory().getRaccoltaDao().deleteFolder(nome, ut.getMail());
-		return "redirect:/folderLike";
-
-	}*/
 	
 	@PostMapping("deleteFolder")
-	public String deleteFolder(HttpServletRequest req) { 
+	@ResponseBody
+	public String deleteFolder(HttpServletRequest req, @RequestParam("nomeRaccolta") String nome) { 
 		HttpSession session = req.getSession();
-		Utente ut=(Utente) session.getAttribute("utente");
-		String nome = (String) session.getAttribute("nome");
-		Database.getInstance().getFactory().getRaccoltaDao().deleteFolder(nome, ut.getMail());
-		return "redirect:/folderLike";
+		Utente ut=(Utente) session.getAttribute("utente");;
+		if (Database.getInstance().getFactory().getRaccoltaDao().deleteFolder(nome, ut.getMail()))
+			return "OK";
+		else
+			return "ERROR";
 
 	}
 	
 	
-	@PostMapping("removeFromFolder")
-	public String removeRecipeFromFolder(@RequestParam(value="removeRecipeFromFolder") String id_ricetta,HttpServletRequest req) {
+	@PostMapping("/removeFromFolder")
+	@ResponseBody
+	public String removeRecipeFromFolder(@RequestParam("id_ricetta")int id_ricetta,HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		String nome=(String) session.getAttribute("nome");
+		Utente ut=(Utente) session.getAttribute("utente");
+		if(Database.getInstance().getFactory().getRaccoltaDao().deleteRecipeFromFolder(nome, ut.getMail(),id_ricetta))
+			return "OK";
+		else
+			return "ERROR";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@GetMapping("search/singleFolder")
+	public String getSingleFolderOther(@RequestParam String nome,HttpServletRequest req) { 
+		HttpSession session = req.getSession();
+		session.setAttribute("nome", nome);
+		return "singleFolder";
+	}
+	
+	@GetMapping("search/folder")
+	@ResponseBody
+	public List<Ricetta> getFolderOther(HttpServletRequest req) { 
 		HttpSession session = req.getSession();
 		Utente ut=(Utente) session.getAttribute("utente");
 		String nome = (String) session.getAttribute("nome");
-		Database.getInstance().getFactory().getRaccoltaDao().deleteRecipeFromFolder(nome, ut.getMail(), Integer.parseInt(id_ricetta));
-		return "redirect:/singleFolder?nome="+ nome;
+		List<Ricetta> list = Database.getInstance().getFactory().getRaccoltaDao().getRecipeForFolder(ut.getMail(), nome);
+		return list;
+	}
+	
+	
+	@PostMapping("search/deleteFolder")
+	@ResponseBody
+	public String deleteFolderOther(HttpServletRequest req, @RequestParam("nomeRaccolta") String nome) { 
+		HttpSession session = req.getSession();
+		Utente ut=(Utente) session.getAttribute("utente");;
+		if (Database.getInstance().getFactory().getRaccoltaDao().deleteFolder(nome, ut.getMail()))
+			return "OK";
+		else
+			return "ERROR";
+
+	}
+	
+	
+	@PostMapping("search/removeFromFolder")
+	@ResponseBody
+	public String removeRecipeFromFolderOther(@RequestParam("id_ricetta") String id_ricetta,@RequestParam("nomeRaccolta") String nome,HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		Utente ut=(Utente) session.getAttribute("utente");
+		if(Database.getInstance().getFactory().getRaccoltaDao().deleteRecipeFromFolder(nome, ut.getMail(), Integer.parseInt(id_ricetta)))
+			return "OK";
+		else
+			return "ERROR";
 	}
 }
 	

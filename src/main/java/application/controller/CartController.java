@@ -28,6 +28,21 @@ public class CartController {
 		return model;
 	}
 	
+	@GetMapping("search/cart")
+	public ModelAndView CartOther(HttpServletRequest req) {
+		UtenteControlloLog utenteLoggato = new UtenteControlloLog();
+		ModelAndView model = new ModelAndView();
+		if (!utenteLoggato.isNull(req)) {
+			Ordine ordine = Database.getInstance().getFactory().getOrdineDao().findCurrentFromUser(utenteLoggato.getUtente(req).getMail());
+			model.addObject("ordine", ordine);
+			model.setViewName("cart");
+			return model;
+		}
+		
+		model.setViewName("cart");
+		return model;
+	}
+	
 	@PostMapping("/shippingList")
 	public String ShippingList(HttpServletRequest req) {
 			return "shippingList";

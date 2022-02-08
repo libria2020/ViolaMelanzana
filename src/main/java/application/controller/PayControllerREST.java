@@ -22,8 +22,18 @@ public class PayControllerREST {
 		Ordine ordine = Database.getInstance().getFactory().getOrdineDao().findCurrentFromUser(utenteLoggato.getUtente(req).getMail());
 		ordine.setStato(StatoOrdine.IN_ATTESA_DELLA_CONSEGNA_PAYPAL);
 		if (!utenteLoggato.isNull(req) && Database.getInstance().getFactory().getOrdineDao().saveOrUpdate(ordine)) {
+			Messaggi m = UpdateDB(resp, req);
 			messaggio.setStatus("OK");
-			messaggio.setMessaggio("Pagamento alla consegna aggiornato sul DB con successo");
+			if(m.status == "OK") {
+				if(m.status == "OK" && m.messaggio == "false")
+					messaggio.setMessaggio("false");
+				else messaggio.setMessaggio("Pagamento alla consegna aggiornato sul DB con successo");
+			}
+			else {
+				resp.setStatus(500);
+				messaggio.setStatus("Fail");
+				messaggio.setMessaggio("Problemi interni, perfavore riprovi");
+			}
 		}else {
 			resp.setStatus(500);
 			messaggio.setStatus("Fail");
@@ -39,8 +49,18 @@ public class PayControllerREST {
 		Ordine ordine = Database.getInstance().getFactory().getOrdineDao().findCurrentFromUser(utenteLoggato.getUtente(req).getMail());
 		ordine.setStato(StatoOrdine.IN_ATTESA_DELLA_CONSEGNA_ALLACONSEGNA);
 		if (!utenteLoggato.isNull(req) && Database.getInstance().getFactory().getOrdineDao().saveOrUpdate(ordine)) {
+			Messaggi m = UpdateDB(resp, req);
 			messaggio.setStatus("OK");
-			messaggio.setMessaggio("Pagamento alla consegna aggiornato sul DB con successo");
+			if(m.status == "OK") {
+				if(m.status == "OK" && m.messaggio == "false")
+					messaggio.setMessaggio("false");
+				else messaggio.setMessaggio("Pagamento alla consegna aggiornato sul DB con successo");
+			}
+			else {
+				resp.setStatus(500);
+				messaggio.setStatus("Fail");
+				messaggio.setMessaggio("Problemi interni, perfavore riprovi");
+			}
 		}else {
 			resp.setStatus(500);
 			messaggio.setStatus("Fail");
@@ -72,38 +92,14 @@ public class PayControllerREST {
 	}
 	
 	
-	@PostMapping("/date")
-	public Messaggi controlloInMagazzinoeESetData(HttpServletResponse resp, HttpServletRequest req) {
-		Messaggi messaggio = new Messaggi();
-		UtenteControlloLog utenteLoggato = new UtenteControlloLog();
-		Ordine ordine = Database.getInstance().getFactory().getOrdineDao().findCurrentFromUser(utenteLoggato.getUtente(req).getMail());
-        long now = System.currentTimeMillis();
-        Date sqlDate = new Date(now);
-		ordine.setData(sqlDate);
-		
-		if (!utenteLoggato.isNull(req) && Database.getInstance().getFactory().getOrdineDao().saveOrUpdate(ordine)) {
-			messaggio.setStatus("OK");
-			messaggio.setMessaggio("Data aggiornata");
-		}
-		else {
-			resp.setStatus(500);
-			messaggio.setStatus("Fail");
-			messaggio.setMessaggio("Problemi interni, perfavore riprovi");
-		}
-		return messaggio;
-	}
-	
-	
-	@PostMapping("/controlAndUpdate")
 	public Messaggi UpdateDB(HttpServletResponse resp, HttpServletRequest req) {
 		Messaggi messaggio = new Messaggi();
 		UtenteControlloLog utenteLoggato = new UtenteControlloLog();
 		Ordine ordine = Database.getInstance().getFactory().getOrdineDao().findCurrentFromUser(utenteLoggato.getUtente(req).getMail());
 		if (!utenteLoggato.isNull(req)) {
-			Ordine o = Database.getInstance().getFactory().getOrdineDao().findCurrentFromUser(utenteLoggato.getUtente(req).getMail());
 			messaggio.setStatus("OK");
 			messaggio.setMessaggio("true");
-			for(var prodotto:o.getProdottiInOrder().keySet()) {
+			for(var prodotto:ordine.getProdottiInOrder().keySet()) {
 				if(ordine.getProdottiInOrder().get(prodotto) > prodotto.getQuantitaDisponibile()) {
 					messaggio.setMessaggio("false");
 					return messaggio;
@@ -112,7 +108,6 @@ public class PayControllerREST {
 			for(var prodotto:ordine.getProdottiInOrder().keySet()) {
 				prodotto.setQuantitaDisponibile(prodotto.getQuantitaDisponibile() - ordine.getProdottiInOrder().get(prodotto));
 				Database.getInstance().getFactory().getProdottoDao().saveOrUpdate(prodotto);
-				
 			}
 			Database.getInstance().getFactory().getOrdineDao().saveOrUpdate(ordine);
 		}else {
@@ -135,7 +130,6 @@ public class PayControllerREST {
 			for(var prodotto:ordine.getProdottiInOrder().keySet()) {
 				prodotto.setQuantitaDisponibile(prodotto.getQuantitaDisponibile() + ordine.getProdottiInOrder().get(prodotto));
 				Database.getInstance().getFactory().getProdottoDao().saveOrUpdate(prodotto);
-				
 			}
 			Database.getInstance().getFactory().getOrdineDao().saveOrUpdate(ordine);
 		}else {

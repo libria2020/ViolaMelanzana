@@ -9,7 +9,6 @@ function eventiButtoni(){
          layout: 'horizontal'
        },
         createOrder: function(data, actions) {
-		controlloInMagazzinoEAggiornamentoDB();
            return actions.order.create({
              purchase_units: [{
                amount: {
@@ -26,7 +25,7 @@ function eventiButtoni(){
 					success: function(risposta){
 						console.log(risposta);
 						if (risposta.status === "OK"){
-							setDataDB();
+							window.location.href = 'confirmedOrder';
 						}
 					},
 					error: function(xhr){
@@ -55,8 +54,7 @@ function eventiButtoni(){
 			success: function(risposta){
 			console.log(risposta);
 				if (risposta.status === "OK"){
-					controlloInMagazzinoEAggiornamentoDB();
-					setDataDB();
+					window.location.href = 'confirmedOrder';
 				}
 			},
 			error: function(xhr){
@@ -92,29 +90,6 @@ function controlloInMagazzino(){
 	});
 }
 
-function controlloInMagazzinoEAggiornamentoDB(){
-	$.ajax({
-		type: "POST",
-		url: "/controlAndUpdate",
-		success: function(risposta){
-		console.log(risposta);
-			if (risposta.status === "OK"){
-				if(risposta.messaggio === "false"){
-					alert("magazzino in eccesso");
-					window.location.href = '/';
-				}
-				else console.log("ok");
-			}
-		},
-		error: function(xhr){
-			console.log(xhr);
-			var res = JSON.parse(xhr.responseText);
-			alert(res.messaggio);
-			window.location.href = '/';
-		}
-	});
-}
-
 
 function ripristinoDB(){
 	$.ajax({
@@ -135,21 +110,3 @@ function ripristinoDB(){
 	});
 }
 
-function setDataDB(){
-	$.ajax({
-		type: "POST",
-		url: "/date",
-		success: function(risposta){
-		console.log(risposta);
-			if (risposta.status === "OK"){
-				window.location.href = 'confirmedOrder';
-			}
-		},
-		error: function(xhr){
-			console.log(xhr);
-			var res = JSON.parse(xhr.responseText);
-			alert(res.messaggio);
-			window.location.href = '/';
-		}
-	});
-}

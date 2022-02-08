@@ -34,7 +34,7 @@ $(document).ready(function(){
 		success: function(risposta) { 
 			
 			for (var i = 0; i < risposta.length; i++) {
-				$('#cat_bar').append($('<a href="search/category?categoria=' + risposta[i].id + '"><b>' + risposta[i].nome + '</b></a>'));
+				$('#cat_bar').append($('<a href="/category?categoria=' + risposta[i].id + '"><b>' + risposta[i].nome + '</b></a>'));
 			}
 		}		
 			
@@ -65,7 +65,7 @@ $(document).ready(function(){
 												'<div>'+
 													'<h4><b>' + risposta[i].nome +'</b></h4>'+	
 												'</div>'+									
-												'<a href="search/chef?key='+ risposta[i].id +'" >'+
+												'<a href="/chef?key='+ risposta[i].id +'" >'+
 													'<img src="'+ risposta[i].img_link +'" class="img-circle person" alt="Avatar">'+
 												'</a>'+										
 											'</div>'));
@@ -101,7 +101,7 @@ $(document).ready(function(){
 												'<div>'+
 													'<h4><b>' + risposta[i].nome +'</b></h4>'+	
 												'</div>'+									
-												'<a href="search/chef?key='+ risposta[i].id +'" >'+
+												'<a href="/chef?key='+ risposta[i].id +'" >'+
 													'<img src="'+ risposta[i].img_link +'" class="img-circle person" alt="Avatar">'+
 												'</a>'+										
 											'</div>'));
@@ -138,7 +138,7 @@ $(document).ready(function(){
 												'<div>'+
 													'<h4><b>' + risposta[i].nome +'</b></h4>'+	
 												'</div>'+									
-												'<a href="search/chef?key='+ risposta[i].id +'" >'+
+												'<a href="/chef?key='+ risposta[i].id +'" >'+
 													'<img src="'+ risposta[i].img_link +'" class="img-circle person" alt="Avatar">'+
 												'</a>'+										
 											'</div>'));

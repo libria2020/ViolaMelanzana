@@ -16,16 +16,17 @@ public class SegnalazioniRicettaDaoJDBC implements SegnalazioniRicettaDao {
 	}
 
 	@Override
-	public boolean add(int id_ricetta, String mail_utente) {
+	public boolean add(int id_ricetta, String mail_utente,String motivazione) {
 			if (mail_utente==null)
 				return false;
-			String query = "INSERT INTO segnalazioni_ricetta VALUES(?,?);";
+			String query = "INSERT INTO segnalazioni_ricetta VALUES(?,?, ?);";
 	
 			try {
 				
 				PreparedStatement prst = conn.prepareStatement(query);
 				prst.setString(1,mail_utente);
 				prst.setInt(2, id_ricetta);
+				prst.setString(3, motivazione);
 				prst.executeUpdate();
 				return true;
 	

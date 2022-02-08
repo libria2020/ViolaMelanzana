@@ -15,7 +15,7 @@
 	<head>
 	<meta charset="UTF-8">
 	<title>Viola Melanzana</title>
-	
+		<meta name="viewport" content="width=device-width, user-scalable=no">
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 	<!-- jQuery library -->
@@ -32,16 +32,17 @@
 	<script src="../js/singleFolderJS.js"></script>
 	
 	<link rel="icon" type="image/x-icon" href="/images/favicon.ico"> 
-	
+
 	</head>
 	
 <body>
 	
 	<jsp:include page="navbar.jsp"></jsp:include>
+	<input type="hidden" id="nomeRaccolta" value="${nome}">
 	
 	 <div id="mainContainer" class="row">
 	 	<div class="container space-nd" id="mainContainer">
-			<div class="col-sm-3" id="left">
+			<div class="col-sm-3 " id="left">
 			    <h2 id="foldHead">Le mie raccolte</h2>
 			    <dl>			
 				     <c:forEach items="${raccolteUtente}" var="raccolta">
@@ -64,10 +65,8 @@
 		  		</dl>
 			</div>
 		
-			<div class="col-sm-9" id="folderRecipe">
-					<form action="deleteFolder" method="post" >
-						<button type="submit" id="deleteFolder" onClick="return confirm('Confermi di voler eliminare DEFINITIVAMENTE questa raccolta?')">elimina</button> 
-					</form>
+			<div class="col-sm-9 " id="folderRecipe">
+						<button id="deleteFolder" onClick="deleteFolderFunction()" >elimina</button> 
 				  	<h1 id="preferiti">${nome}</h1>
 				   	<div id="likeRecipe">
 				   	

@@ -47,6 +47,7 @@ public class OrdineDaoJDBC implements OrdineDao{
 				ordine.setUtenteOrdine(Database.getInstance().getFactory().getUtenteDao().findByPrimaryKey(rs.getString("utente")));
 				ordine.setData(rs.getDate("data_completamento"));
 				ordine.setTotale(rs.getFloat("totale"));
+				ordine.setIndirizzo(Database.getInstance().getFactory().getIndirizzoDao().findByPrimaryKey(rs.getInt("id_indirizzo")));
 				ordine.setStato(rs.getString("stato"));
 				String queryProdotti = "SELECT * "
 				+ "FROM incluso as i, prodotto as p "
