@@ -176,13 +176,6 @@ public class AccountController {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
 	@GetMapping("/orderDetails")
 	@ResponseBody
 	public HashMap<Prodotto, Integer> getOrderDetail(@RequestParam int order, HttpServletRequest request) {
@@ -193,11 +186,29 @@ public class AccountController {
 		return prod;
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	@GetMapping("/getAddress")
+	@ResponseBody
+	public Indirizzo getAddress(@RequestParam String addressId, HttpServletRequest request) {
+
+		int id = Integer.parseInt(addressId);
+		
+		Indirizzo indirizzo =  Database.getInstance().getFactory().getIndirizzoDao().findByPrimaryKey(id);
+	
+		return indirizzo;
+	}
+	
 	@PostMapping("/deleteAddress")
 	@ResponseBody
-	public Messaggi deleteAddress(@RequestParam String orderId, HttpServletRequest request) {
+	public Messaggi deleteAddress(@RequestParam String addressId, HttpServletRequest request) {
 
-		int id = Integer.parseInt(orderId);
+		int id = Integer.parseInt(addressId);
 		
 		Messaggi msg = new Messaggi();
 			

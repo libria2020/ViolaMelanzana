@@ -326,6 +326,7 @@ function loadAddress() {
 										            '</div>'+
 													'<div class="row center">'+
 														'<button class="vm-btn-cart vm-btn-mod glyphicon glyphicon-trash vm-color" onclick="deleteAddress('+ risposta[i].id +')"></button>'+
+														'<button class="vm-btn-cart vm-btn-mod glyphicon glyphicon-edit vm-color" onclick="modAddress('+ risposta[i].id +')"></button>'+
 													'</div>'+
 												'</div>'+
 											'</div>'));
@@ -390,7 +391,7 @@ function deleteAddress(id) {
 		type: "POST",
 		url: "/deleteAddress",
 		data : {
-	        		"orderId" : id
+	        		"addressId" : id
 	    		},
 		
 		success: function(risposta) {
@@ -402,7 +403,41 @@ function deleteAddress(id) {
 				loadAddress();	
 			}
 		}
-	});
+	});	
+}
+
+function modAddress(id) {
+	
+	$.ajax({
+		type: "GET",
+		url: "/getAddress",
+		data : {
+	        		"addressId" : id
+	    		},
+		
+		success: function(risposta) {
+			
+			var via = document.getElementById("via");
+			via.value = risposta.indirizzo;
+			
+			var num = document.getElementById("num");
+			num.value = risposta.n_civico;
+			
+			var cap = document.getElementById("cap");
+			cap.value = risposta.cap;
+			
+			var city = document.getElementById("city");
+			city.value = risposta.citta;
+			
+			var prov = document.getElementById("prov");
+			prov.value = risposta.provincia;
+			
+			var tel = document.getElementById("tel");
+			tel.value = risposta.telefono;
+			
+			$('#addressModal').modal('show');
+		}
+	});	
 	
 	
 }
