@@ -28,6 +28,14 @@ public class SegnalazioniRicettaDaoJDBC implements SegnalazioniRicettaDao {
 				prst.setInt(2, id_ricetta);
 				prst.setString(3, motivazione);
 				prst.executeUpdate();
+				
+				String update = "UPDATE ricetta SET segnalazioni=segnalazioni+1 WHERE id=?;";
+				
+				PreparedStatement prstup = conn.prepareStatement(update);
+				prstup.setInt(1,id_ricetta);
+				
+				prstup.executeUpdate();
+				
 				return true;
 	
 					
